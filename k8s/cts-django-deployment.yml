@@ -20,7 +20,7 @@ spec:
       - envFrom:
           - configMapRef:
               name: cts-config
-        image: popenc/cts-django:dev-kube
+        image: ghcr.io/quanted/cts_app:dev-kube
         imagePullPolicy: Always
         name: cts-django
         ports:

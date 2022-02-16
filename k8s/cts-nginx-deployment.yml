@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: cts-nginx
+  name: cts-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cts-nginx
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: cts-nginx
+    spec:
+      containers:
+        - image: quanted/cts-nginx
+          imagePullPolicy: Always
+          name: nginx
+          ports:
+            - containerPort: 443
+          volumeMounts:
+            - mountPath: /src/collected_static
+              name: collected-static
+      restartPolicy: Always
+      volumes:
+        - name: collected-static
+          hostPath:
+            path: /host/collected-static
+#      volumes:
+#        - name: collected-static
+#          persistentVolumeClaim:
+#            claimName: collected-static-pvolume-claim1

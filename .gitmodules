@@ -1,0 +1,12 @@
+[submodule "cts_app"]
+	path = cts_app
+	url = https://github.com/quanted/cts_app
+[submodule "cts_nodejs"]
+	path = cts_nodejs
+	url = https://github.com/quanted/cts_nodejs
+[submodule "cts_celery"]
+	path = cts_celery
+	url = https://github.com/quanted/cts_celery
+[submodule "cts_nginx"]
+	path = cts_nginx
+	url = https://github.com/quanted/cts_nginx

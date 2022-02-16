@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+  labels:
+    app: qed-tomcat
+  name: qed-tomcat
+  #namespace: qed
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qed-tomcat
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: qed-tomcat
+    spec:
+      containers:
+      - env:
+        - name: JAVA_OPTS
+          value: -Xmx512m
+        image: quanted/qed-tomcat
+        imagePullPolicy: Always
+        name: qed-tomcat
+        volumeMounts:
+        - mountPath: /tmp/tomcat/
+          name: qed-tomcat-config
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      volumes:
+      - name: qed-tomcat-config
+        persistentVolumeClaim:
+          claimName: qed-tomcat-config-pvolume-claim1

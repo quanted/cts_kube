@@ -1,0 +1,51 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+  labels:
+    app: cts-manager
+  name: cts-manager
+  #namespace: qed
+  selfLink: /apis/extensions/v1beta1/namespaces/qed/deployments/cts-manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cts-manager
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: cts-manager
+    spec:
+      containers:
+      - args:
+        - celery
+        - worker
+        - -A
+        - tasks
+        - -Q
+        - manager_queue
+        - -l
+        - info
+        - -n
+        - manager_worker
+        - -c
+        - "1"
+        env:
+        - name: DOCKER_HOSTNAME
+          value: QED_KUBERNETES
+        - name: REDIS_HOSTNAME
+          value: redis
+        image: quanted/cts_celery:dev
+        imagePullPolicy: Always
+        name: worker-manager
+        resources: {}
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler

@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: cts-mongodb
+  name: cts-mongodb
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cts-mongodb
+  serviceName: cts-mongodb
+  template:
+    metadata:
+      labels:
+        app: cts-mongodb
+    spec:
+      containers:
+      - image: mongo:latest
+        imagePullPolicy: Always
+#        command: ['mongod']
+#        env:
+#          - name: DB_PATH
+#            value: /tmp/data/cts
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        name: cts-mongodb
+#        readinessProbe:
+#          exec:
+#            command:
+#            - ls
+#            - /
+#          initialDelaySeconds: 5
+#          periodSeconds: 10
+#        livenessProbe:
+#          exec:
+#            command:
+#            - ls
+#            - /
+#          initialDelaySeconds: 15
+#          periodSeconds: 30
+        ports:
+        - containerPort: 27017
+          protocol: TCP
+#        volumeMounts:
+#        - mountPath: /data/db
+#          name: mongodb-pvolume-claim1
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+#      volumes:
+#      - name: mongodb-pvolume-claim1
+#        persistentVolumeClaim:
+#          claimName: mongodb-pvolume-claim1
+

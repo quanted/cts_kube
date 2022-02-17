@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: qed-tomcat
+  name: qed-tomcat
+  namespace: qed-kube-scripts-79-dev
+  annotations:
+    app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}
+    app.gitlab.com/env: ${CI_ENVIRONMENT_SLUG}
+    eks.amazonaws.com/compute-type: fargate
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qed-tomcat
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: qed-tomcat
+    spec:
+      containers:
+      - env:
+        - name: JAVA_OPTS
+          value: -Xmx512m
+        image: ghcr.io/quanted/cts-tomcat:dev-kube
+        imagePullPolicy: Always
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 30
+          timeoutSeconds: 10
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        name: qed-tomcat
+        ports:
+          - containerPort: 8080
+            protocol: TCP
+        volumeMounts:
+        - mountPath: /tmp/tomcat/
+          name: qed-tomcat-config
+      imagePullSecrets:
+        - name: glcr-auth
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      volumes:
+      - name: qed-tomcat-config
+        persistentVolumeClaim:
+          claimName: qed-tomcat-config-pvolume-claim1

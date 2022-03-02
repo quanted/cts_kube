@@ -20,32 +20,37 @@ spec:
       - envFrom:
           - configMapRef:
               name: cts-config
-        image: ghcr.io/quanted/cts_app:dev-kube
+        image: ghcr.io/quanted/cts-django:dev-kube
         imagePullPolicy: Always
         name: cts-django
         ports:
         - containerPort: 8080
           protocol: TCP
         volumeMounts:
-        - mountPath: /src/cts_app/collected_static
-          name: collected-static
-        - mountPath: /src/app-data
-          name: app-data
-        - mountPath: /src/cts_app
-          name: django-code
+          - mountPath: /src/cts_app
+            name: django-code
+          - mountPath: /src/cts_app/collected_static
+            name: collected-static
+        # - mountPath: /src/app-data
+        #   name: app-data
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       volumes:
         - name: collected-static
           hostPath:
-            path: /host/collected-static
-        - name: app-data
-          hostPath:
-            path: /host/app-data
+            # path: /host/collected-static
+            # path: /C//Users/inick/GitHub/cts_kube/cts_app/static/cts_app
+
+            # TODO: Update hostPaths to PVCs
+            
+            path: /run/desktop/mnt/host/c/Users/inick/GitHub/cts_kube/cts_app/collected_static
+        # - name: app-data
+        #   hostPath:
+        #     path: /host/app-data
         - name: django-code
           hostPath:
-            path: /host/django-code
+            path: /run/desktop/mnt/host/c/Users/inick/GitHub/cts_kube/cts_app
 #      volumes:
 #      - name: collected-static
 #        persistentVolumeClaim:

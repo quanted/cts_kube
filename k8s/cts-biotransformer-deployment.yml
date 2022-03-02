@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: cts-biotransformer
+  name: cts-biotransformer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cts-biotransformer
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: cts-biotransformer
+    spec:
+      containers:
+        - name: cts-biotransformer
+          env:
+          - name: BT_JAR_PATH
+            value: /src/biotransformer3.0jar
+          image: ghcr.io/quanted/cts-biotransformer:dev-kube
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 5002
+            protocol: TCP
+          volumeMounts:
+            - mountPath: /src
+              name: bt-api-code
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      volumes:
+        - name: bt-api-code
+          hostPath:
+            path: /run/desktop/mnt/host/c/Users/inick/GitHub/bt_api

@@ -1,13 +1,9 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    deployment.kubernetes.io/revision: "1"
   labels:
     app: cts-manager
   name: cts-manager
-  #namespace: qed
-  selfLink: /apis/extensions/v1beta1/namespaces/qed/deployments/cts-manager
 spec:
   replicas: 1
   selector:
@@ -24,11 +20,11 @@ spec:
         app: cts-manager
     spec:
       containers:
-      - args:
+      - command:
         - celery
-        - worker
         - -A
         - tasks
+        - worker
         - -Q
         - manager_queue
         - -l
@@ -42,10 +38,35 @@ spec:
           value: QED_KUBERNETES
         - name: REDIS_HOSTNAME
           value: redis
-        image: quanted/cts_celery:dev
+        image: ghcr.io/quanted/cts-celery:dev-kube
         imagePullPolicy: Always
-        name: worker-manager
-        resources: {}
+        envFrom:
+        - configMapRef:
+            name: cts-config
+        livenessProbe:
+          exec:
+            command:
+              - ls
+              - /
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+              - ls
+              - /
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 10
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "2Gi"
+            cpu: "2000m"
+        name: worker-cts
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler

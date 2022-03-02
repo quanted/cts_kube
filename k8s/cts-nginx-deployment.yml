@@ -17,19 +17,22 @@ spec:
         app: cts-nginx
     spec:
       containers:
-        - image: quanted/cts-nginx
+        - image: ghcr.io/quanted/cts-nginx:dev-kube
           imagePullPolicy: Always
           name: nginx
           ports:
             - containerPort: 443
           volumeMounts:
             - mountPath: /src/collected_static
+            # - mountPath: /src/cts_app/static/cts_app
               name: collected-static
       restartPolicy: Always
       volumes:
         - name: collected-static
           hostPath:
-            path: /host/collected-static
+            # NOTE Docker Deskop 3.5.2 / Kubernetes v1.21.2 / WSLv2 mount on Windows 10:
+            # path: /run/desktop/mnt/host/c/Users/inick/GitHub/cts_kube/cts_app/static/cts_app
+            path: /run/desktop/mnt/host/c/Users/inick/GitHub/cts_kube/cts_app/collected_static
 #      volumes:
 #        - name: collected-static
 #          persistentVolumeClaim:

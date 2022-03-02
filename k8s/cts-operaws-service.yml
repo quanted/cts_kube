@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cts-operaws
+spec:
+  ports:
+  - port: 3344
+    protocol: TCP
+    targetPort: 3344
+  selector:
+    app: cts-operaws
+  type: ClusterIP

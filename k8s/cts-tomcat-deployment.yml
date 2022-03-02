@@ -2,29 +2,25 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: qed-tomcat
-  name: qed-tomcat
-  namespace: qed-kube-scripts-79-dev
-  annotations:
-    app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}
-    app.gitlab.com/env: ${CI_ENVIRONMENT_SLUG}
-    eks.amazonaws.com/compute-type: fargate
+    app: cts-tomcat
+  name: cts-tomcat
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: qed-tomcat
+      app: cts-tomcat
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: qed-tomcat
+        app: cts-tomcat
     spec:
       containers:
       - env:
         - name: JAVA_OPTS
-          value: -Xmx512m
+          # value: -Xmx512m
+          value: -Xmx1024m
         image: ghcr.io/quanted/cts-tomcat:dev-kube
         imagePullPolicy: Always
         readinessProbe:
@@ -41,24 +37,40 @@ spec:
           timeoutSeconds: 10
         resources:
           requests:
-            memory: "256Mi"
-            cpu: "250m"
-          limits:
+            # memory: "256Mi"
+            # cpu: "250m"
             memory: "512Mi"
             cpu: "500m"
-        name: qed-tomcat
+          limits:
+            # memory: "512Mi"
+            # cpu: "500m"
+            memory: "1024Mi"
+            cpu: "1000m"
+        name: cts-tomcat
         ports:
           - containerPort: 8080
             protocol: TCP
         volumeMounts:
-        - mountPath: /tmp/tomcat/
-          name: qed-tomcat-config
-      imagePullSecrets:
-        - name: glcr-auth
+          - mountPath: /usr/local/tomcat/webapps
+            name: cts-tomcat-webapps
+          - mountPath: /usr/local/tomcat/conf/tomcat-users.xml
+            name: cts-tomcat-user
+          - mountPath: /home/tomcat/.chemaxon/licenses
+            name: cts-tomcat-chemaxon
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       volumes:
-      - name: qed-tomcat-config
-        persistentVolumeClaim:
-          claimName: qed-tomcat-config-pvolume-claim1
+        - name: cts-tomcat-webapps
+          hostPath:
+            path: /run/desktop/mnt/host/c/Users/inick/GitHub/cts_kube/cts_tomcat/webapps
+        - name: cts-tomcat-user
+          hostPath:
+            path: /run/desktop/mnt/host/c/Users/inick/GitHub/cts_kube/cts_tomcat/tomcat-users.xml
+        - name: cts-tomcat-chemaxon
+          hostPath:
+            path: /run/desktop/mnt/host/c/Users/inick/GitHub/cts_kube/cts_tomcat/chemaxon/licenses
+      # - name: cts-tomcat-config
+      #   persistentVolumeClaim:
+      #     claimName: cts-tomcat-config-pvolume-claim1
+      

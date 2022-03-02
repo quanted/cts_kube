@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: cts-envipath
+  name: cts-envipath
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cts-envipath
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: cts-envipath
+    spec:
+      containers:
+        - name: cts-envipath
+          env:
+          - name: BT_JAR_PATH
+            value: /src/biotransformer3.0jar
+          image: ghcr.io/kurtw555/cts-envipath:dev-kube
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 5003
+            protocol: TCP
+          volumeMounts:
+            - mountPath: /src
+              name: bt-api-code
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      volumes:
+        - name: bt-api-code
+          hostPath:
+            path: /run/desktop/mnt/host/c/Users/inick/GitHub/cts-envipath

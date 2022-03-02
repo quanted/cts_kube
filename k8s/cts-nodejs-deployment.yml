@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
@@ -32,7 +32,7 @@ spec:
           value: redis
         - name: REDIS_PORT
           value: "6379"
-        image: quanted/cts_nodejs:dev
+        image: ghcr.io/quanted/cts-nodejs:dev-kube
         imagePullPolicy: Always
         name: cts-nodejs
       dnsPolicy: ClusterFirst

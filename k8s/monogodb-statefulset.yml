@@ -2,40 +2,75 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   labels:
-    app: mongodb
-  name: mongodb
-  #namespace: qed
+    app: cts-mongodb
+  name: cts-mongodb
 spec:
   podManagementPolicy: OrderedReady
   replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: mongodb
-  serviceName: mongodb
+      app: cts-mongodb
+  serviceName: cts-mongodb
   template:
     metadata:
       labels:
-        app: mongodb
+        app: cts-mongodb
     spec:
       containers:
-      - image: quanted/mongo
+      - image: mongo:latest
         imagePullPolicy: Always
-        name: mongodb
+        name: cts-mongodb
         ports:
         - containerPort: 27017
           protocol: TCP
         volumeMounts:
         - mountPath: /data/db
-          name: mongodb-pvolume
+          name: cts-mongodb-data
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       volumes:
-      - name: mongodb-pvolume
-        persistentVolumeClaim:
-          claimName: mongodb-pvolume-claim1
-  updateStrategy:
-    rollingUpdate:
-      partition: 0
-    type: RollingUpdate
+        - name: cts-mongodb-data
+          hostPath:
+            path: /run/desktop/mnt/host/c/Users/inick/mongodb_data
+      # volumes:
+      # - name: cts-mongodb-pvolume
+      #   persistentVolumeClaim:
+      #     claimName: cts-mongodb-pvolume-claim1
+  # updateStrategy:
+  #   rollingUpdate:
+  #     partition: 0
+  #   type: RollingUpdate
+
+# ---
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: cts-mongodb-data
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   capacity:
+#     storage: 2Gi
+#   hostPath:
+#     path: /run/desktop/mnt/host/c/Users/inick/GitHub/cts_kube/cts_app
+# ---
+
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: mongodb-pvolume-claim1
+#   labels:
+#     app: mongodb
+#   # namespace: qed-kube-scripts-79-dev
+# spec:
+#   accessModes:
+#     - ReadWriteMany
+#     # - ReadWriteOnce
+#   # storageClassName: efs-sc
+#   resources:
+#     requests:
+#       storage: "5Gi"
+# ---

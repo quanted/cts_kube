@@ -1,0 +1,199 @@
+stages:
+  - Image Build
+  - Deployment
+  - Restart Pods
+  - Image Scan
+
+include:
+  - project: 'DSO/DASTScanner'
+    file: '.gitlab-ci.yml'
+  - remote: 'https://gitlab.com/prismacloud-public/shift-left/extension/-/raw/master/.pcs.gitlab-ci.yml'
+
+
+CopyDevImages:
+  stage: Image Build
+  tags:
+    - devsecops-instance
+  when: manual
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [ "" ]
+  script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    - mkdir -p /workspace
+    # CTS BioTransformer Image:
+    - echo "FROM ghcr.io/quanted/cts-biotransformer:dev-kube" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-biotransformer:$CI_COMMIT_REF_NAME
+    # CTS Django Image:
+    - echo "FROM ghcr.io/quanted/cts-django:dev-kube" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-django:$CI_COMMIT_REF_NAME
+    # CTS EnviPath Image:
+    - echo "FROM ghcr.io/kurtw555/cts-envipath:dev-kube" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-envipath:$CI_COMMIT_REF_NAME
+    # CTS Celery Image:
+    - echo "FROM ghcr.io/quanted/cts-celery:dev-kube" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-celery:$CI_COMMIT_REF_NAME
+    # CTS Nginx Image:
+    - echo "FROM ghcr.io/quanted/cts-nginx:dev-kube" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-nginx:$CI_COMMIT_REF_NAME
+    # CTS NodeJS Image:
+    - echo "FROM ghcr.io/quanted/cts-nodejs:dev-kube" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-nodejs:$CI_COMMIT_REF_NAME
+    # CTS OPERAWS Image:
+    - echo "FROM ghcr.io/quanted/operaws:dev-kube" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/operaws:$CI_COMMIT_REF_NAME
+    # CTS Tomcat Image:
+    - echo "FROM ghcr.io/quanted/cts-tomcat:dev-kube" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-tomcat:$CI_COMMIT_REF_NAME
+
+  environment:
+    name: dev
+    url: http://qed.devsecops-dev.aws.epa.gov
+    kubernetes:
+      namespace: cts-kube
+
+ApplyManifests:
+  stage: Deployment
+  tags:
+    - devsecops-instance
+  when: manual
+  image: dtzar/helm-kubectl
+  script:
+    - kubectl config set-cluster "$KUBECTL_DEV_CLUSTER" --server="$KUBE_URL"
+    - kubectl config set-cluster "$KUBECTL_DEV_CLUSTER" --certificate-authority=$KUBE_CA_PEM_FILE --embed-certs=true
+    - kubectl config set-credentials gitlab --token="$KUBE_TOKEN"
+    - kubectl config set-context default --cluster="$KUBECTL_DEV_CLUSTER" --user=gitlab --namespace="$KUBE_NAMESPACE"
+    - kubectl config use-context default
+    - kubectl apply -f k8s/
+  environment:
+    name: dev
+    url: http://qed.devsecops-dev.aws.epa.gov
+    kubernetes:
+      namespace: cts-kube
+
+ScalePods:
+  stage: Restart Pods
+  tags:
+    - devsecops-instance
+  when: manual
+  image: dtzar/helm-kubectl
+  script:
+    - kubectl config set-cluster "$KUBECTL_DEV_CLUSTER" --server="$KUBE_URL"
+    - kubectl config set-cluster "$KUBECTL_DEV_CLUSTER" --certificate-authority=$KUBE_CA_PEM_FILE --embed-certs=true
+    - kubectl config set-credentials gitlab --token="$KUBE_TOKEN"
+    - kubectl config set-context default --cluster="$KUBECTL_DEV_CLUSTER" --user=gitlab --namespace="$KUBE_NAMESPACE"
+    - kubectl config use-context default
+    - kubectl scale deployment cts-biotransformer --replicas=0
+    - kubectl scale deployment cts-biotransformer --replicas=1
+    - kubectl scale deployment cts-django --replicas=0
+    - kubectl scale deployment cts-django --replicas=1
+    - kubectl scale deployment cts-envipath --replicas=0
+    - kubectl scale deployment cts-envipath --replicas=1
+    - kubectl scale deployment cts-manager --replicas=0
+    - kubectl scale deployment cts-manager --replicas=1
+    - kubectl scale deployment cts-nginx --replicas=0
+    - kubectl scale deployment cts-nginx --replicas=1
+    - kubectl scale deployment cts-operaws --replicas=0
+    - kubectl scale deployment cts-operaws --replicas=1
+    - kubectl scale deployment cts-tomcat --replicas=0
+    - kubectl scale deployment cts-tomcat --replicas=1
+    - kubectl scale deployment cts-worker --replicas=0
+    - kubectl scale deployment cts-worker --replicas=1
+    - kubectl scale deployment cts-mongodb --replicas=0
+    - kubectl scale deployment cts-mongodb --replicas=1
+    - kubectl scale deployment redis --replicas=0
+    - kubectl scale deployment redis --replicas=1
+  environment:
+    name: dev
+    url: http://qed.devsecops-dev.aws.epa.gov
+    kubernetes:
+      namespace: cts-kube
+
+BiotransformerImageScan:
+  stage: Image Scan
+  tags:
+    - twistcli
+  when: manual
+  allow_failure: false
+  variables:
+    cts_biotransformer_image: "qed/cts_kube/cts-biotransformer:dev-gl"
+  script:
+    - /public/server/apps/twistcli images scan --details --address https://prismacloud.gitlab-prod.aws.epa.gov $cts_biotransformer_image
+
+DjangoImageScan:
+  stage: Image Scan
+  tags:
+    - twistcli
+  when: manual
+  allow_failure: false
+  variables:
+    cts_django_image: "qed/cts_kube/cts-django:dev-gl"
+  script:
+    - /public/server/apps/twistcli images scan --details --address https://prismacloud.gitlab-prod.aws.epa.gov $cts_django_image
+
+EnvipathImageScan:
+  stage: Image Scan
+  tags:
+    - twistcli
+  when: manual
+  allow_failure: false
+  variables:
+    cts_envipath_image: "qed/cts_kube/cts-envipath:dev-gl"
+  script:
+    - /public/server/apps/twistcli images scan --details --address https://prismacloud.gitlab-prod.aws.epa.gov $cts_envipath_image
+
+CeleryImageScan:
+  stage: Image Scan
+  tags:
+    - twistcli
+  when: manual
+  allow_failure: false
+  variables:
+    cts_celery_image: "qed/cts_kube/cts-celery:dev-gl"
+  script:
+    - /public/server/apps/twistcli images scan --details --address https://prismacloud.gitlab-prod.aws.epa.gov $cts_celery_image
+
+NginxImageScan:
+  stage: Image Scan
+  tags:
+    - twistcli
+  when: manual
+  allow_failure: false
+  variables:
+    cts_nginx_image: "qed/cts_kube/cts-nginx:dev-gl"
+  script:
+    - /public/server/apps/twistcli images scan --details --address https://prismacloud.gitlab-prod.aws.epa.gov $cts_nginx_image
+
+NodejsImageScan:
+  stage: Image Scan
+  tags:
+    - twistcli
+  when: manual
+  allow_failure: false
+  variables:
+    cts_nodejs_image: "qed/cts_kube/cts-nodejs:dev-gl"
+  script:
+    - /public/server/apps/twistcli images scan --details --address https://prismacloud.gitlab-prod.aws.epa.gov $cts_nodejs_image
+
+OperawsImageScan:
+  stage: Image Scan
+  tags:
+    - twistcli
+  when: manual
+  allow_failure: false
+  variables:
+    cts_operaws_image: "qed/cts_kube/cts-operaws:dev-gl"
+  script:
+    - /public/server/apps/twistcli images scan --details --address https://prismacloud.gitlab-prod.aws.epa.gov $cts_operaws_image
+
+TomcatImageScan:
+  stage: Image Scan
+  tags:
+    - twistcli
+  when: manual
+  allow_failure: false
+  variables:
+    cts_tomcat_image: "qed/cts_kube/cts-tomcat:dev-gl"
+  script:
+    - /public/server/apps/twistcli images scan --details --address https://prismacloud.gitlab-prod.aws.epa.gov $cts_tomcat_image

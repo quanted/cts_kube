@@ -4,6 +4,11 @@ metadata:
   labels:
     app: cts-tomcat
   name: cts-tomcat
+  namespace: cts-kube
+  annotations:
+    app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}
+    app.gitlab.com/env: ${CI_ENVIRONMENT_SLUG}
+    eks.amazonaws.com/compute-type: fargate
 spec:
   replicas: 1
   selector:
@@ -19,9 +24,8 @@ spec:
       containers:
       - env:
         - name: JAVA_OPTS
-          # value: -Xmx512m
           value: -Xmx1024m
-        image: ghcr.io/quanted/cts-tomcat:dev-kube
+        image: registry.epa.gov/qed/cyanweb_kube/cts-tomcat:dev-gl
         imagePullPolicy: Always
         readinessProbe:
           tcpSocket:
@@ -37,13 +41,9 @@ spec:
           timeoutSeconds: 10
         resources:
           requests:
-            # memory: "256Mi"
-            # cpu: "250m"
             memory: "512Mi"
             cpu: "500m"
           limits:
-            # memory: "512Mi"
-            # cpu: "500m"
             memory: "1024Mi"
             cpu: "1000m"
         name: cts-tomcat
@@ -51,8 +51,6 @@ spec:
           - containerPort: 8080
             protocol: TCP
         volumeMounts:
-          - mountPath: /usr/local/tomcat/webapps
-            name: cts-tomcat-webapps
           - mountPath: /usr/local/tomcat/conf/tomcat-users.xml
             name: cts-tomcat-user
           - mountPath: /home/tomcat/.chemaxon/licenses
@@ -61,16 +59,9 @@ spec:
       restartPolicy: Always
       schedulerName: default-scheduler
       volumes:
-        - name: cts-tomcat-webapps
-          hostPath:
-            path: /run/desktop/mnt/host/c/Users/inick/GitHub/cts_kube/cts_tomcat/webapps
-        - name: cts-tomcat-user
-          hostPath:
-            path: /run/desktop/mnt/host/c/Users/inick/GitHub/cts_kube/cts_tomcat/tomcat-users.xml
         - name: cts-tomcat-chemaxon
-          hostPath:
-            path: /run/desktop/mnt/host/c/Users/inick/GitHub/cts_kube/cts_tomcat/chemaxon/licenses
-      # - name: cts-tomcat-config
-      #   persistentVolumeClaim:
-      #     claimName: cts-tomcat-config-pvolume-claim1
-      
+        persistentVolumeClaim:
+          claimName: cts-tomcat-chemaxon-pvolume-claim1
+        - name: cts-tomcat-user
+        persistentVolumeClaim:
+          claimName: cts-tomcat-user-pvolume-claim1

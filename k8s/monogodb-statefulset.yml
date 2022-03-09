@@ -4,6 +4,7 @@ metadata:
   labels:
     app: cts-mongodb
   name: cts-mongodb
+  namespace: cts-kube
 spec:
   podManagementPolicy: OrderedReady
   replicas: 1
@@ -31,46 +32,6 @@ spec:
       restartPolicy: Always
       schedulerName: default-scheduler
       volumes:
-        - name: cts-mongodb-data
-          hostPath:
-            path: /run/desktop/mnt/host/c/Users/inick/mongodb_data
-      # volumes:
-      # - name: cts-mongodb-pvolume
-      #   persistentVolumeClaim:
-      #     claimName: cts-mongodb-pvolume-claim1
-  # updateStrategy:
-  #   rollingUpdate:
-  #     partition: 0
-  #   type: RollingUpdate
-
-# ---
-# apiVersion: v1
-# kind: PersistentVolume
-# metadata:
-#   name: cts-mongodb-data
-# spec:
-#   accessModes:
-#     - ReadWriteOnce
-#   capacity:
-#     storage: 2Gi
-#   hostPath:
-#     path: /run/desktop/mnt/host/c/Users/inick/GitHub/cts_kube/cts_app
-# ---
-
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: mongodb-pvolume-claim1
-#   labels:
-#     app: mongodb
-#   # namespace: qed-kube-scripts-79-dev
-# spec:
-#   accessModes:
-#     - ReadWriteMany
-#     # - ReadWriteOnce
-#   # storageClassName: efs-sc
-#   resources:
-#     requests:
-#       storage: "5Gi"
-# ---
+      - name: cts-mongodb-pvolume
+        persistentVolumeClaim:
+          claimName: cts-mongodb-pvolume-claim1

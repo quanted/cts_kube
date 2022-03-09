@@ -4,6 +4,11 @@ metadata:
   labels:
     app: cts-django
   name: cts-django
+  namespace: cts-kube
+  annotations:
+    app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}
+    app.gitlab.com/env: ${CI_ENVIRONMENT_SLUG}
+    eks.amazonaws.com/compute-type: fargate
 spec:
   replicas: 1
   selector:
@@ -20,41 +25,42 @@ spec:
       - envFrom:
           - configMapRef:
               name: cts-config
-        image: ghcr.io/quanted/cts-django:dev-kube
+        image: registry.epa.gov/qed/cyanweb_kube/cts-django:dev-gl
         imagePullPolicy: Always
         name: cts-django
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        livenessProbe:
+          exec:
+            command:
+              - ls
+              - /
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+              - ls
+              - /
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 10
         ports:
         - containerPort: 8080
           protocol: TCP
         volumeMounts:
-          - mountPath: /src/cts_app
-            name: django-code
           - mountPath: /src/cts_app/collected_static
-            name: collected-static
-        # - mountPath: /src/app-data
-        #   name: app-data
+            name: cts-collected-static
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       volumes:
-        - name: collected-static
-          hostPath:
-            # path: /host/collected-static
-            # path: /C//Users/inick/GitHub/cts_kube/cts_app/static/cts_app
-
-            # TODO: Update hostPaths to PVCs
-            
-            path: /run/desktop/mnt/host/c/Users/inick/GitHub/cts_kube/cts_app/collected_static
-        # - name: app-data
-        #   hostPath:
-        #     path: /host/app-data
-        - name: django-code
-          hostPath:
-            path: /run/desktop/mnt/host/c/Users/inick/GitHub/cts_kube/cts_app
-#      volumes:
-#      - name: collected-static
-#        persistentVolumeClaim:
-#          claimName: collected-static-pvolume-claim1
-#      - name: app-data
-#        persistentVolumeClaim:
-#          claimName: app-data-pvolume-claim1
+      - name: cts-collected-static
+        persistentVolumeClaim:
+          claimName: cts-collected-static-pvolume-claim1

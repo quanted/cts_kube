@@ -4,6 +4,11 @@ metadata:
   labels:
     app: cts-worker
   name: cts-worker
+  namespace: cts-kube
+  annotations:
+    app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}
+    app.gitlab.com/env: ${CI_ENVIRONMENT_SLUG}
+    eks.amazonaws.com/compute-type: fargate
 spec:
   replicas: 1
   selector:
@@ -38,10 +43,8 @@ spec:
           value: QED_KUBERNETES
         - name: REDIS_HOSTNAME
           value: redis
-        # image: ghcr.io/quanted/cts-celery:dev-kube
-        # imagePullPolicy: Always
-        image: cts-celery-testing
-        imagePullPolicy: Never
+        image: registry.epa.gov/qed/cyanweb_kube/cts-celery:dev-kube
+        imagePullPolicy: Always
         envFrom:
         - configMapRef:
             name: cts-config

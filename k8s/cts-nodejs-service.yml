@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: cts-nodejs
-  #namespace: qed
+  namespace: cts-kube
 spec:
   ports:
   - port: 4000

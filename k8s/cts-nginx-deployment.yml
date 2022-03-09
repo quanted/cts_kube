@@ -4,6 +4,11 @@ metadata:
   labels:
     app: cts-nginx
   name: cts-nginx
+  namespace: cts-kube
+  annotations:
+    app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}
+    app.gitlab.com/env: ${CI_ENVIRONMENT_SLUG}
+    eks.amazonaws.com/compute-type: fargate
 spec:
   replicas: 1
   selector:
@@ -17,23 +22,34 @@ spec:
         app: cts-nginx
     spec:
       containers:
-        - image: ghcr.io/quanted/cts-nginx:dev-kube
+        - image: registry.epa.gov/qed/cyanweb_kube/cts-nginx:dev-gl
           imagePullPolicy: Always
           name: nginx
+          readinessProbe:
+          tcpSocket:
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 15
+            periodSeconds: 30
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "500Mi"
+              cpu: "500m"
           ports:
             - containerPort: 443
+            - containerPort: 80
           volumeMounts:
             - mountPath: /src/collected_static
-            # - mountPath: /src/cts_app/static/cts_app
-              name: collected-static
+              name: cts-collected-static
       restartPolicy: Always
       volumes:
-        - name: collected-static
-          hostPath:
-            # NOTE Docker Deskop 3.5.2 / Kubernetes v1.21.2 / WSLv2 mount on Windows 10:
-            # path: /run/desktop/mnt/host/c/Users/inick/GitHub/cts_kube/cts_app/static/cts_app
-            path: /run/desktop/mnt/host/c/Users/inick/GitHub/cts_kube/cts_app/collected_static
-#      volumes:
-#        - name: collected-static
-#          persistentVolumeClaim:
-#            claimName: collected-static-pvolume-claim1
+      - name: cts-collected-static
+        persistentVolumeClaim:
+          claimName: cts-collected-static-pvolume-claim1

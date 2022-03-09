@@ -1,0 +1,83 @@
+# # CTS Collected Static PVC
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: cts-collected-static-pvolume-claim1
+#   namespace: cts-kube
+#   labels:
+#     app: cts-collected-static-pvolume-claim1
+# spec:
+#   accessModes:
+#     - ReadWriteMany
+#   resources:
+#     requests:
+#       storage: 1Gi
+#   selector:
+#     matchLabels:
+#       release: "stable"
+#       name: cts-collected-static-pv
+# ---
+
+# # CTS OPERAWS PVC
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: cts-mongodb-pvolume-claim1
+#   namespace: cts-kube
+#   labels:
+#     app: cts-mongodb-pvolume-claim1
+# spec:
+#   accessModes:
+#     - ReadWriteMany
+#   resources:
+#     requests:
+#       storage: 5Gi
+#   selector:
+#     matchLabels:
+#       release: "stable"
+#       name: cts-mongodb-pv
+# ---
+
+# # CTS Tomcat Chemaxon PVC
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: cts-tomcat-chemaxon-pvolume-claim1
+#   namespace: cts-kube
+#   labels:
+#     app: cts-tomcat-chemaxon-pvolume-claim1
+# spec:
+#   accessModes:
+#     - ReadOnlyMany
+#   resources:
+#     requests:
+#       storage: 5Mi
+#   selector:
+#     matchLabels:
+#       release: "stable"
+#       name: cts-tomcat-chemaxon-pv
+# ---
+
+# # CTS Tomcat tomcat-users.xml PVC
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: cts-tomcat-user-pvolume-claim1
+#   namespace: cts-kube
+#   labels:
+#     app: cts-tomcat-user-pvolume-claim1
+# spec:
+#   accessModes:
+#     - ReadOnlyMany
+#   resources:
+#     requests:
+#       storage: 1Mi
+#   selector:
+#     matchLabels:
+#       release: "stable"
+#       name: cts-tomcat-user-pv
+# ---

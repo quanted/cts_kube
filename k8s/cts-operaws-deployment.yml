@@ -4,6 +4,11 @@ metadata:
   labels:
     app: cts-operaws
   name: cts-operaws
+  namespace: cts-kube
+  annotations:
+    app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}
+    app.gitlab.com/env: ${CI_ENVIRONMENT_SLUG}
+    eks.amazonaws.com/compute-type: fargate
 spec:
   replicas: 1
   selector:
@@ -18,18 +23,34 @@ spec:
     spec:
       containers:
         - name: cts-operaws
-          image: ghcr.io/quanted/operaws:dev-kube
+          image: registry.epa.gov/qed/cyanweb_kube/operaws:dev-gl
           imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+          livenessProbe:
+            exec:
+              command:
+                - ls
+                - /
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 10
+          readinessProbe:
+            exec:
+              command:
+                - ls
+                - /
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 10
           ports:
           - containerPort: 3344
             protocol: TCP
-          volumeMounts:
-            - mountPath: /src/operaws
-              name: operaws-code
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
-      volumes:
-        - name: operaws-code
-          hostPath:
-            path: /run/desktop/mnt/host/c/Users/inick/GitHub/OPERAWS

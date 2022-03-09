@@ -1,0 +1,71 @@
+# # CTS Collected Static PV
+# ---
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: cts-collected-static-pv
+#   labels:
+#     type: local
+#     app: cts-collected-static-pv
+# spec:
+#   storageClassName: cts-collected-static-pv
+#   accessModes:
+#     - ReadWriteMany
+#   capacity:
+#     storage: 1Gi
+#   hostPath:
+#     path: /run/desktop/mnt/host/c/Users/inick/GitHub/cts_kube/cts_app/collected_static
+# ---
+
+# # CTS OPERAWS PV
+# ---
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: cts-mongodb-pv
+#   labels:
+#     type: local
+#     app: cts-mongodb-pv
+# spec:
+#   storageClassName: cts-mongodb-pv
+#   accessModes:
+#     - ReadWriteMany
+#   capacity:
+#     storage: 5Gi
+#   hostPath:
+#     path: /run/desktop/mnt/host/c/Users/inick/mongodb_data
+# ---
+
+# # CTS Tomcat Chemaxon PV
+# ---
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: cts-tomcat-chemaxon-pv
+#   labels:
+#     type: local
+#     app: cts-tomcat-chemaxon-pv
+# spec:
+#   storageClassName: cts-tomcat-chemaxon-pv
+#   accessModes:
+#     - ReadOnlyMany
+#   capacity:
+#     storage: 5Mi
+#   hostPath:
+#     path: /run/desktop/mnt/host/c/Users/inick/GitHub/cts_kube/cts_tomcat/chemaxon
+# ---
+
+# # CTS Tomcat tomcat-users.xml PV
+# ---
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: cts-tomcat-user-pv
+# spec:
+#   accessModes:
+#     - ReadOnlyMany
+#   capacity:
+#     storage: 1Mi
+#   hostPath:
+#     path: /run/desktop/mnt/host/c/Users/inick/GitHub/cts_kube/cts_tomcat/tomcat-users.xml
+# ---

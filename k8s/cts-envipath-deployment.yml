@@ -4,6 +4,11 @@ metadata:
   labels:
     app: cts-envipath
   name: cts-envipath
+  namespace: cts-kube
+  annotations:
+    app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}
+    app.gitlab.com/env: ${CI_ENVIRONMENT_SLUG}
+    eks.amazonaws.com/compute-type: fargate
 spec:
   replicas: 1
   selector:
@@ -21,18 +26,34 @@ spec:
           env:
           - name: BT_JAR_PATH
             value: /src/biotransformer3.0jar
-          image: ghcr.io/kurtw555/cts-envipath:dev-kube
+          image: ghcr.io/kurtw555/cts-envipath:dev-gl
           imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+          livenessProbe:
+            exec:
+              command:
+                - ls
+                - /
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 10
+          readinessProbe:
+            exec:
+              command:
+                - ls
+                - /
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 10
           ports:
           - containerPort: 5003
             protocol: TCP
-          volumeMounts:
-            - mountPath: /src
-              name: bt-api-code
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
-      volumes:
-        - name: bt-api-code
-          hostPath:
-            path: /run/desktop/mnt/host/c/Users/inick/GitHub/cts-envipath

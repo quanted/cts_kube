@@ -11,6 +11,9 @@ RUN mkdir -p /home/tomcat/.chemaxon/licenses && \
 # Makes "tomcat" user as owner of chemaxon dir
 RUN chown -R tomcat:tomcat /home/tomcat/.chemaxon
 
+# Copies webapps folder to image
+COPY ./webapps/ /usr/local/tomcat/webapps/
+
 # Sets work directory to "tomcat" folder
 WORKDIR /home/tomcat
 

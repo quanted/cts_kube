@@ -112,88 +112,136 @@ ScalePods:
 
 BiotransformerImageScan:
   stage: Image Scan
+  extends:
+    - .pcs_compute_scan
   tags:
     - twistcli
   when: manual
   allow_failure: false
   variables:
-    cts_biotransformer_image: "qed/cts_kube/cts-biotransformer:dev-gl"
+    prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
+    GIT_STRATEGY: clone
+    prisma_cloud_scan_image: "qed/cts_kube/cts-biotransformer:dev-gl" 
   script:
-    - /public/server/apps/twistcli images scan --details --address https://prismacloud.gitlab-prod.aws.epa.gov $cts_biotransformer_image
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
+    - docker pull $prisma_cloud_scan_image
+    - ./image_scan.sh
 
 DjangoImageScan:
   stage: Image Scan
+  extends:
+    - .pcs_compute_scan
   tags:
     - twistcli
   when: manual
   allow_failure: false
   variables:
-    cts_django_image: "qed/cts_kube/cts-django:dev-gl"
+    prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
+    GIT_STRATEGY: clone
+    prisma_cloud_scan_image: "qed/cts_kube/cts-django:dev-gl" 
   script:
-    - /public/server/apps/twistcli images scan --details --address https://prismacloud.gitlab-prod.aws.epa.gov $cts_django_image
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
+    - docker pull $prisma_cloud_scan_image
+    - ./image_scan.sh
 
 EnvipathImageScan:
   stage: Image Scan
+  extends:
+    - .pcs_compute_scan
   tags:
     - twistcli
   when: manual
   allow_failure: false
   variables:
-    cts_envipath_image: "qed/cts_kube/cts-envipath:dev-gl"
+    prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
+    GIT_STRATEGY: clone
+    prisma_cloud_scan_image: "qed/cts_kube/cts-envipath:dev-gl" 
   script:
-    - /public/server/apps/twistcli images scan --details --address https://prismacloud.gitlab-prod.aws.epa.gov $cts_envipath_image
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
+    - docker pull $prisma_cloud_scan_image
+    - ./image_scan.sh
 
 CeleryImageScan:
   stage: Image Scan
+  extends:
+    - .pcs_compute_scan
   tags:
     - twistcli
   when: manual
   allow_failure: false
   variables:
-    cts_celery_image: "qed/cts_kube/cts-celery:dev-gl"
+    prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
+    GIT_STRATEGY: clone
+    prisma_cloud_scan_image: "qed/cts_kube/cts-celery:dev-gl" 
   script:
-    - /public/server/apps/twistcli images scan --details --address https://prismacloud.gitlab-prod.aws.epa.gov $cts_celery_image
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
+    - docker pull $prisma_cloud_scan_image
+    - ./image_scan.sh
 
 NginxImageScan:
   stage: Image Scan
+  extends:
+    - .pcs_compute_scan
   tags:
     - twistcli
   when: manual
   allow_failure: false
   variables:
-    cts_nginx_image: "qed/cts_kube/cts-nginx:dev-gl"
+    prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
+    GIT_STRATEGY: clone
+    prisma_cloud_scan_image: "qed/cts_kube/cts-nginx:dev-gl" 
   script:
-    - /public/server/apps/twistcli images scan --details --address https://prismacloud.gitlab-prod.aws.epa.gov $cts_nginx_image
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
+    - docker pull $prisma_cloud_scan_image
+    - ./image_scan.sh
 
 NodejsImageScan:
   stage: Image Scan
+  extends:
+    - .pcs_compute_scan
   tags:
     - twistcli
   when: manual
   allow_failure: false
   variables:
-    cts_nodejs_image: "qed/cts_kube/cts-nodejs:dev-gl"
+    prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
+    GIT_STRATEGY: clone
+    prisma_cloud_scan_image: "qed/cts_kube/cts-nodejs:dev-gl" 
   script:
-    - /public/server/apps/twistcli images scan --details --address https://prismacloud.gitlab-prod.aws.epa.gov $cts_nodejs_image
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
+    - docker pull $prisma_cloud_scan_image
+    - ./image_scan.sh
 
 OperawsImageScan:
   stage: Image Scan
+  extends:
+    - .pcs_compute_scan
   tags:
     - twistcli
   when: manual
   allow_failure: false
   variables:
-    cts_operaws_image: "qed/cts_kube/cts-operaws:dev-gl"
+    prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
+    GIT_STRATEGY: clone
+    prisma_cloud_scan_image: "qed/cts_kube/cts-operaws:dev-gl" 
   script:
-    - /public/server/apps/twistcli images scan --details --address https://prismacloud.gitlab-prod.aws.epa.gov $cts_operaws_image
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
+    - docker pull $prisma_cloud_scan_image
+    - ./image_scan.sh
 
 TomcatImageScan:
   stage: Image Scan
+  extends:
+    - .pcs_compute_scan
   tags:
     - twistcli
   when: manual
   allow_failure: false
   variables:
-    cts_tomcat_image: "qed/cts_kube/cts-tomcat:dev-gl"
+    prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
+    GIT_STRATEGY: clone
+    prisma_cloud_scan_image: "qed/cts_kube/cts-tomcat:dev-gl" 
   script:
-    - /public/server/apps/twistcli images scan --details --address https://prismacloud.gitlab-prod.aws.epa.gov $cts_tomcat_image
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
+    - docker pull $prisma_cloud_scan_image
+    - ./image_scan.sh

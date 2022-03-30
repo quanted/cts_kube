@@ -19,7 +19,8 @@ spec:
         app: cts-mongodb
     spec:
       containers:
-      - image: mongo:latest
+      # - image: mongo:latest
+      - image: ghcr.io/quanted/mongo:5.0.6
         imagePullPolicy: Always
         name: cts-mongodb
         ports:

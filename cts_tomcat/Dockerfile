@@ -1,4 +1,5 @@
-FROM tomcat:7.0-jre8
+# FROM tomcat:7.0-jre8
+FROM tomcat:10.0.11-jre8
 
 # Creates "tomcat" user, makes them owner of tomcat app dir
 RUN useradd --create-home --shell /bin/bash tomcat && \

@@ -1,8 +1,6 @@
-FROM ghcr.io/quanted/cts-tomcat-base as base
+FROM ghcr.io/quanted/cts-tomcat-base
 
-USER root
-
-COPY --from=base /usr/local/tomcat/ /usr/local/tomcat 
+# COPY --from=ghcr.io/quanted/cts-tomcat-base /usr/local/tomcat/ /usr/local/tomcat 
 
 RUN dnf -y update && \
     dnf -y --nodocs install ca-certificates curl gnupg dirmngr git procps bzip2 unzip fontconfig p11-kit && \ 

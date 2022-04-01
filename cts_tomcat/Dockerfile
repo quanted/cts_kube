@@ -1,4 +1,4 @@
-FROM ghcr.io/quanted/cts-tomcat-base
+FROM ghcr.io/quanted/cts-tomcat-base as base
 
 USER root
 

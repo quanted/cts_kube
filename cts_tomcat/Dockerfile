@@ -1,6 +1,5 @@
-FROM tomcat:7.0-jre8
+FROM ghcr.io/quanted/cts-tomcat-base
 
-# Creates "tomcat" user, makes them owner of tomcat app dir
 RUN useradd --create-home --shell /bin/bash tomcat && \
 	chown -R tomcat:tomcat /usr/local/tomcat
 
@@ -11,11 +10,13 @@ RUN mkdir -p /home/tomcat/.chemaxon/licenses && \
 # Makes "tomcat" user as owner of chemaxon dir
 RUN chown -R tomcat:tomcat /home/tomcat/.chemaxon
 
-# Copies webapps folder to image
-COPY ./webapps/ /usr/local/tomcat/webapps/
-
 # Sets work directory to "tomcat" folder
-WORKDIR /home/tomcat
+# WORKDIR /home/tomcat
+WORKDIR /usr/local/tomcat
 
 # Sets default user as "tomcat"
 USER tomcat
+
+# EXPOSE 8080
+
+CMD ["catalina.sh", "run"]

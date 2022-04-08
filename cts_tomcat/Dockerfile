@@ -11,6 +11,11 @@ RUN mkdir -p /home/tomcat/.chemaxon/licenses && \
 # Makes "tomcat" user as owner of chemaxon dir
 RUN chown -R tomcat:tomcat /home/tomcat/.chemaxon
 
+RUN apt-get remove -y python3 python3.9 && \
+	apt autoremove -y && \
+	rm -rf /etc/python3 && \
+	rm -rf /etc/python3.9
+
 # Sets work directory to "tomcat" folder
 # WORKDIR /home/tomcat
 WORKDIR /usr/local/tomcat

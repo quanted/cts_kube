@@ -1,4 +1,5 @@
-FROM ghcr.io/quanted/cts-tomcat-base
+# FROM ghcr.io/quanted/cts-tomcat-base
+FROM tomcat:8.5.77-jdk8-openjdk
 
 RUN useradd --create-home --shell /bin/bash tomcat && \
 	chown -R tomcat:tomcat /usr/local/tomcat

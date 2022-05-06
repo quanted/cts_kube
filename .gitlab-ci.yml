@@ -4,6 +4,8 @@ stages:
   - Restart Pods
   - Image Scan
 
+# Testing "repo mirroring not triggering new pipeline" issue that we're seeing for ordsat
+
 include:
   - project: 'DSO/DASTScanner'
     file: '.gitlab-ci.yml'

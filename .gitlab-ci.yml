@@ -25,8 +25,8 @@ CopyDevImages:
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
     - mkdir -p /workspace
     # CTS BioTransformer Image:
-    # - echo "FROM ghcr.io/quanted/cts-biotransformer:dev-kube" > /workspace/Dockerfile
-    # - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-biotransformer:$CI_COMMIT_REF_NAME
+    - echo "FROM ghcr.io/quanted/cts-biotransformer:dev-kube" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-biotransformer:$CI_COMMIT_REF_NAME
     # CTS Django Image:
     - echo "FROM ghcr.io/quanted/cts-django:dev-kube" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-django:$CI_COMMIT_REF_NAME
@@ -86,8 +86,8 @@ ScalePods:
     - kubectl config set-credentials gitlab --token="$KUBE_TOKEN"
     - kubectl config set-context default --cluster="$KUBECTL_DEV_CLUSTER" --user=gitlab --namespace="$KUBE_NAMESPACE"
     - kubectl config use-context default
-    # - kubectl scale deployment cts-biotransformer --replicas=0
-    # - kubectl scale deployment cts-biotransformer --replicas=1
+    - kubectl scale deployment cts-biotransformer --replicas=0
+    - kubectl scale deployment cts-biotransformer --replicas=1
     - kubectl scale deployment cts-django --replicas=0
     - kubectl scale deployment cts-django --replicas=1
     - kubectl scale deployment cts-envipath --replicas=0
@@ -112,22 +112,22 @@ ScalePods:
     kubernetes:
       namespace: cts-kube
 
-# BiotransformerImageScan:
-#   stage: Image Scan
-#   extends:
-#     - .pcs_compute_scan
-#   tags:
-#     - twistcli
-#   when: manual
-#   allow_failure: false
-#   variables:
-#     prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
-#     GIT_STRATEGY: clone
-#     prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-biotransformer:dev-gl" 
-#   script:
-#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
-#     - docker pull $prisma_cloud_scan_image
-#     - ./image_scan.sh
+BiotransformerImageScan:
+  stage: Image Scan
+  extends:
+    - .pcs_compute_scan
+  tags:
+    - twistcli
+  when: manual
+  allow_failure: false
+  variables:
+    prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
+    GIT_STRATEGY: clone
+    prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-biotransformer:dev-gl" 
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
+    - docker pull $prisma_cloud_scan_image
+    - ./image_scan.sh
 
 DjangoImageScan:
   stage: Image Scan

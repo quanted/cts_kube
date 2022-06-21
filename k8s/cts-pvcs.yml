@@ -19,7 +19,7 @@
 #       name: cts-collected-static-pv
 # ---
 
-# # CTS OPERAWS PVC
+# CTS OPERAWS PVC
 # ---
 # apiVersion: v1
 # kind: PersistentVolumeClaim

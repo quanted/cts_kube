@@ -29,11 +29,13 @@ Build OPERAWS Image:
   stage: Image Build
   tags:
     - devsecops-instance
+  image:
+    docker:latest
   when: manual
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
-    - docker build -t operaws:$tag_name operaws/
-    - docker push operaws:$tag_name
+    - docker build -t cts-operaws:$tag_name operaws/
+    - docker push https://registry.epa.gov/qed/cts_kube/cts-operaws:$tag_name
 
 
 CopyDevImages:

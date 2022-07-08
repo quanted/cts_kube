@@ -8,6 +8,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: quanted/cts-tomcat
+  TOMCAT_VERSION: 0.0.1
 
 jobs:
   build-tomcat:

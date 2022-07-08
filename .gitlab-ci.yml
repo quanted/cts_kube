@@ -12,6 +12,32 @@ include:
   - remote: 'https://gitlab.com/prismacloud-public/shift-left/extension/-/raw/master/.pcs.gitlab-ci.yml'
 
 
+variables:
+  cts_biotransformer_version: 0.0.1
+  cts_celery_version: 0.0.1
+  cts_django_version: 0.0.1
+  cts_envipath_version: 0.0.1
+  cts_nginx_version: 0.0.1
+  cts_nodejs_version: 0.0.1
+  cts_operaws_version: 0.0.1
+  cts_tomcat_version: 0.0.1
+
+  tag_name: $CI_COMMIT_REF_NAME-$CI_COMMIT_SHA
+
+
+Build OPERAWS Image:
+  stage: Image Build
+  tags:
+    - devsecops-instance
+  when: manual
+  image:
+    docker:latest
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
+    - docker build -t operaws:$tag_name operaws/
+    - docker push operaws:$tag_name
+
+
 CopyDevImages:
   stage: Image Build
   tags:

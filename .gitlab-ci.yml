@@ -43,8 +43,8 @@ CopyDevImages:
     - echo "FROM ghcr.io/quanted/cts-nodejs:dev-kube" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-nodejs:$CI_COMMIT_REF_NAME
     # CTS OPERAWS Image:
-    - echo "FROM ghcr.io/quanted/operaws:dev-kube" > /workspace/Dockerfile
-    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-operaws:$CI_COMMIT_REF_NAME
+    - echo "FROM ghcr.io/quanted/operaws:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHA" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-operaws:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHA
     # CTS Tomcat Image:
     - echo "FROM ghcr.io/quanted/cts-tomcat:dev-kube" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-tomcat:$CI_COMMIT_REF_NAME

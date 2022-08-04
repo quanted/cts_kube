@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cts-config
-  namespace: cts-kube
+  namespace: qed-45-stg
   labels:
     app: cts-config
 data:

@@ -30,7 +30,7 @@ Build OPERAWS Image:
   tags:
     - devsecops-instance
   image:
-    docker:latest
+    docker:stable
   when: manual
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
@@ -79,7 +79,7 @@ CopyDevImages:
     name: dev
     url: http://qed.devsecops-dev.aws.epa.gov
     kubernetes:
-      namespace: cts-kube
+      namespace: qed-45-stg
 
 ApplyManifests:
   stage: Deployment
@@ -98,7 +98,7 @@ ApplyManifests:
     name: dev
     url: http://qed.devsecops-dev.aws.epa.gov
     kubernetes:
-      namespace: cts-kube
+      namespace: qed-45-stg
 
 ScalePods:
   stage: Restart Pods
@@ -136,7 +136,7 @@ ScalePods:
     name: dev
     url: http://qed.devsecops-dev.aws.epa.gov
     kubernetes:
-      namespace: cts-kube
+      namespace: qed-45-stg
 
 BiotransformerImageScan:
   stage: Image Scan

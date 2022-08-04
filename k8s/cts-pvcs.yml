@@ -4,7 +4,7 @@
 # kind: PersistentVolumeClaim
 # metadata:
 #   name: cts-collected-static-pvolume-claim1
-#   namespace: cts-kube
+#   namespace: qed-45-stg
 #   labels:
 #     app: cts-collected-static-pvolume-claim1
 # spec:
@@ -25,7 +25,7 @@
 # kind: PersistentVolumeClaim
 # metadata:
 #   name: cts-mongodb-pvolume-claim1
-#   namespace: cts-kube
+#   namespace: qed-45-stg
 #   labels:
 #     app: cts-mongodb-pvolume-claim1
 # spec:
@@ -46,7 +46,7 @@
 # kind: PersistentVolumeClaim
 # metadata:
 #   name: cts-tomcat-chemaxon-pvolume-claim1
-#   namespace: cts-kube
+#   namespace: qed-45-stg
 #   labels:
 #     app: cts-tomcat-chemaxon-pvolume-claim1
 # spec:
@@ -67,7 +67,7 @@
 # kind: PersistentVolumeClaim
 # metadata:
 #   name: cts-tomcat-user-pvolume-claim1
-#   namespace: cts-kube
+#   namespace: qed-45-stg
 #   labels:
 #     app: cts-tomcat-user-pvolume-claim1
 # spec:

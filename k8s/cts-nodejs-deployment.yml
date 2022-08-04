@@ -6,7 +6,7 @@ metadata:
   labels:
     app: cts-nodejs
   name: cts-nodejs
-  namespace: cts-kube
+  namespace: qed-45-stg
   annotations:
     app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}
     app.gitlab.com/env: ${CI_ENVIRONMENT_SLUG}

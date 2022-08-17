@@ -7,6 +7,7 @@ services:
     restart: unless-stopped
     build: ./cts_nginx
     image: cts-nginx
+    container_name: cts-nginx
     ports:
       - "80:80"
       - "443:443"
@@ -22,9 +23,9 @@ services:
   # CTS Django front-end
   cts-django:
     restart: unless-stopped
-    # image: ghcr.io/quanted/cts-django:dev-kube-${CTS_VERSION}  # use qed image w/ tag = VERSION, default = latest
     build: ./cts_app
     image: cts-django
+    container_name: cts-django
     expose:
       - "8080"
     volumes:
@@ -32,18 +33,17 @@ services:
       - .:/src
       # - /var/www/app_data:/src/app-data
     environment:
-      - REDIS_HOSTNAME=redis
+      - REDIS_HOSTNAME=cts-redis
     links:
-      - redis
+      - cts-redis
       - cts-mongodb
 
  # Redis (message broker)
   cts-redis:
     restart: unless-stopped
     build: ./cts_redis
-    # image: redis:latest
     image: cts-redis
-    hostname: redis
+    container_name: cts-redis
     expose:
       - "6379"
 
@@ -51,18 +51,17 @@ services:
   cts-nodejs:
     restart: unless-stopped
     build: ./cts_nodejs
-    # image: quanted/cts_nodejs
-    # image: ghcr.io/quanted/cts-nodejs:dev
     image: cts-nodejs
+    container_name: cts-nodejs
     expose:
       - "4000"
     environment:
       - NODEJS_HOST=cts_nodejs
       - NODEJS_PORT=4000
-      - REDIS_HOSTNAME=redis
+      - REDIS_HOSTNAME=cts-redis
       - REDIS_PORT=6379
     links:
-      - redis
+      - cts-redis
     # volumes:
     #   - ./cts_nodejs:/src
 
@@ -70,14 +69,13 @@ services:
   cts-celery-worker:
     restart: unless-stopped
     build: ./cts_celery
-    # image: quanted/cts_celery
-    # image: ghcr.io/quanted/cts-celery:dev
     image: cts-celery
+    container_name: cts-celery
     command: celery -A tasks worker -Q manager_queue -l info -n manager_worker -c 1
     links:
-      - redis
+      - cts-redis
     environment:
-      - REDIS_HOSTNAME=redis
+      - REDIS_HOSTNAME=cts-redis
     volumes:
       - ./cts_celery:/src
 
@@ -85,14 +83,13 @@ services:
   cts-celery-manager:
     restart: unless-stopped
     build: ./cts_celery
-    # image: quanted/cts_celery
-    # image: ghcr.io/quanted/cts-celery:dev
     image: cts-celery
+    container_name: cts-celery
     command: celery -A tasks worker -Q cts_queue -l info -n cts_worker -c 2
     links:
-      - redis
+      - cts-redis
     environment:
-      - REDIS_HOSTNAME=redis
+      - REDIS_HOSTNAME=cts-redis
     volumes:
       - ./cts_celery:/src
 
@@ -100,7 +97,8 @@ services:
   cts-mongodb:
     restart: unless-stopped
     build: ./cts_mongodb
-    image: mongo:latest
+    image: cts-mongodb
+    container_name: cts-mongodb
     volumes:
       - /var/www/mongodb:/data/db
     expose:
@@ -110,9 +108,8 @@ services:
   cts-tomcat:
     restart: unless-stopped
     build: ./cts_tomcat
-      # dockerfile: Dockerfile_Tomcat
-    # image: ghcr.io/quanted/cts-tomcat:dev-kube
     image: cts-tomcat
+    container_name: cts-tomcat
     expose:
       - "8080"
     environment:
@@ -122,33 +119,3 @@ services:
       - ./cts_tomcat/tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml
       - ./cts_tomcat/webapps:/usr/local/tomcat/webapps
       - ./cts_tomcat/chemaxon/licenses:/home/tomcat/.chemaxon/licenses
-
-  # # Biotransformer Webservices
-  # cts-biotransformer:
-  #   restart: unless-stopped
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   image: quanted/bt_api
-  #   container_name: biotransformer
-  #   ports:
-  #     - "5002:5002"
-  #   volumes:
-  #     - ./:/src
-  #   environment:
-  #     - BT_JAR_PATH=/src/biotransformer3.0jar
-
-  # # OPERA Webservices
-  # operaws:
-  #   restart: unless-stopped
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   image: quanted/operaws
-  #   container_name: operaws
-  #   ports:
-  #     - "3344:3344"
-  #   environment:
-  #     - HOSTNAME=docker
-  #   volumes:
-  #     - .:/src/operaws

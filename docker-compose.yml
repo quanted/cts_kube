@@ -40,12 +40,10 @@ services:
  # Redis (message broker)
   cts-redis:
     restart: unless-stopped
+    build: ./cts_redis
     # image: redis:latest
     image: cts-redis
     hostname: redis
-    command: redis-server /usr/local/etc/redis/redis.conf
-    volumes:
-      - ./redis.config:/usr/local/etc/redis/redis.conf
     expose:
       - "6379"
 
@@ -71,8 +69,7 @@ services:
   # Celery worker - manager calc
   cts-celery-worker:
     restart: unless-stopped
-    build:
-      context: ./cts_celery
+    build: ./cts_celery
     # image: quanted/cts_celery
     # image: ghcr.io/quanted/cts-celery:dev
     image: cts-celery
@@ -87,8 +84,7 @@ services:
   # # Celery worker - cts calc
   cts-celery-manager:
     restart: unless-stopped
-    build:
-      context: ./cts_celery
+    build: ./cts_celery
     # image: quanted/cts_celery
     # image: ghcr.io/quanted/cts-celery:dev
     image: cts-celery
@@ -103,6 +99,7 @@ services:
   # mongoDB database container
   cts-mongodb:
     restart: unless-stopped
+    build: ./cts_mongodb
     image: mongo:latest
     volumes:
       - /var/www/mongodb:/data/db
@@ -112,8 +109,7 @@ services:
   # Apache Tomcat container
   cts-tomcat:
     restart: unless-stopped
-    build:
-      context: ./cts_tomcat
+    build: ./cts_tomcat
       # dockerfile: Dockerfile_Tomcat
     # image: ghcr.io/quanted/cts-tomcat:dev-kube
     image: cts-tomcat
@@ -123,9 +119,6 @@ services:
       - JAVA_OPTS=-Xmx1g
       - LOG4J_FORMAT_MSG_NO_LOOKUPS=true
     volumes:
-      # - ./secrets/tomcat/tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml
-      # - ./secrets/tomcat/webapps:/usr/local/tomcat/webapps
-      # - ./secrets/tomcat/chemaxon/licenses:/home/tomcat/.chemaxon/licenses
       - ./cts_tomcat/tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml
       - ./cts_tomcat/webapps:/usr/local/tomcat/webapps
       - ./cts_tomcat/chemaxon/licenses:/home/tomcat/.chemaxon/licenses

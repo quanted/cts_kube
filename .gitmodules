@@ -10,6 +10,3 @@
 [submodule "cts_nginx"]
 	path = cts_nginx
 	url = https://github.com/quanted/cts_nginx
-[submodule "operaws"]
-	path = operaws
-	url = https://github.com/quanted/operaws

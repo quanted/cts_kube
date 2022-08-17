@@ -1,0 +1,161 @@
+version: '2.1'
+volumes:
+  collected_static:
+services:
+
+  cts-nginx:
+    restart: unless-stopped
+    build: ./cts_nginx
+    image: cts-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - cts-django:uwsgi_django  # Nginx.conf can reference "cts-django" service with the hostname 'uwsgi' or 'cts-django'
+      - cts-nodejs:cts_nodejs
+    volumes:
+      - /var/www/nginx/certs:/etc/nginx/qed # this points to the keys directory
+      - /etc/letsencrypt:/etc/letsencrypt  # certs from letsencrypt (uses certbot)
+    volumes_from:
+      - cts-django:ro  # Mount all volumes from "cts-django" to NGINX, so it can access the collected static files
+
+  # CTS Django front-end
+  cts-django:
+    restart: unless-stopped
+    # image: ghcr.io/quanted/cts-django:dev-kube-${CTS_VERSION}  # use qed image w/ tag = VERSION, default = latest
+    build: ./cts_app
+    image: cts-django
+    expose:
+      - "8080"
+    volumes:
+      - collected_static:/src/collected_static
+      - .:/src
+      # - /var/www/app_data:/src/app-data
+    environment:
+      - REDIS_HOSTNAME=redis
+    links:
+      - redis
+      - cts-mongodb
+
+ # Redis (message broker)
+  cts-redis:
+    restart: unless-stopped
+    # image: redis:latest
+    image: cts-redis
+    hostname: redis
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./redis.config:/usr/local/etc/redis/redis.conf
+    expose:
+      - "6379"
+
+  # CTS nodejs submodule
+  cts-nodejs:
+    restart: unless-stopped
+    build: ./cts_nodejs
+    # image: quanted/cts_nodejs
+    # image: ghcr.io/quanted/cts-nodejs:dev
+    image: cts-nodejs
+    expose:
+      - "4000"
+    environment:
+      - NODEJS_HOST=cts_nodejs
+      - NODEJS_PORT=4000
+      - REDIS_HOSTNAME=redis
+      - REDIS_PORT=6379
+    links:
+      - redis
+    # volumes:
+    #   - ./cts_nodejs:/src
+
+  # Celery worker - manager calc
+  cts-celery-worker:
+    restart: unless-stopped
+    build:
+      context: ./cts_celery
+    # image: quanted/cts_celery
+    # image: ghcr.io/quanted/cts-celery:dev
+    image: cts-celery
+    command: celery -A tasks worker -Q manager_queue -l info -n manager_worker -c 1
+    links:
+      - redis
+    environment:
+      - REDIS_HOSTNAME=redis
+    volumes:
+      - ./cts_celery:/src
+
+  # # Celery worker - cts calc
+  cts-celery-manager:
+    restart: unless-stopped
+    build:
+      context: ./cts_celery
+    # image: quanted/cts_celery
+    # image: ghcr.io/quanted/cts-celery:dev
+    image: cts-celery
+    command: celery -A tasks worker -Q cts_queue -l info -n cts_worker -c 2
+    links:
+      - redis
+    environment:
+      - REDIS_HOSTNAME=redis
+    volumes:
+      - ./cts_celery:/src
+
+  # mongoDB database container
+  cts-mongodb:
+    restart: unless-stopped
+    image: mongo:latest
+    volumes:
+      - /var/www/mongodb:/data/db
+    expose:
+      - "27017"
+
+  # Apache Tomcat container
+  cts-tomcat:
+    restart: unless-stopped
+    build:
+      context: ./cts_tomcat
+      # dockerfile: Dockerfile_Tomcat
+    # image: ghcr.io/quanted/cts-tomcat:dev-kube
+    image: cts-tomcat
+    expose:
+      - "8080"
+    environment:
+      - JAVA_OPTS=-Xmx1g
+      - LOG4J_FORMAT_MSG_NO_LOOKUPS=true
+    volumes:
+      # - ./secrets/tomcat/tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml
+      # - ./secrets/tomcat/webapps:/usr/local/tomcat/webapps
+      # - ./secrets/tomcat/chemaxon/licenses:/home/tomcat/.chemaxon/licenses
+      - ./cts_tomcat/tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml
+      - ./cts_tomcat/webapps:/usr/local/tomcat/webapps
+      - ./cts_tomcat/chemaxon/licenses:/home/tomcat/.chemaxon/licenses
+
+  # # Biotransformer Webservices
+  # cts-biotransformer:
+  #   restart: unless-stopped
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   image: quanted/bt_api
+  #   container_name: biotransformer
+  #   ports:
+  #     - "5002:5002"
+  #   volumes:
+  #     - ./:/src
+  #   environment:
+  #     - BT_JAR_PATH=/src/biotransformer3.0jar
+
+  # # OPERA Webservices
+  # operaws:
+  #   restart: unless-stopped
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   image: quanted/operaws
+  #   container_name: operaws
+  #   ports:
+  #     - "3344:3344"
+  #   environment:
+  #     - HOSTNAME=docker
+  #   volumes:
+  #     - .:/src/operaws

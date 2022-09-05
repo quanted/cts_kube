@@ -19,26 +19,26 @@
 #       name: cts-collected-static-pv
 # ---
 
-# CTS MongoDB PVC
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: cts-mongodb-pvolume-claim1
-  namespace: qed-kube-dev
-  labels:
-    app: cts-mongodb-pvolume-claim1
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 5Gi
-  selector:
-    matchLabels:
-      release: "stable"
-      name: cts-mongodb-pv
----
+# # CTS MongoDB PVC
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: cts-mongodb-pvolume-claim1
+#   namespace: qed-kube-dev
+#   labels:
+#     app: cts-mongodb-pvolume-claim1
+# spec:
+#   accessModes:
+#     - ReadWriteMany
+#   resources:
+#     requests:
+#       storage: 5Gi
+#   selector:
+#     matchLabels:
+#       release: "stable"
+#       name: cts-mongodb-pv
+# ---
 
 # # CTS Tomcat Chemaxon PVC
 # ---

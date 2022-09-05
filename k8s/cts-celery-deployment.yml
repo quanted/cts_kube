@@ -1,0 +1,118 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: cts-celery
+  name: cts-celery
+  namespace: qed-45-stg
+  annotations:
+    app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}
+    app.gitlab.com/env: ${CI_ENVIRONMENT_SLUG}
+    eks.amazonaws.com/compute-type: fargate
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cts-celery
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: cts-celery
+    spec:
+      containers:
+      - name: cts-worker
+        command:
+        - celery
+        - -A
+        - tasks
+        - worker
+        - -Q
+        - cts_queue
+        - -l
+        - info
+        - -n
+        - cts_worker
+        - -c
+        - "2"
+        # image: registry.epa.gov/qed/cyanweb_kube/cts-celery:dev-kube
+        # imagePullPolicy: Always
+        image: cts-celery
+        imagePullPolicy: Never
+        envFrom:
+        - configMapRef:
+            name: cts-config
+        livenessProbe:
+          exec:
+            command:
+              - ls
+              - /
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+              - ls
+              - /
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 10
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "2Gi"
+            cpu: "2000m"
+      - name: cts-manager
+        command:
+        - celery
+        - -A
+        - tasks
+        - worker
+        - -Q
+        - manager_queue
+        - -l
+        - info
+        - -n
+        - manager_worker
+        - -c
+        - "1"
+        # image: registry.epa.gov/qed/cyanweb_kube/cts-celery:dev-gl
+        # imagePullPolicy: Always
+        image: cts-celery
+        imagePullPolicy: Never
+        envFrom:
+        - configMapRef:
+            name: cts-config
+        livenessProbe:
+          exec:
+            command:
+              - ls
+              - /
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+              - ls
+              - /
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 10
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "2Gi"
+            cpu: "2000m"
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler

@@ -19,10 +19,10 @@ spec:
         app: cts-mongodb
     spec:
       containers:
-      # - image: ghcr.io/quanted/mongo:5.0.6
-      #   imagePullPolicy: Always
-      - image: cts-mongodb
-        imagePullPolicy: Never
+      - image: ghcr.io/quanted/cts-mongodb:dev-kube
+        imagePullPolicy: Always
+      # - image: cts-mongodb
+      #   imagePullPolicy: Never
         name: cts-mongodb
         ports:
         - containerPort: 27017

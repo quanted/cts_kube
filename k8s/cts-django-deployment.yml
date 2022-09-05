@@ -25,10 +25,10 @@ spec:
       - envFrom:
           - configMapRef:
               name: cts-config
-        # image: registry.epa.gov/qed/cyanweb_kube/cts-django:dev-gl
-        # imagePullPolicy: Always
-        image: cts-django
-        imagePullPolicy: Never
+        image: ghcr.io/quanted/cts-django:dev-kube
+        imagePullPolicy: Always
+        # image: cts-django
+        # imagePullPolicy: Never
         name: cts-django
         resources:
           requests:

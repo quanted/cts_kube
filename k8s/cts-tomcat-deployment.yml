@@ -25,11 +25,11 @@ spec:
       - env:
         - name: JAVA_OPTS
           # value: -Xmx1024m -DCTS_TOMCAT_PASS=${CTS_TOMCAT_PASS}  # TODO: envsubst can pass this to configmap
-          value: -Xmx1024m -DCTS_TOMCAT_PASS=ctstomcat123
-        # image: registry.epa.gov/qed/cyanweb_kube/cts-tomcat:dev-gl
-        # imagePullPolicy: Always
-        image: cts-tomcat
-        imagePullPolicy: Never
+          value: -Xmx1024m -DCTS_TOMCAT_PASS=${CTS_TOMCAT_PASS}
+        image: ghcr.io/quanted/cts-tomcat:dev-kube
+        imagePullPolicy: Always
+        # image: cts-tomcat
+        # imagePullPolicy: Never
         readinessProbe:
           tcpSocket:
             port: 8080

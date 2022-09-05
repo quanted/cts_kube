@@ -22,10 +22,10 @@ spec:
         app: cts-nginx
     spec:
       containers:
-        # - image: registry.epa.gov/qed/cyanweb_kube/cts-nginx:dev-gl
-        #   imagePullPolicy: Always
-        - image: cts-nginx
-          imagePullPolicy: Never
+        - image: ghcr.io/quanted/cts-nginx:dev-kube
+          imagePullPolicy: Always
+        # - image: cts-nginx
+        #   imagePullPolicy: Never
           name: cts-nginx
           readinessProbe:
             tcpSocket:

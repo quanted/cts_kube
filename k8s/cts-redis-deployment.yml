@@ -22,10 +22,10 @@ spec:
         app: cts-redis
     spec:
       containers:
-      # - image: registry.epa.gov/qed/cyanweb_kube/cts-nodejs:dev-gl
-      #   imagePullPolicy: Always
-      - image: cts-redis
-        imagePullPolicy: Never
+      - image: ghcr.io/quanted/cts-redis:dev-kube
+        imagePullPolicy: Always
+      # - image: cts-redis
+      #   imagePullPolicy: Never
         resources:
           requests:
             memory: "256Mi"

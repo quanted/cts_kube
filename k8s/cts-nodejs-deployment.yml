@@ -36,10 +36,10 @@ spec:
           value: cts-redis
         - name: REDIS_PORT
           value: "6379"
-        # image: registry.epa.gov/qed/cyanweb_kube/cts-nodejs:dev-gl
-        # imagePullPolicy: Always
-        image: cts-nodejs
-        imagePullPolicy: Never
+        image: ghcr.io/quanted/cts-nodejs:dev-kube
+        imagePullPolicy: Always
+        # image: cts-nodejs
+        # imagePullPolicy: Never
         name: cts-nodejs
         resources:
           requests:

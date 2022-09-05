@@ -7,10 +7,6 @@ metadata:
     app: cts-nodejs
   name: cts-nodejs
   namespace: qed-kube-dev
-  annotations:
-    app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}
-    app.gitlab.com/env: ${CI_ENVIRONMENT_SLUG}
-    eks.amazonaws.com/compute-type: fargate
 spec:
   replicas: 1
   selector:

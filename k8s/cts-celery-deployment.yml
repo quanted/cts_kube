@@ -79,10 +79,10 @@ spec:
         - manager_worker
         - -c
         - "1"
-        # image: registry.epa.gov/qed/cyanweb_kube/cts-celery:dev-gl
-        # imagePullPolicy: Always
-        image: cts-celery
-        imagePullPolicy: Never
+        image: ghcr.io/quanted/cts-celery:dev-kube
+        imagePullPolicy: Always
+        # image: cts-celery
+        # imagePullPolicy: Never
         envFrom:
         - configMapRef:
             name: cts-config

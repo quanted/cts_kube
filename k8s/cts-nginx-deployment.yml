@@ -4,7 +4,7 @@ metadata:
   labels:
     app: cts-nginx
   name: cts-nginx
-  namespace: qed-45-stg
+  namespace: qed-kube-dev
   annotations:
     app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}
     app.gitlab.com/env: ${CI_ENVIRONMENT_SLUG}
@@ -22,14 +22,16 @@ spec:
         app: cts-nginx
     spec:
       containers:
-        - image: registry.epa.gov/qed/cyanweb_kube/cts-nginx:dev-gl
-          imagePullPolicy: Always
-          name: nginx
+        # - image: registry.epa.gov/qed/cyanweb_kube/cts-nginx:dev-gl
+        #   imagePullPolicy: Always
+        - image: cts-nginx
+          imagePullPolicy: Never
+          name: cts-nginx
           readinessProbe:
-          tcpSocket:
-            port: 80
-          initialDelaySeconds: 5
-          periodSeconds: 10
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
           livenessProbe:
             tcpSocket:
               port: 80

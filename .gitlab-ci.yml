@@ -79,7 +79,7 @@ CopyDevImages:
     name: dev
     url: http://qed.devsecops-dev.aws.epa.gov
     kubernetes:
-      namespace: qed-45-stg
+      namespace: qed-kube-dev
 
 ApplyManifests:
   stage: Deployment
@@ -98,7 +98,7 @@ ApplyManifests:
     name: dev
     url: http://qed.devsecops-dev.aws.epa.gov
     kubernetes:
-      namespace: qed-45-stg
+      namespace: qed-kube-dev
 
 DeleteManifests:
   stage: Deployment
@@ -117,7 +117,7 @@ DeleteManifests:
     name: stg
     url: http://qed.qed-stage.aws.epa.gov
     kubernetes:
-      namespace: qed-45-stg
+      namespace: qed-kube-dev
 
 ScalePods:
   stage: Restart Pods
@@ -155,7 +155,7 @@ ScalePods:
     name: dev
     url: http://qed.devsecops-dev.aws.epa.gov
     kubernetes:
-      namespace: qed-45-stg
+      namespace: qed-kube-dev
 
 # BiotransformerImageScan:
 #   stage: Image Scan

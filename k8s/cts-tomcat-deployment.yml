@@ -4,7 +4,7 @@ metadata:
   labels:
     app: cts-tomcat
   name: cts-tomcat
-  namespace: qed-45-stg
+  namespace: qed-kube-dev
   annotations:
     app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}
     app.gitlab.com/env: ${CI_ENVIRONMENT_SLUG}
@@ -24,9 +24,12 @@ spec:
       containers:
       - env:
         - name: JAVA_OPTS
-          value: -Xmx1024m
-        image: registry.epa.gov/qed/cyanweb_kube/cts-tomcat:dev-gl
-        imagePullPolicy: Always
+          # value: -Xmx1024m -DCTS_TOMCAT_PASS=${CTS_TOMCAT_PASS}  # TODO: envsubst can pass this to configmap
+          value: -Xmx1024m -DCTS_TOMCAT_PASS=ctstomcat123
+        # image: registry.epa.gov/qed/cyanweb_kube/cts-tomcat:dev-gl
+        # imagePullPolicy: Always
+        image: cts-tomcat
+        imagePullPolicy: Never
         readinessProbe:
           tcpSocket:
             port: 8080
@@ -51,8 +54,8 @@ spec:
           - containerPort: 8080
             protocol: TCP
         volumeMounts:
-          - mountPath: /usr/local/tomcat/conf/tomcat-users.xml
-            name: cts-tomcat-user
+          # - mountPath: /usr/local/tomcat/conf/tomcat-users.xml
+          #   name: cts-tomcat-user
           - mountPath: /home/tomcat/.chemaxon/licenses
             name: cts-tomcat-chemaxon
       dnsPolicy: ClusterFirst
@@ -60,8 +63,8 @@ spec:
       schedulerName: default-scheduler
       volumes:
         - name: cts-tomcat-chemaxon
-        persistentVolumeClaim:
-          claimName: cts-tomcat-chemaxon-pvolume-claim1
-        - name: cts-tomcat-user
-        persistentVolumeClaim:
-          claimName: cts-tomcat-user-pvolume-claim1
+          persistentVolumeClaim:
+            claimName: cts-tomcat-chemaxon-pvolume-claim1
+        # - name: cts-tomcat-user
+        #   persistentVolumeClaim:
+        #     claimName: cts-tomcat-user-pvolume-claim1

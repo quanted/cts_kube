@@ -6,7 +6,7 @@ metadata:
   labels:
     app: cts-nodejs
   name: cts-nodejs
-  namespace: qed-45-stg
+  namespace: qed-kube-dev
   annotations:
     app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}
     app.gitlab.com/env: ${CI_ENVIRONMENT_SLUG}
@@ -29,39 +29,41 @@ spec:
       containers:
       - env:
         - name: NODEJS_HOST
-          value: cts_nodejs
+          value: cts-nodejs
         - name: NODEJS_PORT
           value: "4000"
         - name: REDIS_HOSTNAME
-          value: redis
+          value: cts-redis
         - name: REDIS_PORT
           value: "6379"
-        image: registry.epa.gov/qed/cyanweb_kube/cts-nodejs:dev-gl
-        imagePullPolicy: Always
+        # image: registry.epa.gov/qed/cyanweb_kube/cts-nodejs:dev-gl
+        # imagePullPolicy: Always
+        image: cts-nodejs
+        imagePullPolicy: Never
         name: cts-nodejs
         resources:
-            requests:
-              memory: "1Gi"
-              cpu: "500m"
-            limits:
-              memory: "2Gi"
-              cpu: "1000m"
-          livenessProbe:
-            exec:
-              command:
-                - ls
-                - /
-            initialDelaySeconds: 5
-            periodSeconds: 5
-            timeoutSeconds: 10
-          readinessProbe:
-            exec:
-              command:
-                - ls
-                - /
-            initialDelaySeconds: 10
-            periodSeconds: 30
-            timeoutSeconds: 10
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        livenessProbe:
+          exec:
+            command:
+              - ls
+              - /
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+              - ls
+              - /
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 10
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler

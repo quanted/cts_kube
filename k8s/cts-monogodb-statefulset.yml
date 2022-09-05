@@ -4,7 +4,7 @@ metadata:
   labels:
     app: cts-mongodb
   name: cts-mongodb
-  namespace: qed-45-stg
+  namespace: qed-kube-dev
 spec:
   podManagementPolicy: OrderedReady
   replicas: 1

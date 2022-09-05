@@ -17,7 +17,7 @@
 #     path: /run/desktop/mnt/host/c/Users/inick/GitHub/cts_kube/cts_app/collected_static
 # ---
 
-# # CTS OPERAWS PV
+# # CTS MongoDB PV
 # ---
 # apiVersion: v1
 # kind: PersistentVolume

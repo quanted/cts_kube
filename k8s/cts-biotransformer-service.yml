@@ -2,7 +2,7 @@
 # kind: Service
 # metadata:
 #   name: cts-biotransformer
-#   namespace: qed-45-stg
+#   namespace: qed-kube-dev
 # spec:
 #   ports:
 #   - port: 5002

@@ -4,7 +4,7 @@ metadata:
   labels:
     app: cts-celery
   name: cts-celery
-  namespace: qed-45-stg
+  namespace: qed-kube-dev
   annotations:
     app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}
     app.gitlab.com/env: ${CI_ENVIRONMENT_SLUG}

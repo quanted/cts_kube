@@ -4,7 +4,7 @@ metadata:
   labels:
     app: cts-django
   name: cts-django
-  namespace: qed-45-stg
+  namespace: qed-kube-dev
   annotations:
     app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}
     app.gitlab.com/env: ${CI_ENVIRONMENT_SLUG}
@@ -25,8 +25,10 @@ spec:
       - envFrom:
           - configMapRef:
               name: cts-config
-        image: registry.epa.gov/qed/cyanweb_kube/cts-django:dev-gl
-        imagePullPolicy: Always
+        # image: registry.epa.gov/qed/cyanweb_kube/cts-django:dev-gl
+        # imagePullPolicy: Always
+        image: cts-django
+        imagePullPolicy: Never
         name: cts-django
         resources:
           requests:

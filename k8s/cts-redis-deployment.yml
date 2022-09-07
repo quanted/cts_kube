@@ -30,16 +30,22 @@ spec:
             memory: "512Mi"
             cpu: "500m"
         name: cts-redis
-        readinessProbe:
-          tcpSocket:
-            port: 6379
-          initialDelaySeconds: 5
-          periodSeconds: 10
         livenessProbe:
-          tcpSocket:
-            port: 6379
-          initialDelaySeconds: 15
+          exec:
+            command:
+              - ls
+              - /
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+              - ls
+              - /
+          initialDelaySeconds: 10
           periodSeconds: 30
+          timeoutSeconds: 10
         ports:
         - containerPort: 6379
           protocol: TCP

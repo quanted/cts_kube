@@ -20,15 +20,8 @@ spec:
       containers:
       - image: ghcr.io/quanted/cts-redis:dev-kube
         imagePullPolicy: Always
-      # - image: cts-redis
+      # - image: redis:latest
       #   imagePullPolicy: Never
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "250m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
         name: cts-redis
         livenessProbe:
           exec:
@@ -47,8 +40,7 @@ spec:
           periodSeconds: 30
           timeoutSeconds: 10
         ports:
-        - containerPort: 6379
-          protocol: TCP
+          - containerPort: 6379
+            protocol: TCP
       dnsPolicy: ClusterFirst
       restartPolicy: Always
-      schedulerName: default-scheduler

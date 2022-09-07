@@ -43,15 +43,6 @@ spec:
         ports:
         - containerPort: 6379
           protocol: TCP
-        # volumeMounts:
-        # - mountPath: /etc/redis/database
-        #   name: redis-pvolume
-      imagePullSecrets:
-        - name: glcr-auth
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
-      # volumes:
-      # - name: redis-pvolume
-      #   persistentVolumeClaim:
-      #     claimName: redis-pvolume-claim1

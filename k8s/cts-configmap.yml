@@ -20,6 +20,9 @@ data:
   CTS_REST_SERVER: http://host.docker.internal
   CTS_TEST_SERVER: https://comptox.epa.gov/dashboard/web-test
   CTS_VERSION: "1.2.3"
+  CTS_EMAIL_PASS: ${CTS_EMAIL_PASS}
+  CTS_RECAPTCHA_KEY: ${CTS_RECAPTCHA_KEY}
+  CTS_TOMCAT_PASS: ${CTS_TOMCAT_PASS}
   DJANGO_SETTINGS_MODULE: "settings"
   ENV_NAME: kube_dev
   MARVIN_PROXY: http://172.17.0.1
@@ -29,3 +32,9 @@ data:
   PASSWORD_REQUIRED: "False"
   REDIS_HOSTNAME: cts-redis
   REDIS_PORT: "6379"
+  CTS_TOMCAT_USER: |
+    <?xml version='1.0' encoding='utf-8'?>
+    <tomcat-users>
+      <role rolename="manager-gui"/>
+      <user username="docker" password="${CTS_TOMCAT_PASS}" roles="manager-gui"/>
+    </tomcat-users>

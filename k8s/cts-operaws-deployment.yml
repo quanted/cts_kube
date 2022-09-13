@@ -1,52 +1,52 @@
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   labels:
-#     app: cts-operaws
-#   name: cts-operaws
-#   namespace: qed-kube-dev
-# spec:
-#   replicas: 1
-#   selector:
-#     matchLabels:
-#       app: cts-operaws
-#   strategy:
-#     type: Recreate
-#   template:
-#     metadata:
-#       labels:
-#         app: cts-operaws
-#     spec:
-#       containers:
-#         - name: cts-operaws
-#           image: registry.epa.gov/qed/cyanweb_kube/operaws:dev-gl
-#           imagePullPolicy: Always
-#           resources:
-#             requests:
-#               memory: "1Gi"
-#               cpu: "500m"
-#             limits:
-#               memory: "2Gi"
-#               cpu: "1000m"
-#           livenessProbe:
-#             exec:
-#               command:
-#                 - ls
-#                 - /
-#             initialDelaySeconds: 5
-#             periodSeconds: 5
-#             timeoutSeconds: 10
-#           readinessProbe:
-#             exec:
-#               command:
-#                 - ls
-#                 - /
-#             initialDelaySeconds: 10
-#             periodSeconds: 30
-#             timeoutSeconds: 10
-#           ports:
-#           - containerPort: 3344
-#             protocol: TCP
-#       dnsPolicy: ClusterFirst
-#       restartPolicy: Always
-#       schedulerName: default-scheduler
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: cts-operaws
+  name: cts-operaws
+  namespace: qed-kube-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cts-operaws
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: cts-operaws
+    spec:
+      containers:
+        - name: cts-operaws
+          image: ghcr.io/quanted/operaws:dev-64e77f044fa047f4bca8bdee2a9bff0f7cb0458b
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+          livenessProbe:
+            exec:
+              command:
+                - ls
+                - /
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 10
+          readinessProbe:
+            exec:
+              command:
+                - ls
+                - /
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 10
+          ports:
+          - containerPort: 3344
+            protocol: TCP
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler

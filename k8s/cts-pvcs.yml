@@ -3,20 +3,17 @@
 # apiVersion: v1
 # kind: PersistentVolumeClaim
 # metadata:
-#   name: cts-collected-static-pvolume-claim1
+#   name: cts-collected-static-pvc
 #   namespace: qed-kube-dev
 #   labels:
-#     app: cts-collected-static-pvolume-claim1
+#     app: cts-collected-static-pvc
 # spec:
+#   storageClassName: efs-sc
 #   accessModes:
 #     - ReadWriteMany
 #   resources:
 #     requests:
 #       storage: 1Gi
-#   selector:
-#     matchLabels:
-#       release: "stable"
-#       name: cts-collected-static-pv
 # ---
 
 # # CTS MongoDB PVC
@@ -24,20 +21,17 @@
 # apiVersion: v1
 # kind: PersistentVolumeClaim
 # metadata:
-#   name: cts-mongodb-pvolume-claim1
+#   name: cts-mongodb-pvc
 #   namespace: qed-kube-dev
 #   labels:
-#     app: cts-mongodb-pvolume-claim1
+#     app: cts-mongodb-pvc
 # spec:
+#   storageClassName: efs-sc
 #   accessModes:
 #     - ReadWriteMany
 #   resources:
 #     requests:
 #       storage: 5Gi
-#   selector:
-#     matchLabels:
-#       release: "stable"
-#       name: cts-mongodb-pv
 # ---
 
 # # CTS Tomcat Chemaxon PVC
@@ -45,39 +39,15 @@
 # apiVersion: v1
 # kind: PersistentVolumeClaim
 # metadata:
-#   name: cts-tomcat-chemaxon-pvolume-claim1
+#   name: cts-chemaxon-license-pvc
 #   namespace: qed-kube-dev
 #   labels:
-#     app: cts-tomcat-chemaxon-pvolume-claim1
+#     app: cts-chemaxon-license-pvc
 # spec:
-#   accessModes:
-#     - ReadOnlyMany
-#   resources:
-#     requests:
-#       storage: 5Mi
-#   selector:
-#     matchLabels:
-#       release: "stable"
-#       name: cts-tomcat-chemaxon-pv
-# ---
-
-# # CTS Tomcat tomcat-users.xml PVC
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: cts-tomcat-user-pvolume-claim1
-#   namespace: qed-kube-dev
-#   labels:
-#     app: cts-tomcat-user-pvolume-claim1
-# spec:
+#   storageClassName: efs-sc
 #   accessModes:
 #     - ReadOnlyMany
 #   resources:
 #     requests:
 #       storage: 1Mi
-#   selector:
-#     matchLabels:
-#       release: "stable"
-#       name: cts-tomcat-user-pv
 # ---

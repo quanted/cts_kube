@@ -61,4 +61,4 @@ spec:
       volumes:
       - name: cts-collected-static
         persistentVolumeClaim:
-          claimName: cts-collected-static-pvolume-claim1
+          claimName: cts-collected-static-pvc

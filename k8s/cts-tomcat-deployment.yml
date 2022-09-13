@@ -20,12 +20,18 @@ spec:
       containers:
       - env:
         - name: JAVA_OPTS
-          # value: -Xmx1024m -DCTS_TOMCAT_PASS=${CTS_TOMCAT_PASS}  # TODO: envsubst can pass this to configmap
           value: -Xmx1024m -DCTS_TOMCAT_PASS=${CTS_TOMCAT_PASS}
+        - name: CTS_TOMCAT_USER
+          valueFrom:
+            configMapKeyRef:
+              name: cts-config
+              key: CTS_TOMCAT_USER
         image: ghcr.io/quanted/cts-tomcat:dev-kube
         imagePullPolicy: Always
-        # image: cts-tomcat
-        # imagePullPolicy: Never
+        command: ["/bin/sh", "-c"]
+        args:
+          - printenv CTS_TOMCAT_USER > /usr/local/tomcat/conf/tomcat-users.xml;
+            catalina.sh run
         readinessProbe:
           tcpSocket:
             port: 8080
@@ -50,17 +56,12 @@ spec:
           - containerPort: 8080
             protocol: TCP
         volumeMounts:
-          # - mountPath: /usr/local/tomcat/conf/tomcat-users.xml
-          #   name: cts-tomcat-user
           - mountPath: /home/tomcat/.chemaxon/licenses
-            name: cts-tomcat-chemaxon
+            name: cts-chemaxon-license-pvc
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       volumes:
-        - name: cts-tomcat-chemaxon
+        - name: cts-chemaxon-license
           persistentVolumeClaim:
-            claimName: cts-tomcat-chemaxon-pvolume-claim1
-        # - name: cts-tomcat-user
-        #   persistentVolumeClaim:
-        #     claimName: cts-tomcat-user-pvolume-claim1
+            claimName: cts-chemaxon-license-pvc

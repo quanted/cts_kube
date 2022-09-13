@@ -83,7 +83,7 @@ CopyDevImages:
 
   environment:
     name: dev
-    url: http://qed.devsecops-dev.aws.epa.gov
+    url: https://qed.qed-stage.aws.epa.gov
     kubernetes:
       namespace: qed-45-stg
 
@@ -113,7 +113,7 @@ ApplyManifests:
     - envsubst < k8s/cts-redis-service.yml | kubectl apply -f -
   environment:
     name: dev
-    url: http://qed.devsecops-dev.aws.epa.gov
+    url: https://qed.qed-stage.aws.epa.gov
     kubernetes:
       namespace: qed-45-stg
 
@@ -132,7 +132,7 @@ DeleteManifests:
     - kubectl delete -f k8s/
   environment:
     name: stg
-    url: http://qed.qed-stage.aws.epa.gov
+    url: https://qed.qed-stage.aws.epa.gov
     kubernetes:
       namespace: qed-45-stg
 
@@ -151,7 +151,7 @@ ApplyPVC:
     - kubectl apply -f k8s/cts-pvcs.yml
   environment:
     name: stg
-    url: http://qed.qed-stage.aws.epa.gov
+    url: https://qed.qed-stage.aws.epa.gov
     kubernetes:
       namespace: qed-45-stg
 
@@ -189,7 +189,7 @@ ApplyPVC:
 #     - kubectl scale deployment redis --replicas=1
 #   environment:
 #     name: dev
-#     url: http://qed.devsecops-dev.aws.epa.gov
+#     url: https://qed.qed-stage.aws.epa.gov
 #     kubernetes:
 #       namespace: qed-45-stg
 

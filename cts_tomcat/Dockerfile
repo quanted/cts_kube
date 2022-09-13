@@ -1,6 +1,8 @@
 # FROM ghcr.io/quanted/cts-tomcat-base
 FROM tomcat:8.5.77-jdk8-openjdk
 
+COPY webapps /usr/local/tomcat/webapps
+
 RUN useradd --create-home --shell /bin/bash tomcat && \
 	chown -R tomcat:tomcat /usr/local/tomcat
 
@@ -19,8 +21,6 @@ RUN apt-get remove -y python3 python3.9 && \
 # Sets work directory to "tomcat" folder
 # WORKDIR /home/tomcat
 WORKDIR /usr/local/tomcat
-
-COPY webapps /usr/local/tomcat/webapps
 
 # Sets default user as "tomcat"
 USER tomcat

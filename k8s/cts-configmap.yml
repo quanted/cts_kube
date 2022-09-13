@@ -19,10 +19,10 @@ data:
   CTS_OPERA_SERVER: http://cts-operaws:3344
   CTS_REST_SERVER: http://host.docker.internal
   CTS_TEST_SERVER: https://comptox.epa.gov/dashboard/web-test
-  CTS_VERSION: "1.2.3"
-  CTS_EMAIL_PASS: ${CTS_EMAIL_PASS}
-  CTS_RECAPTCHA_KEY: ${CTS_RECAPTCHA_KEY}
-  CTS_TOMCAT_PASS: ${CTS_TOMCAT_PASS}
+  CTS_VERSION: "1.3"
+  CTS_EMAIL_PASS: "${CTS_EMAIL_PASS}"
+  CTS_RECAPTCHA_KEY: "${CTS_RECAPTCHA_KEY}"
+  CTS_TOMCAT_PASS: "${CTS_TOMCAT_PASS}"
   DJANGO_SETTINGS_MODULE: "settings"
   ENV_NAME: kube_dev
   MARVIN_PROXY: http://172.17.0.1

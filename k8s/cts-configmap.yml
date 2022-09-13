@@ -23,7 +23,12 @@ data:
   CTS_VERSION: '${CTS_VERSION}'
   CTS_RECAPTCHA_KEY: '${CTS_RECAPTCHA_KEY}'
   CTS_TOMCAT_PASS: '${CTS_TOMCAT_PASS}'
-  CTS_TOMCAT_USER: '${CTS_TOMCAT_USER}'
+  CTS_TOMCAT_USER: |
+    <?xml version='1.0' encoding='utf-8'?>
+    <tomcat-users>
+      <role rolename="manager-gui"/>
+      <user username="docker" password="${CTS_TOMCAT_PASS}" roles="manager-gui"/>
+    </tomcat-users>
   DJANGO_SETTINGS_MODULE: "settings"
   ENV_NAME: kube_dev
   MARVIN_PROXY: '${MARVIN_PROXY}'

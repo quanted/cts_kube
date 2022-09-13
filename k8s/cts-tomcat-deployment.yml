@@ -27,6 +27,10 @@ spec:
           value: -Xmx1024m
         image: registry.epa.gov/qed/cyanweb_kube/cts-tomcat:dev-gl
         imagePullPolicy: Always
+        command: ["/bin/sh", "-c"]
+        args:
+          - printenv CTS_TOMCAT_USER > /usr/local/tomcat/conf/tomcat-users.xml;
+            catalina.sh run
         readinessProbe:
           tcpSocket:
             port: 8080
@@ -51,8 +55,6 @@ spec:
           - containerPort: 8080
             protocol: TCP
         volumeMounts:
-          - mountPath: /usr/local/tomcat/conf/tomcat-users.xml
-            name: cts-tomcat-user
           - mountPath: /home/tomcat/.chemaxon/licenses
             name: cts-tomcat-chemaxon
       dnsPolicy: ClusterFirst
@@ -62,6 +64,3 @@ spec:
         - name: cts-tomcat-chemaxon
         persistentVolumeClaim:
           claimName: cts-chemaxon-license-pvc
-        - name: cts-tomcat-user
-        persistentVolumeClaim:
-          claimName: cts-tomcat-user-pvolume-claim1

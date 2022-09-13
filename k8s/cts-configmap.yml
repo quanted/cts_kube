@@ -6,27 +6,29 @@ metadata:
   labels:
     app: cts-config
 data:
-  CTS_BIOTRANS_SERVER: http://cts-biotransformer:5002
-  CTS_DB_HOST: mongodb://mongodb:27017
+  CTS_BIOTRANS_SERVER: '${CTS_BIOTRANS_SERVER}' 
+  CTS_DB_HOST: mongodb://cts-mongodb:27017
   CTS_DB_NAME: cts
   CTS_EFS_SERVER: http://cts-tomcat:8080
-  CTS_EMAIL: ctsemailserver@gmail.com
-  CTS_EMAIL_RECIPIENT: ctsemailserver@gmail.com
-  CTS_ENVIPATH_SERVER: http://cts-envipath:5003
-  CTS_EPI_SERVER: http://172.17.0.1:55342/rest/episuite/estimated
+  CTS_EMAIL: '${CTS_EMAIL}'
+  CTS_EMAIL_PASS: '${CTS_EMAIL_PASS}'
+  CTS_EMAIL_RECIPIENT: '${CTS_EMAIL_RECIPIENT}'
+  CTS_ENVIPATH_SERVER: '${CTS_ENVIPATH_SERVER}'
+  CTS_EPI_SERVER: '${CTS_EPI_SERVER}'
   CTS_JCHEM_SERVER: http://cts-tomcat:8080
-  CTS_MEASURED_SERVER: http://172.17.0.1:55342/rest/episuite/measured
-  CTS_OPERA_SERVER: http://cts-operaws:3344
-  CTS_REST_SERVER: http://host.docker.internal
+  CTS_MEASURED_SERVER: '${CTS_MEASURED_SERVER}'
+  CTS_OPERA_SERVER: '${CTS_OPERA_SERVER}'
+  CTS_REST_SERVER: '${CTS_REST_SERVER}'
   CTS_TEST_SERVER: https://comptox.epa.gov/dashboard/web-test
-  CTS_SPARC_SERVER: http://204.46.160.69:8080
-  CTS_VERSION: "1.2"
+  CTS_VERSION: '${CTS_VERSION}'
+  CTS_RECAPTCHA_KEY: '${CTS_RECAPTCHA_KEY}'
+  CTS_TOMCAT_PASS: '${CTS_TOMCAT_PASS}'
+  CTS_TOMCAT_USER: '${CTS_TOMCAT_USER}'
   DJANGO_SETTINGS_MODULE: "settings"
-  ENV_NAME: local_docker_dev
-  MARVIN_PROXY: http://172.17.0.1
-  MONGO_SERVER: "cts-mongodb:27017"
-  NODEJS_HOST: nginx
+  ENV_NAME: kube_dev
+  MARVIN_PROXY: '${MARVIN_PROXY}'
+  NODEJS_HOST: cts-nodejs
   NODEJS_PORT: "4000"
   PASSWORD_REQUIRED: "False"
-  REDIS_HOSTNAME: redis
+  REDIS_HOSTNAME: cts-redis
   REDIS_PORT: "6379"

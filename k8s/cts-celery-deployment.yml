@@ -2,8 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: cts-manager
-  name: cts-manager
+    app: cts-celery
+  name: cts-celery
   namespace: qed-45-stg
   annotations:
     app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}
@@ -13,7 +13,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cts-manager
+      app: cts-celery
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -22,29 +22,27 @@ spec:
   template:
     metadata:
       labels:
-        app: cts-manager
+        app: cts-celery
     spec:
       containers:
-      - command:
+      - name: cts-worker
+        command:
         - celery
         - -A
         - tasks
         - worker
         - -Q
-        - manager_queue
+        - cts_queue
         - -l
         - info
         - -n
-        - manager_worker
+        - cts_worker
         - -c
-        - "1"
-        env:
-        - name: DOCKER_HOSTNAME
-          value: QED_KUBERNETES
-        - name: REDIS_HOSTNAME
-          value: redis
+        - "2"
         image: registry.epa.gov/qed/cyanweb_kube/cts-celery:dev-gl
         imagePullPolicy: Always
+        # image: cts-celery
+        # imagePullPolicy: Never
         envFrom:
         - configMapRef:
             name: cts-config
@@ -71,7 +69,50 @@ spec:
           limits:
             memory: "2Gi"
             cpu: "2000m"
-        name: worker-cts
+      - name: cts-manager
+        command:
+        - celery
+        - -A
+        - tasks
+        - worker
+        - -Q
+        - manager_queue
+        - -l
+        - info
+        - -n
+        - manager_worker
+        - -c
+        - "1"
+        image: ghcr.io/quanted/cts-celery:dev-kube
+        imagePullPolicy: Always
+        # image: cts-celery
+        # imagePullPolicy: Never
+        envFrom:
+        - configMapRef:
+            name: cts-config
+        livenessProbe:
+          exec:
+            command:
+              - ls
+              - /
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+              - ls
+              - /
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 10
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "2Gi"
+            cpu: "2000m"
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler

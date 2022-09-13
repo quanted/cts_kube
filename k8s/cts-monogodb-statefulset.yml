@@ -19,7 +19,6 @@ spec:
         app: cts-mongodb
     spec:
       containers:
-      # - image: mongo:latest
       - image: ghcr.io/quanted/mongo:5.0.6
         imagePullPolicy: Always
         name: cts-mongodb
@@ -35,4 +34,4 @@ spec:
       volumes:
       - name: cts-mongodb-pvolume
         persistentVolumeClaim:
-          claimName: cts-mongodb-pvolume-claim1
+          claimName: cts-mongodb-pvc

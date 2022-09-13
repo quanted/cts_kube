@@ -28,7 +28,7 @@ variables:
 # Build OPERAWS Image:
 #   stage: Image Build
 #   tags:
-#     - devsecops-instance
+#     - qed-stg-runner
 #   image:
 #     docker:stable
 #   when: manual
@@ -41,7 +41,7 @@ variables:
 CopyDevImages:
   stage: Image Build
   tags:
-    - devsecops-instance
+    - qed-stg-runner
   when: manual
   image:
     name: gcr.io/kaniko-project/executor:debug
@@ -74,6 +74,12 @@ CopyDevImages:
     # CTS Tomcat Image:
     - echo "FROM ghcr.io/quanted/cts-tomcat:dev-kube" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-tomcat:$CI_COMMIT_REF_NAME
+    # CTS MongoDB Image:
+    - echo "FROM ghcr.io/quanted/cts-mongodb:dev-kube" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-mongodb:$CI_COMMIT_REF_NAME
+    # CTS Redis Image:
+    - echo "FROM ghcr.io/quanted/cts-redis:dev-kube" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-redis:$CI_COMMIT_REF_NAME
 
   environment:
     name: dev
@@ -84,7 +90,7 @@ CopyDevImages:
 ApplyManifests:
   stage: Deployment
   tags:
-    - devsecops-instance
+    - qed-stg-runner
   when: manual
   image: dtzar/helm-kubectl
   script:
@@ -93,7 +99,18 @@ ApplyManifests:
     - kubectl config set-credentials gitlab --token="$KUBE_TOKEN"
     - kubectl config set-context default --cluster="$KUBECTL_DEV_CLUSTER" --user=gitlab --namespace="$KUBE_NAMESPACE"
     - kubectl config use-context default
-    - kubectl apply -f k8s/
+    - envsubst < k8s/cts-configmap.yml | kubectl apply -f -
+    - envsubst < k8s/cts-celery-deployment.yml | kubectl apply -f -
+    - envsubst < k8s/cts-django-deployment.yml | kubectl apply -f -
+    - envsubst < k8s/cts-django-service.yml | kubectl apply -f -
+    - envsubst < k8s/cts-nodejs-deployment.yml | kubectl apply -f -
+    - envsubst < k8s/cts-nodejs-service.yml | kubectl apply -f -
+    # - envsubst < k8s/cts-mongodb-service.yml | kubectl apply -f -
+    # - envsubst < k8s/cts-mongodb-statefulset.yml | kubectl apply -f -
+    - envsubst < k8s/cts-nginx-deployment.yml | kubectl apply -f -
+    - envsubst < k8s/cts-nginx-service.yml | kubectl apply -f -
+    - envsubst < k8s/cts-redis-deployment.yml | kubectl apply -f -
+    - envsubst < k8s/cts-redis-service.yml | kubectl apply -f -
   environment:
     name: dev
     url: http://qed.devsecops-dev.aws.epa.gov
@@ -119,10 +136,10 @@ DeleteManifests:
     kubernetes:
       namespace: qed-45-stg
 
-ScalePods:
-  stage: Restart Pods
+ApplyPVC:
+  stage: Deployment
   tags:
-    - devsecops-instance
+    - qed-stg-runner
   when: manual
   image: dtzar/helm-kubectl
   script:
@@ -131,31 +148,50 @@ ScalePods:
     - kubectl config set-credentials gitlab --token="$KUBE_TOKEN"
     - kubectl config set-context default --cluster="$KUBECTL_DEV_CLUSTER" --user=gitlab --namespace="$KUBE_NAMESPACE"
     - kubectl config use-context default
-    - kubectl scale deployment cts-biotransformer --replicas=0
-    - kubectl scale deployment cts-biotransformer --replicas=1
-    - kubectl scale deployment cts-django --replicas=0
-    - kubectl scale deployment cts-django --replicas=1
-    - kubectl scale deployment cts-envipath --replicas=0
-    - kubectl scale deployment cts-envipath --replicas=1
-    - kubectl scale deployment cts-manager --replicas=0
-    - kubectl scale deployment cts-manager --replicas=1
-    - kubectl scale deployment cts-nginx --replicas=0
-    - kubectl scale deployment cts-nginx --replicas=1
-    - kubectl scale deployment cts-operaws --replicas=0
-    - kubectl scale deployment cts-operaws --replicas=1
-    - kubectl scale deployment cts-tomcat --replicas=0
-    - kubectl scale deployment cts-tomcat --replicas=1
-    - kubectl scale deployment cts-worker --replicas=0
-    - kubectl scale deployment cts-worker --replicas=1
-    - kubectl scale deployment cts-mongodb --replicas=0
-    - kubectl scale deployment cts-mongodb --replicas=1
-    - kubectl scale deployment redis --replicas=0
-    - kubectl scale deployment redis --replicas=1
+    - kubectl apply -f k8s/cts-pvcs.yml
   environment:
-    name: dev
-    url: http://qed.devsecops-dev.aws.epa.gov
+    name: stg
+    url: http://qed.qed-stage.aws.epa.gov
     kubernetes:
       namespace: qed-45-stg
+
+# ScalePods:
+#   stage: Restart Pods
+#   tags:
+#     - qed-stg-runner
+#   when: manual
+#   image: dtzar/helm-kubectl
+#   script:
+#     - kubectl config set-cluster "$KUBECTL_DEV_CLUSTER" --server="$KUBE_URL"
+#     - kubectl config set-cluster "$KUBECTL_DEV_CLUSTER" --certificate-authority=$KUBE_CA_PEM_FILE --embed-certs=true
+#     - kubectl config set-credentials gitlab --token="$KUBE_TOKEN"
+#     - kubectl config set-context default --cluster="$KUBECTL_DEV_CLUSTER" --user=gitlab --namespace="$KUBE_NAMESPACE"
+#     - kubectl config use-context default
+#     - kubectl scale deployment cts-biotransformer --replicas=0
+#     - kubectl scale deployment cts-biotransformer --replicas=1
+#     - kubectl scale deployment cts-django --replicas=0
+#     - kubectl scale deployment cts-django --replicas=1
+#     - kubectl scale deployment cts-envipath --replicas=0
+#     - kubectl scale deployment cts-envipath --replicas=1
+#     - kubectl scale deployment cts-manager --replicas=0
+#     - kubectl scale deployment cts-manager --replicas=1
+#     - kubectl scale deployment cts-nginx --replicas=0
+#     - kubectl scale deployment cts-nginx --replicas=1
+#     - kubectl scale deployment cts-operaws --replicas=0
+#     - kubectl scale deployment cts-operaws --replicas=1
+#     - kubectl scale deployment cts-tomcat --replicas=0
+#     - kubectl scale deployment cts-tomcat --replicas=1
+#     - kubectl scale deployment cts-worker --replicas=0
+#     - kubectl scale deployment cts-worker --replicas=1
+#     - kubectl scale deployment cts-mongodb --replicas=0
+#     - kubectl scale deployment cts-mongodb --replicas=1
+#     - kubectl scale deployment redis --replicas=0
+#     - kubectl scale deployment redis --replicas=1
+#   environment:
+#     name: dev
+#     url: http://qed.devsecops-dev.aws.epa.gov
+#     kubernetes:
+#       namespace: qed-45-stg
 
 # BiotransformerImageScan:
 #   stage: Image Scan
@@ -174,24 +210,7 @@ ScalePods:
 #     - docker pull $prisma_cloud_scan_image
 #     - ./image_scan.sh
 
-DjangoImageScan:
-  stage: Image Scan
-  extends:
-    - .pcs_compute_scan
-  tags:
-    - twistcli
-  when: manual
-  allow_failure: false
-  variables:
-    prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
-    GIT_STRATEGY: clone
-    prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-django:dev-gl" 
-  script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
-    - docker pull $prisma_cloud_scan_image
-    - ./image_scan.sh
-
-# EnvipathImageScan:
+# DjangoImageScan:
 #   stage: Image Scan
 #   extends:
 #     - .pcs_compute_scan
@@ -202,64 +221,30 @@ DjangoImageScan:
 #   variables:
 #     prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
 #     GIT_STRATEGY: clone
-#     prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-envipath:dev-gl" 
+#     prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-django:dev-gl" 
 #   script:
 #     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
 #     - docker pull $prisma_cloud_scan_image
 #     - ./image_scan.sh
 
-CeleryImageScan:
-  stage: Image Scan
-  extends:
-    - .pcs_compute_scan
-  tags:
-    - twistcli
-  when: manual
-  allow_failure: false
-  variables:
-    prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
-    GIT_STRATEGY: clone
-    prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-celery:dev-gl" 
-  script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
-    - docker pull $prisma_cloud_scan_image
-    - ./image_scan.sh
+# # EnvipathImageScan:
+# #   stage: Image Scan
+# #   extends:
+# #     - .pcs_compute_scan
+# #   tags:
+# #     - twistcli
+# #   when: manual
+# #   allow_failure: false
+# #   variables:
+# #     prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
+# #     GIT_STRATEGY: clone
+# #     prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-envipath:dev-gl" 
+# #   script:
+# #     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
+# #     - docker pull $prisma_cloud_scan_image
+# #     - ./image_scan.sh
 
-NginxImageScan:
-  stage: Image Scan
-  extends:
-    - .pcs_compute_scan
-  tags:
-    - twistcli
-  when: manual
-  allow_failure: false
-  variables:
-    prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
-    GIT_STRATEGY: clone
-    prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-nginx:dev-gl" 
-  script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
-    - docker pull $prisma_cloud_scan_image
-    - ./image_scan.sh
-
-NodejsImageScan:
-  stage: Image Scan
-  extends:
-    - .pcs_compute_scan
-  tags:
-    - twistcli
-  when: manual
-  allow_failure: false
-  variables:
-    prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
-    GIT_STRATEGY: clone
-    prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-nodejs:dev-gl" 
-  script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
-    - docker pull $prisma_cloud_scan_image
-    - ./image_scan.sh
-
-# OperawsImageScan:
+# CeleryImageScan:
 #   stage: Image Scan
 #   extends:
 #     - .pcs_compute_scan
@@ -270,25 +255,76 @@ NodejsImageScan:
 #   variables:
 #     prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
 #     GIT_STRATEGY: clone
-#     prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-operaws:dev-gl" 
+#     prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-celery:dev-gl" 
 #   script:
 #     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
 #     - docker pull $prisma_cloud_scan_image
 #     - ./image_scan.sh
 
-TomcatImageScan:
-  stage: Image Scan
-  extends:
-    - .pcs_compute_scan
-  tags:
-    - twistcli
-  when: manual
-  allow_failure: false
-  variables:
-    prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
-    GIT_STRATEGY: clone
-    prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-tomcat:dev-gl" 
-  script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
-    - docker pull $prisma_cloud_scan_image
-    - ./image_scan.sh
+# NginxImageScan:
+#   stage: Image Scan
+#   extends:
+#     - .pcs_compute_scan
+#   tags:
+#     - twistcli
+#   when: manual
+#   allow_failure: false
+#   variables:
+#     prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
+#     GIT_STRATEGY: clone
+#     prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-nginx:dev-gl" 
+#   script:
+#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
+#     - docker pull $prisma_cloud_scan_image
+#     - ./image_scan.sh
+
+# NodejsImageScan:
+#   stage: Image Scan
+#   extends:
+#     - .pcs_compute_scan
+#   tags:
+#     - twistcli
+#   when: manual
+#   allow_failure: false
+#   variables:
+#     prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
+#     GIT_STRATEGY: clone
+#     prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-nodejs:dev-gl" 
+#   script:
+#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
+#     - docker pull $prisma_cloud_scan_image
+#     - ./image_scan.sh
+
+# # OperawsImageScan:
+# #   stage: Image Scan
+# #   extends:
+# #     - .pcs_compute_scan
+# #   tags:
+# #     - twistcli
+# #   when: manual
+# #   allow_failure: false
+# #   variables:
+# #     prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
+# #     GIT_STRATEGY: clone
+# #     prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-operaws:dev-gl" 
+# #   script:
+# #     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
+# #     - docker pull $prisma_cloud_scan_image
+# #     - ./image_scan.sh
+
+# TomcatImageScan:
+#   stage: Image Scan
+#   extends:
+#     - .pcs_compute_scan
+#   tags:
+#     - twistcli
+#   when: manual
+#   allow_failure: false
+#   variables:
+#     prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
+#     GIT_STRATEGY: clone
+#     prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-tomcat:dev-gl" 
+#   script:
+#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
+#     - docker pull $prisma_cloud_scan_image
+#     - ./image_scan.sh

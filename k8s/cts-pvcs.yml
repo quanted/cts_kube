@@ -1,83 +1,53 @@
-# # CTS Collected Static PVC
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: cts-collected-static-pvolume-claim1
-#   namespace: qed-45-stg
-#   labels:
-#     app: cts-collected-static-pvolume-claim1
-# spec:
-#   accessModes:
-#     - ReadWriteMany
-#   resources:
-#     requests:
-#       storage: 1Gi
-#   selector:
-#     matchLabels:
-#       release: "stable"
-#       name: cts-collected-static-pv
-# ---
+# CTS Collected Static PVC
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cts-collected-static-pvc
+  namespace: qed-45-stg
+  labels:
+    app: cts-collected-static-pvc
+spec:
+  storageClassName: efs-sc
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+---
 
-# CTS OPERAWS PVC
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: cts-mongodb-pvolume-claim1
-#   namespace: qed-45-stg
-#   labels:
-#     app: cts-mongodb-pvolume-claim1
-# spec:
-#   accessModes:
-#     - ReadWriteMany
-#   resources:
-#     requests:
-#       storage: 5Gi
-#   selector:
-#     matchLabels:
-#       release: "stable"
-#       name: cts-mongodb-pv
-# ---
+# CTS OPERA Calc DB PVC
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cts-mongodb-pvc
+  namespace: qed-45-stg
+  labels:
+    app: cts-mongodb-pvc
+spec:
+  storageClassName: efs-sc
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
 
-# # CTS Tomcat Chemaxon PVC
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: cts-tomcat-chemaxon-pvolume-claim1
-#   namespace: qed-45-stg
-#   labels:
-#     app: cts-tomcat-chemaxon-pvolume-claim1
-# spec:
-#   accessModes:
-#     - ReadOnlyMany
-#   resources:
-#     requests:
-#       storage: 5Mi
-#   selector:
-#     matchLabels:
-#       release: "stable"
-#       name: cts-tomcat-chemaxon-pv
-# ---
-
-# # CTS Tomcat tomcat-users.xml PVC
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: cts-tomcat-user-pvolume-claim1
-#   namespace: qed-45-stg
-#   labels:
-#     app: cts-tomcat-user-pvolume-claim1
-# spec:
-#   accessModes:
-#     - ReadOnlyMany
-#   resources:
-#     requests:
-#       storage: 1Mi
-#   selector:
-#     matchLabels:
-#       release: "stable"
-#       name: cts-tomcat-user-pv
-# ---
+# CTS Tomcat Chemaxon PVC
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cts-chemaxon-license-pvc
+  namespace: qed-45-stg
+  labels:
+    app: cts-chemaxon-license-pvc
+spec:
+  storageClassName: efs-sc
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: 1Mi
+---

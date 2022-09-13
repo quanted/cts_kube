@@ -61,7 +61,7 @@ spec:
       volumes:
         - name: cts-tomcat-chemaxon
         persistentVolumeClaim:
-          claimName: cts-tomcat-chemaxon-pvolume-claim1
+          claimName: cts-chemaxon-license-pvc
         - name: cts-tomcat-user
         persistentVolumeClaim:
           claimName: cts-tomcat-user-pvolume-claim1

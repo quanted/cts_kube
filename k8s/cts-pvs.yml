@@ -54,18 +54,3 @@
 #   hostPath:
 #     path: /run/desktop/mnt/host/c/Users/inick/GitHub/cts_kube/cts_tomcat/chemaxon
 # ---
-
-# # CTS Tomcat tomcat-users.xml PV
-# ---
-# apiVersion: v1
-# kind: PersistentVolume
-# metadata:
-#   name: cts-tomcat-user-pv
-# spec:
-#   accessModes:
-#     - ReadOnlyMany
-#   capacity:
-#     storage: 1Mi
-#   hostPath:
-#     path: /run/desktop/mnt/host/c/Users/inick/GitHub/cts_kube/cts_tomcat/tomcat-users.xml
-# ---

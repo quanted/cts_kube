@@ -24,7 +24,7 @@ spec:
       containers:
         - image: registry.epa.gov/qed/cyanweb_kube/cts-nginx:dev-gl
           imagePullPolicy: Always
-          name: nginx
+          name: cts-nginx
           readinessProbe:
           tcpSocket:
             port: 80
@@ -52,4 +52,4 @@ spec:
       volumes:
       - name: cts-collected-static
         persistentVolumeClaim:
-          claimName: cts-collected-static-pvolume-claim1
+          claimName: cts-collected-static-pvc

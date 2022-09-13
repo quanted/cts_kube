@@ -2,8 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: redis
-  name: redis
+    app: cts-redis
+  name: cts-redis
   namespace: qed-45-stg
   annotations:
     app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}
@@ -13,16 +13,16 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: redis
+      app: cts-redis
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: redis
+        app: cts-redis
     spec:
       containers:
-      - image: redis:latest
+      - image: registry.epa.gov/qed/cyanweb_kube/cts-redis:dev-gl
         imagePullPolicy: Always
         resources:
           requests:
@@ -31,7 +31,7 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "500m"
-        name: redis
+        name: cts-redis
         readinessProbe:
           tcpSocket:
             port: 6379

@@ -20,6 +20,8 @@ RUN apt-get remove -y python3 python3.9 && \
 # WORKDIR /home/tomcat
 WORKDIR /usr/local/tomcat
 
+COPY webapps /usr/local/tomcat/webapps
+
 # Sets default user as "tomcat"
 USER tomcat
 

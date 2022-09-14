@@ -94,6 +94,7 @@ ApplyManifests:
   when: manual
   image: dtzar/helm-kubectl
   script:
+    - apk add gettext
     - kubectl config set-cluster "$KUBECTL_DEV_CLUSTER" --server="$KUBE_URL"
     - kubectl config set-cluster "$KUBECTL_DEV_CLUSTER" --certificate-authority=$KUBE_CA_PEM_FILE --embed-certs=true
     - kubectl config set-credentials gitlab --token="$KUBE_TOKEN"

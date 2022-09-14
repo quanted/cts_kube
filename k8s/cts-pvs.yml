@@ -12,7 +12,7 @@
 #   accessModes:
 #     - ReadWriteMany
 #   capacity:
-#     storage: 1Gi
+#     storage: 5Gi
 #   hostPath:
 #     path: /run/desktop/mnt/host/c/Users/inick/GitHub/cts_kube/cts_app/collected_static
 # ---

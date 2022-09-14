@@ -8,46 +8,27 @@ metadata:
   labels:
     app: cts-collected-static-pvc
 spec:
+  volumeName: cts-collected-static-pv
   storageClassName: efs-sc
   accessModes:
     - ReadWriteMany
   resources:
     requests:
       storage: 1Gi
----
 
-# CTS OPERA Calc DB PVC
+# CTS MongoDB PVC
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: cts-mongodb-pvc
   namespace: qed-45-stg
-  labels:
-    app: cts-mongodb-pvc
 spec:
+  volumeName: cts-mongodb-pv
   storageClassName: efs-sc
   accessModes:
     - ReadWriteMany
   resources:
     requests:
       storage: 5Gi
----
-
-# CTS Tomcat Chemaxon PVC
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: cts-chemaxon-license-pvc
-  namespace: qed-45-stg
-  labels:
-    app: cts-chemaxon-license-pvc
-spec:
-  storageClassName: efs-sc
-  accessModes:
-    - ReadOnlyMany
-  resources:
-    requests:
-      storage: 1Mi
 ---

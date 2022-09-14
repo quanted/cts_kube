@@ -82,7 +82,7 @@ CopyDevImages:
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-redis:$CI_COMMIT_REF_NAME
 
   environment:
-    name: dev
+    name: stg
     url: http://qed.qed-stage.aws.epa.gov
     kubernetes:
       namespace: qed-45-stg
@@ -112,7 +112,7 @@ ApplyManifests:
     - envsubst < k8s/cts-redis-deployment.yml | kubectl apply -f -
     - envsubst < k8s/cts-redis-service.yml | kubectl apply -f -
   environment:
-    name: dev
+    name: stg
     url: http://qed.qed-stage.aws.epa.gov
     kubernetes:
       namespace: qed-45-stg
@@ -199,7 +199,7 @@ ApplyPVC:
 #     - kubectl scale deployment redis --replicas=0
 #     - kubectl scale deployment redis --replicas=1
 #   environment:
-#     name: dev
+#     name: stg
 #     url: http://qed.qed-stage.aws.epa.gov
 #     kubernetes:
 #       namespace: qed-45-stg

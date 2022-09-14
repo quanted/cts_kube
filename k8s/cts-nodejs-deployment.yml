@@ -46,22 +46,22 @@ spec:
             limits:
               memory: "2Gi"
               cpu: "1000m"
-          livenessProbe:
-            exec:
-              command:
-                - ls
-                - /
-            initialDelaySeconds: 5
-            periodSeconds: 5
-            timeoutSeconds: 10
-          readinessProbe:
-            exec:
-              command:
-                - ls
-                - /
-            initialDelaySeconds: 10
-            periodSeconds: 30
-            timeoutSeconds: 10
+        livenessProbe:
+          exec:
+            command:
+              - ls
+              - /
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+              - ls
+              - /
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 10
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler

@@ -19,7 +19,7 @@ spec:
         app: cts-mongodb
     spec:
       containers:
-      - image: ghcr.io/quanted/mongo:5.0.6
+      - image: registry.epa.gov/qed/cts_kube/mongo:5.0.6
         imagePullPolicy: Always
         name: cts-mongodb
         ports:
@@ -27,7 +27,7 @@ spec:
           protocol: TCP
         volumeMounts:
         - mountPath: /data/db
-          name: cts-mongodb-data
+          name: cts-mongodb-pvolume
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler

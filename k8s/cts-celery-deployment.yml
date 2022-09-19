@@ -39,7 +39,7 @@ spec:
         - cts_worker
         - -c
         - "2"
-        image: registry.epa.gov/qed/cyanweb_kube/cts-celery:dev-gl
+        image: registry.epa.gov/qed/cts_kube/cts-celery:dev-gl
         imagePullPolicy: Always
         # image: cts-celery
         # imagePullPolicy: Never
@@ -83,7 +83,7 @@ spec:
         - manager_worker
         - -c
         - "1"
-        image: ghcr.io/quanted/cts-celery:dev-kube
+        image: registry.epa.gov/qed/cts_kube/cts-celery:dev-gl
         imagePullPolicy: Always
         # image: cts-celery
         # imagePullPolicy: Never

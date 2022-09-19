@@ -22,7 +22,7 @@ spec:
         app: cts-redis
     spec:
       containers:
-      - image: registry.epa.gov/qed/cyanweb_kube/cts-redis:dev-gl
+      - image: registry.epa.gov/qed/cts_kube/cts-redis:dev-gl
         imagePullPolicy: Always
         resources:
           requests:

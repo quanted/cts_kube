@@ -25,7 +25,7 @@ spec:
       - envFrom:
           - configMapRef:
               name: cts-config
-        image: registry.epa.gov/qed/cyanweb_kube/cts-django:dev-gl
+        image: registry.epa.gov/qed/cts_kube/cts-django:dev-gl
         imagePullPolicy: Always
         name: cts-django
         resources:

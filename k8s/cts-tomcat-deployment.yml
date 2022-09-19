@@ -61,6 +61,6 @@ spec:
       restartPolicy: Always
       schedulerName: default-scheduler
       volumes:
-        - name: cts-tomcat-chemaxon
+      - name: cts-tomcat-chemaxon
         persistentVolumeClaim:
           claimName: cts-chemaxon-license-pvc

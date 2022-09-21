@@ -19,7 +19,7 @@ spec:
         app: cts-mongodb
     spec:
       containers:
-      - image: registry.epa.gov/qed/cts_kube/mongo:5.0.6
+      - image: registry.epa.gov/qed/cts_kube/cts-mongodb:dev-gl
         imagePullPolicy: Always
         name: cts-mongodb
         ports:

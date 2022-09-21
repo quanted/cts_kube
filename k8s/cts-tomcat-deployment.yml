@@ -24,12 +24,13 @@ spec:
       containers:
       - env:
         - name: JAVA_OPTS
-          value: -Xmx1024m
+          value: -Xmx1024m -DCTS_TOMCAT_PASS=${CTS_TOMCAT_PASS}
         image: registry.epa.gov/qed/cts_kube/cts-tomcat:dev-gl
         imagePullPolicy: Always
         command: ["/bin/sh", "-c"]
         args:
           - printenv CTS_TOMCAT_USER > /usr/local/tomcat/conf/tomcat-users.xml;
+            printenv CTS_CHEMAXON_LICENSE > /home/tomcat/.chemaxon/licenses/license.cxl;
             catalina.sh run
         readinessProbe:
           tcpSocket:
@@ -54,15 +55,15 @@ spec:
         ports:
           - containerPort: 8080
             protocol: TCP
-        volumeMounts:
-          - mountPath: /home/tomcat/.chemaxon/licenses
-            name: cts-tomcat-chemaxon
+        # volumeMounts:
+        #   - mountPath: /home/tomcat/.chemaxon/licenses
+        #     name: cts-tomcat-chemaxon
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       imagePullSecrets:
         - name: glcr-auth
-      volumes:
-      - name: cts-tomcat-chemaxon
-        persistentVolumeClaim:
-          claimName: cts-chemaxon-license-pvc
+      # volumes:
+      # - name: cts-tomcat-chemaxon
+      #   persistentVolumeClaim:
+      #     claimName: cts-chemaxon-license-pvc

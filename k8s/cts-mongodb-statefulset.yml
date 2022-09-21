@@ -31,6 +31,8 @@ spec:
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
+      imagePullSecrets:
+        - name: glcr-auth
       volumes:
       - name: cts-mongodb-pvolume
         persistentVolumeClaim:

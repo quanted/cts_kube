@@ -26,7 +26,7 @@ spec:
           env:
           - name: BT_JAR_PATH
             value: /src/biotransformer3.0jar
-          image: registry.epa.gov/qed/cyanweb_kube/cts-biotransformer:dev-gl
+          image: registry.epa.gov/qed/cts_kube/cts-biotransformer:dev-gl
           imagePullPolicy: Always
           resources:
             requests:
@@ -57,3 +57,5 @@ spec:
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
+      imagePullSecrets:
+        - name: glcr-auth

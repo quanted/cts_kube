@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: cts-operaws
-          image: registry.epa.gov/qed/cyanweb_kube/operaws:dev-gl
+          image: registry.epa.gov/qed/cts_kube/operaws:dev-gl
           imagePullPolicy: Always
           resources:
             requests:
@@ -54,3 +54,5 @@ spec:
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
+      imagePullSecrets:
+        - name: glcr-auth

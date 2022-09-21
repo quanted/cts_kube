@@ -57,3 +57,5 @@ spec:
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
+      imagePullSecrets:
+        - name: glcr-auth

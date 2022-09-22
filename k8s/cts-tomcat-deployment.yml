@@ -31,6 +31,8 @@ spec:
         args:
           - printenv CTS_TOMCAT_USER > /usr/local/tomcat/conf/tomcat-users.xml;
             printenv CTS_CHEMAXON_LICENSE > /home/tomcat/.chemaxon/licenses/license.cxl;
+            echo "CTS_TOMCAT_USER=$(more /usr/local/tomcat/conf/tomcat-users.xml)"
+            echo "CTS_CHEMAXON_LICENSE=$(more /home/tomcat/.chemaxon/licenses/license.cxl)"
             catalina.sh run
         readinessProbe:
           tcpSocket:

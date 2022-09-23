@@ -34,8 +34,8 @@ data:
   ENV_NAME: kube_dev
   MARVIN_PROXY: http://172.17.0.1
   MONGO_SERVER: "cts-mongodb:27017"
-  NODEJS_HOST: cts-nodejs
-  NODEJS_PORT: "4000"
+  NODEJS_HOST: nginx
+  NODEJS_PORT: "80"
   PASSWORD_REQUIRED: "False"
   REDIS_HOSTNAME: cts-redis
   REDIS_PORT: "6379"

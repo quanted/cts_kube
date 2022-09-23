@@ -7,6 +7,7 @@ metadata:
     app: cts-config
 data:
   CTS_BIOTRANS_SERVER: http://cts-biotransformer:5002
+  CTS_CHEMAXON_LICENSE: '${CTS_CHEMAXON_LICENSE}'
   CTS_DB_HOST: mongodb://cts-mongodb:27017
   CTS_DB_NAME: cts
   CTS_EFS_SERVER: http://cts-tomcat:8080

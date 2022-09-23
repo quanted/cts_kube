@@ -26,6 +26,11 @@ spec:
             configMapKeyRef:
               name: cts-config
               key: CTS_TOMCAT_USER
+        - name: CTS_CHEMAXON_LICENSE
+          valueFrom:
+            configMapKeyRef:
+              name: cts-config
+              key: CTS_CHEMAXON_LICENSE
         image: ghcr.io/quanted/cts-tomcat:dev-kube
         imagePullPolicy: Always
         command: ["/bin/sh", "-c"]

@@ -25,25 +25,13 @@ spec:
       containers:
       - env:
         - name: NODEJS_HOST
-          valueFrom:
-            configMapKeyRef:
-              name: cts-config
-              key: NODEJS_HOST
+          value: cts-nodejs
         - name: NODEJS_PORT
-          valueFrom:
-            configMapKeyRef:
-              name: cts-config
-              key: NODEJS_PORT
+          value: "4000"
         - name: REDIS_HOSTNAME
-          valueFrom:
-            configMapKeyRef:
-              name: cts-config
-              key: REDIS_HOSTNAME
+          value: cts-redis
         - name: REDIS_PORT
-          valueFrom:
-            configMapKeyRef:
-              name: cts-config
-              key: REDIS_PORT
+          value: "6379"
         image: ghcr.io/quanted/cts-nodejs:dev-kube
         imagePullPolicy: Always
         # image: cts-nodejs

@@ -6,7 +6,8 @@ metadata:
   labels:
     app: cts-config
 data:
-  CTS_BIOTRANS_SERVER: '${CTS_BIOTRANS_SERVER}' 
+  CTS_BIOTRANS_SERVER: '${CTS_BIOTRANS_SERVER}'
+  CTS_CHEMAXON_LICENSE: '${CTS_CHEMAXON_LICENSE}'
   CTS_DB_HOST: mongodb://cts-mongodb:27017
   CTS_DB_NAME: cts
   CTS_EFS_SERVER: http://cts-tomcat:8080
@@ -19,6 +20,7 @@ data:
   CTS_MEASURED_SERVER: '${CTS_MEASURED_SERVER}'
   CTS_OPERA_SERVER: '${CTS_OPERA_SERVER}'
   CTS_REST_SERVER: '${CTS_REST_SERVER}'
+  CTS_STATIC_URL: '/cts/static/'
   CTS_TEST_SERVER: https://comptox.epa.gov/dashboard/web-test
   CTS_VERSION: '${CTS_VERSION}'
   CTS_RECAPTCHA_KEY: '${CTS_RECAPTCHA_KEY}'
@@ -32,8 +34,8 @@ data:
   DJANGO_SETTINGS_MODULE: "settings"
   ENV_NAME: kube_dev
   MARVIN_PROXY: '${MARVIN_PROXY}'
-  NODEJS_HOST: cts-nodejs
-  NODEJS_PORT: "4000"
+  NODEJS_HOST: https://qed.qed-stage.aws.epa.gov
+  NODEJS_PORT: "80"
   PASSWORD_REQUIRED: "False"
   REDIS_HOSTNAME: cts-redis
   REDIS_PORT: "6379"

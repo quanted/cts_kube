@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export $(grep -v '^#' .env | xargs)  # sets env vars with .env
+# export $(grep -v '^#' .env | xargs)  # sets env vars with .env
 
 # Applys manifests with env vars:
 envsubst < k8s/cts-configmap.yml | kubectl apply -f -

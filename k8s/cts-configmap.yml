@@ -14,9 +14,9 @@ data:
   CTS_EMAIL: ctsemailserver@gmail.com
   CTS_EMAIL_RECIPIENT: ctsemailserver@gmail.com
   CTS_ENVIPATH_SERVER: http://cts-envipath:5003
-  CTS_EPI_SERVER: http://172.17.0.1:55342/rest/episuite/estimated
+  CTS_EPI_SERVER: https://ceamdev.ceeopdev.net/epi/estimated
   CTS_JCHEM_SERVER: http://cts-tomcat:8080
-  CTS_MEASURED_SERVER: http://172.17.0.1:55342/rest/episuite/measured
+  CTS_MEASURED_SERVER: https://ceamdev.ceeopdev.net/epi/measured
   CTS_OPERA_SERVER: http://cts-operaws:3344
   CTS_REST_SERVER: http://host.docker.internal
   CTS_TEST_SERVER: https://comptox.epa.gov/dashboard/web-test

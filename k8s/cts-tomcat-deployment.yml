@@ -25,6 +25,16 @@ spec:
       - env:
         - name: JAVA_OPTS
           value: -Xmx1024m -DCTS_TOMCAT_PASS=${CTS_TOMCAT_PASS}
+        - name: CTS_TOMCAT_USER
+          valueFrom:
+            configMapKeyRef:
+              name: cts-config
+              key: CTS_TOMCAT_USER
+        - name: CTS_CHEMAXON_LICENSE
+          valueFrom:
+            configMapKeyRef:
+              name: cts-config
+              key: CTS_CHEMAXON_LICENSE
         image: registry.epa.gov/qed/cts_kube/cts-tomcat:dev-gl
         imagePullPolicy: Always
         command: ["/bin/sh", "-c"]

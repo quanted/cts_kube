@@ -213,6 +213,7 @@ BiotransformerImageScan:
     - .pcs_compute_scan
   tags:
     - twistcli
+    - qed-stg-runner
   when: manual
   allow_failure: true
   variables:
@@ -230,6 +231,7 @@ DjangoImageScan:
     - .pcs_compute_scan
   tags:
     - twistcli
+    - qed-stg-runner
   when: manual
   allow_failure: true
   variables:
@@ -247,6 +249,7 @@ EnvipathImageScan:
     - .pcs_compute_scan
   tags:
     - twistcli
+    - qed-stg-runner
   when: manual
   allow_failure: true
   variables:
@@ -264,6 +267,7 @@ CeleryImageScan:
     - .pcs_compute_scan
   tags:
     - twistcli
+    - qed-stg-runner
   when: manual
   allow_failure: true
   variables:
@@ -281,6 +285,7 @@ NginxImageScan:
     - .pcs_compute_scan
   tags:
     - twistcli
+    - qed-stg-runner
   when: manual
   allow_failure: true
   variables:
@@ -298,6 +303,7 @@ NodejsImageScan:
     - .pcs_compute_scan
   tags:
     - twistcli
+    - qed-stg-runner
   when: manual
   allow_failure: true
   variables:
@@ -315,6 +321,7 @@ OperawsImageScan:
     - .pcs_compute_scan
   tags:
     - twistcli
+    - qed-stg-runner
   when: manual
   allow_failure: true
   variables:
@@ -332,6 +339,7 @@ TomcatImageScan:
     - .pcs_compute_scan
   tags:
     - twistcli
+    - qed-stg-runner
   when: manual
   allow_failure: true
   variables:

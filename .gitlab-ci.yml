@@ -1,8 +1,8 @@
 stages:
   - Image Build
-  - Deployment
-  - Restart Pods
   - Image Scan
+  - Deployment
+  # - Restart Pods
 
 # Testing "repo mirroring not triggering new pipeline" issue that we're seeing for ordsat
 
@@ -13,13 +13,13 @@ include:
 
 
 variables:
-  # cts_biotransformer_version: 0.0.1
+  cts_biotransformer_version: 0.0.1
   cts_celery_version: 0.0.1
   cts_django_version: 0.0.1
-  # cts_envipath_version: 0.0.1
+  cts_envipath_version: 0.0.1
   cts_nginx_version: 0.0.1
   cts_nodejs_version: 0.0.1
-  # cts_operaws_version: 0.0.1
+  cts_operaws_version: 0.0.1
   cts_tomcat_version: 0.0.1
 
   tag_name: $CI_COMMIT_REF_NAME-$CI_COMMIT_SHA
@@ -50,15 +50,15 @@ CopyDevImages:
     - mkdir -p /kaniko/.docker
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
     - mkdir -p /workspace
-    # # CTS BioTransformer Image:
-    # - echo "FROM ghcr.io/quanted/cts-biotransformer:dev-kube" > /workspace/Dockerfile
-    # - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-biotransformer:$CI_COMMIT_REF_NAME
+    # CTS BioTransformer Image:
+    - echo "FROM ghcr.io/quanted/cts-biotransformer:dev-kube" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-biotransformer:$CI_COMMIT_REF_NAME
     # CTS Django Image:
     - echo "FROM ghcr.io/quanted/cts-django:dev-kube" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-django:$CI_COMMIT_REF_NAME
-    # # CTS EnviPath Image:
-    # - echo "FROM ghcr.io/kurtw555/cts-envipath:dev-kube" > /workspace/Dockerfile
-    # - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-envipath:$CI_COMMIT_REF_NAME
+    # CTS EnviPath Image:
+    - echo "FROM ghcr.io/kurtw555/cts-envipath:dev-kube" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-envipath:$CI_COMMIT_REF_NAME
     # CTS Celery Image:
     - echo "FROM ghcr.io/quanted/cts-celery:dev-kube" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-celery:$CI_COMMIT_REF_NAME
@@ -68,9 +68,9 @@ CopyDevImages:
     # CTS NodeJS Image:
     - echo "FROM ghcr.io/quanted/cts-nodejs:dev-kube" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-nodejs:$CI_COMMIT_REF_NAME
-    # # CTS OPERAWS Image:
-    # - echo "FROM ghcr.io/quanted/operaws:dev-kube-$CI_COMMIT_SHA" > /workspace/Dockerfile
-    # - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-operaws:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHA
+    # CTS OPERAWS Image:
+    - echo "FROM ghcr.io/quanted/operaws:dev-kube-$CI_COMMIT_SHA" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-operaws:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHA
     # CTS Tomcat Image:
     - echo "FROM ghcr.io/quanted/cts-tomcat:dev-kube" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-tomcat:$CI_COMMIT_REF_NAME
@@ -207,138 +207,138 @@ ApplyPVC:
 #     kubernetes:
 #       namespace: qed-45-stg
 
-# BiotransformerImageScan:
-#   stage: Image Scan
-#   extends:
-#     - .pcs_compute_scan
-#   tags:
-#     - twistcli
-#   when: manual
-#   allow_failure: false
-#   variables:
-#     prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
-#     GIT_STRATEGY: clone
-#     prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-biotransformer:dev-gl" 
-#   script:
-#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
-#     - docker pull $prisma_cloud_scan_image
-#     - ./image_scan.sh
+BiotransformerImageScan:
+  stage: Image Scan
+  extends:
+    - .pcs_compute_scan
+  tags:
+    - twistcli
+  when: manual
+  allow_failure: true
+  variables:
+    prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
+    GIT_STRATEGY: clone
+    prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-biotransformer:dev-gl" 
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
+    - docker pull $prisma_cloud_scan_image
+    - ./image_scan.sh
 
-# DjangoImageScan:
-#   stage: Image Scan
-#   extends:
-#     - .pcs_compute_scan
-#   tags:
-#     - twistcli
-#   when: manual
-#   allow_failure: false
-#   variables:
-#     prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
-#     GIT_STRATEGY: clone
-#     prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-django:dev-gl" 
-#   script:
-#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
-#     - docker pull $prisma_cloud_scan_image
-#     - ./image_scan.sh
+DjangoImageScan:
+  stage: Image Scan
+  extends:
+    - .pcs_compute_scan
+  tags:
+    - twistcli
+  when: manual
+  allow_failure: true
+  variables:
+    prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
+    GIT_STRATEGY: clone
+    prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-django:dev-gl" 
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
+    - docker pull $prisma_cloud_scan_image
+    - ./image_scan.sh
 
-# # EnvipathImageScan:
-# #   stage: Image Scan
-# #   extends:
-# #     - .pcs_compute_scan
-# #   tags:
-# #     - twistcli
-# #   when: manual
-# #   allow_failure: false
-# #   variables:
-# #     prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
-# #     GIT_STRATEGY: clone
-# #     prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-envipath:dev-gl" 
-# #   script:
-# #     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
-# #     - docker pull $prisma_cloud_scan_image
-# #     - ./image_scan.sh
+EnvipathImageScan:
+  stage: Image Scan
+  extends:
+    - .pcs_compute_scan
+  tags:
+    - twistcli
+  when: manual
+  allow_failure: true
+  variables:
+    prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
+    GIT_STRATEGY: clone
+    prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-envipath:dev-gl" 
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
+    - docker pull $prisma_cloud_scan_image
+    - ./image_scan.sh
 
-# CeleryImageScan:
-#   stage: Image Scan
-#   extends:
-#     - .pcs_compute_scan
-#   tags:
-#     - twistcli
-#   when: manual
-#   allow_failure: false
-#   variables:
-#     prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
-#     GIT_STRATEGY: clone
-#     prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-celery:dev-gl" 
-#   script:
-#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
-#     - docker pull $prisma_cloud_scan_image
-#     - ./image_scan.sh
+CeleryImageScan:
+  stage: Image Scan
+  extends:
+    - .pcs_compute_scan
+  tags:
+    - twistcli
+  when: manual
+  allow_failure: true
+  variables:
+    prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
+    GIT_STRATEGY: clone
+    prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-celery:dev-gl" 
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
+    - docker pull $prisma_cloud_scan_image
+    - ./image_scan.sh
 
-# NginxImageScan:
-#   stage: Image Scan
-#   extends:
-#     - .pcs_compute_scan
-#   tags:
-#     - twistcli
-#   when: manual
-#   allow_failure: false
-#   variables:
-#     prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
-#     GIT_STRATEGY: clone
-#     prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-nginx:dev-gl" 
-#   script:
-#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
-#     - docker pull $prisma_cloud_scan_image
-#     - ./image_scan.sh
+NginxImageScan:
+  stage: Image Scan
+  extends:
+    - .pcs_compute_scan
+  tags:
+    - twistcli
+  when: manual
+  allow_failure: true
+  variables:
+    prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
+    GIT_STRATEGY: clone
+    prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-nginx:dev-gl" 
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
+    - docker pull $prisma_cloud_scan_image
+    - ./image_scan.sh
 
-# NodejsImageScan:
-#   stage: Image Scan
-#   extends:
-#     - .pcs_compute_scan
-#   tags:
-#     - twistcli
-#   when: manual
-#   allow_failure: false
-#   variables:
-#     prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
-#     GIT_STRATEGY: clone
-#     prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-nodejs:dev-gl" 
-#   script:
-#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
-#     - docker pull $prisma_cloud_scan_image
-#     - ./image_scan.sh
+NodejsImageScan:
+  stage: Image Scan
+  extends:
+    - .pcs_compute_scan
+  tags:
+    - twistcli
+  when: manual
+  allow_failure: true
+  variables:
+    prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
+    GIT_STRATEGY: clone
+    prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-nodejs:dev-gl" 
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
+    - docker pull $prisma_cloud_scan_image
+    - ./image_scan.sh
 
-# # OperawsImageScan:
-# #   stage: Image Scan
-# #   extends:
-# #     - .pcs_compute_scan
-# #   tags:
-# #     - twistcli
-# #   when: manual
-# #   allow_failure: false
-# #   variables:
-# #     prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
-# #     GIT_STRATEGY: clone
-# #     prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-operaws:dev-gl" 
-# #   script:
-# #     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
-# #     - docker pull $prisma_cloud_scan_image
-# #     - ./image_scan.sh
+OperawsImageScan:
+  stage: Image Scan
+  extends:
+    - .pcs_compute_scan
+  tags:
+    - twistcli
+  when: manual
+  allow_failure: true
+  variables:
+    prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
+    GIT_STRATEGY: clone
+    prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-operaws:dev-gl" 
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
+    - docker pull $prisma_cloud_scan_image
+    - ./image_scan.sh
 
-# TomcatImageScan:
-#   stage: Image Scan
-#   extends:
-#     - .pcs_compute_scan
-#   tags:
-#     - twistcli
-#   when: manual
-#   allow_failure: false
-#   variables:
-#     prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
-#     GIT_STRATEGY: clone
-#     prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-tomcat:dev-gl" 
-#   script:
-#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
-#     - docker pull $prisma_cloud_scan_image
-#     - ./image_scan.sh
+TomcatImageScan:
+  stage: Image Scan
+  extends:
+    - .pcs_compute_scan
+  tags:
+    - twistcli
+  when: manual
+  allow_failure: true
+  variables:
+    prisma_cloud_compute_url: "https://prismacloud.gitlab-prod.aws.epa.gov"
+    GIT_STRATEGY: clone
+    prisma_cloud_scan_image: "registry.epa.gov/qed/cts_kube/cts-tomcat:dev-gl" 
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
+    - docker pull $prisma_cloud_scan_image
+    - ./image_scan.sh

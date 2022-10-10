@@ -22,7 +22,7 @@ data:
   CTS_REST_SERVER: '${CTS_REST_SERVER}'
   CTS_STATIC_URL: '/cts/static/'
   CTS_TEST_SERVER: https://comptox.epa.gov/dashboard/web-test
-  CTS_VERSION: '${CTS_VERSION}'
+  CTS_VERSION: "1.3.1"
   CTS_RECAPTCHA_KEY: '${CTS_RECAPTCHA_KEY}'
   CTS_TOMCAT_PASS: '${CTS_TOMCAT_PASS}'
   CTS_TOMCAT_USER: |

@@ -34,6 +34,6 @@ spec:
       restartPolicy: Always
       schedulerName: default-scheduler
       volumes:
-      - name: cts-mongodb-pvolume
+      - name: cts-mongodb-data
         persistentVolumeClaim:
-          claimName: cts-mongodb-pvolume-claim1
+          claimName: cts-mongodb-pvc

@@ -26,7 +26,7 @@ spec:
         command:
           - mongod
           - --dbpath
-          - '/data/db/cts'
+          - '/data/db'
           - --bind_ip_all
         name: cts-mongodb
         ports:

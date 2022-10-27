@@ -26,14 +26,14 @@ spec:
         command:
           - mongod
           - --dbpath
-          - '/data/db'
+          - '/data/db/cts'
           - --bind_ip_all
         name: cts-mongodb
         ports:
         - containerPort: 27017
           protocol: TCP
         volumeMounts:
-        - mountPath: /data
+        - mountPath: /data/db/cts
           name: cts-mongodb-data
       dnsPolicy: ClusterFirst
       restartPolicy: Always

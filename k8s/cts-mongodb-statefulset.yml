@@ -21,19 +21,24 @@ spec:
       containers:
       - image: registry.epa.gov/qed/cts_kube/cts-mongodb:dev-gl
         imagePullPolicy: Always
+        command:
+          - mongod
+          - --dbpath
+          - '/data/db/cts'
+          - --bind_ip_all
         name: cts-mongodb
         ports:
         - containerPort: 27017
           protocol: TCP
         volumeMounts:
-        - mountPath: /data/db
-          name: cts-mongodb-pvolume
+        - mountPath: /data/db/cts
+          name: cts-mongodb-data
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       imagePullSecrets:
         - name: glcr-auth
       volumes:
-      - name: cts-mongodb-pvolume
+      - name: cts-mongodb-data
         persistentVolumeClaim:
           claimName: cts-mongodb-pvc

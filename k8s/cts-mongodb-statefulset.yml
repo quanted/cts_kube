@@ -27,6 +27,13 @@ spec:
           - '/data/db/cts'
           - --bind_ip_all
         name: cts-mongodb
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
         ports:
         - containerPort: 27017
           protocol: TCP

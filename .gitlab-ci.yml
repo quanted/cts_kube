@@ -69,7 +69,7 @@ CopyDevImages:
     - echo "FROM ghcr.io/quanted/cts-nodejs:dev-kube" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-nodejs:$CI_COMMIT_REF_NAME
     # CTS OPERAWS Image:
-    - echo "FROM ghcr.io/quanted/operaws:dev-kube-$CI_COMMIT_SHA" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/operaws:dev-8152f35b44a5402450220294acabad7008ee7e86" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-operaws:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHA
     # CTS Tomcat Image:
     - echo "FROM ghcr.io/quanted/cts-tomcat:dev-kube" > /workspace/Dockerfile
@@ -188,44 +188,6 @@ LoadVolumeData:
     url: http://qed.qed-stage.aws.epa.gov
     kubernetes:
       namespace: qed-45-stg
-
-# ScalePods:
-#   stage: Restart Pods
-#   tags:
-#     - qed-stg-runner
-#   when: manual
-#   image: dtzar/helm-kubectl
-#   script:
-#     - kubectl config set-cluster "$KUBECTL_DEV_CLUSTER" --server="$KUBE_URL"
-#     - kubectl config set-cluster "$KUBECTL_DEV_CLUSTER" --certificate-authority=$KUBE_CA_PEM_FILE --embed-certs=true
-#     - kubectl config set-credentials gitlab --token="$KUBE_TOKEN"
-#     - kubectl config set-context default --cluster="$KUBECTL_DEV_CLUSTER" --user=gitlab --namespace="$KUBE_NAMESPACE"
-#     - kubectl config use-context default
-#     - kubectl scale deployment cts-biotransformer --replicas=0
-#     - kubectl scale deployment cts-biotransformer --replicas=1
-#     - kubectl scale deployment cts-django --replicas=0
-#     - kubectl scale deployment cts-django --replicas=1
-#     - kubectl scale deployment cts-envipath --replicas=0
-#     - kubectl scale deployment cts-envipath --replicas=1
-#     - kubectl scale deployment cts-manager --replicas=0
-#     - kubectl scale deployment cts-manager --replicas=1
-#     - kubectl scale deployment cts-nginx --replicas=0
-#     - kubectl scale deployment cts-nginx --replicas=1
-#     - kubectl scale deployment cts-operaws --replicas=0
-#     - kubectl scale deployment cts-operaws --replicas=1
-#     - kubectl scale deployment cts-tomcat --replicas=0
-#     - kubectl scale deployment cts-tomcat --replicas=1
-#     - kubectl scale deployment cts-worker --replicas=0
-#     - kubectl scale deployment cts-worker --replicas=1
-#     - kubectl scale deployment cts-mongodb --replicas=0
-#     - kubectl scale deployment cts-mongodb --replicas=1
-#     - kubectl scale deployment redis --replicas=0
-#     - kubectl scale deployment redis --replicas=1
-#   environment:
-#     name: stg
-#     url: http://qed.qed-stage.aws.epa.gov
-#     kubernetes:
-#       namespace: qed-45-stg
 
 BiotransformerImageScan:
   stage: Image Scan

@@ -10,19 +10,20 @@ include:
   - project: 'DSO/DASTScanner'
     file: '.gitlab-ci.yml'
   - remote: 'https://gitlab.com/prismacloud-public/shift-left/extension/-/raw/master/.pcs.gitlab-ci.yml'
+  - local: 'version.yml'
 
 
-variables:
-  cts_biotransformer_version: 0.0.1
-  cts_celery_version: 0.0.1
-  cts_django_version: 0.0.1
-  cts_envipath_version: 0.0.1
-  cts_nginx_version: 0.0.1
-  cts_nodejs_version: 0.0.1
-  cts_operaws_version: 0.0.1
-  cts_tomcat_version: 0.0.1
+# variables:
+#   cts_biotransformer_version: 0.0.1
+#   cts_celery_version: 0.0.1
+#   cts_django_version: 0.0.1
+#   cts_envipath_version: 0.0.1
+#   cts_nginx_version: 0.0.1
+#   cts_nodejs_version: 0.0.1
+#   cts_operaws_version: 0.0.1
+#   cts_tomcat_version: 0.0.1
 
-  tag_name: $CI_COMMIT_REF_NAME-$CI_COMMIT_SHA
+#   tag_name: $CI_COMMIT_REF_NAME-$CI_COMMIT_SHA
 
 
 # Build OPERAWS Image:
@@ -80,7 +81,51 @@ CopyDevImages:
     # CTS Redis Image:
     - echo "FROM ghcr.io/quanted/cts-redis:dev-kube" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-redis:$CI_COMMIT_REF_NAME
+  environment:
+    name: stg
+    url: http://qed.qed-stage.aws.epa.gov
+    kubernetes:
+      namespace: qed-45-stg
 
+SetProdImages:
+  stage: Image Build
+  tags:
+    - qed-stg-runner
+  when: manual
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [ "" ]
+  script:
+    # CTS BioTransformer Image:
+    - echo "FROM ghcr.io/quanted/cts-biotransformer:dev-kube" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-biotransformer:main-$CTS_PROD_VERSION
+    # CTS Django Image:
+    - echo "FROM ghcr.io/quanted/cts-django:dev-kube" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-django:main-$CTS_PROD_VERSION
+    # CTS EnviPath Image:
+    - echo "FROM ghcr.io/kurtw555/cts-envipath:dev-kube" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-envipath:main-$CTS_PROD_VERSION
+    # CTS Celery Image:
+    - echo "FROM ghcr.io/quanted/cts-celery:dev-kube" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-celery:main-$CTS_PROD_VERSION
+    # CTS Nginx Image:
+    - echo "FROM ghcr.io/quanted/cts-nginx:dev-kube" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-nginx:main-$CTS_PROD_VERSION
+    # CTS NodeJS Image:
+    - echo "FROM ghcr.io/quanted/cts-nodejs:dev-kube" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-nodejs:main-$CTS_PROD_VERSION
+    # CTS OPERAWS Image:
+    - echo "FROM ghcr.io/quanted/operaws:dev-8152f35b44a5402450220294acabad7008ee7e86" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-operaws:main-$CTS_PROD_VERSION
+    # CTS Tomcat Image:
+    - echo "FROM ghcr.io/quanted/cts-tomcat:dev-kube" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-tomcat:main-$CTS_PROD_VERSION
+    # CTS MongoDB Image:
+    - echo "FROM ghcr.io/quanted/cts-mongodb:dev-kube" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-mongodb:main-$CTS_PROD_VERSION
+    # CTS Redis Image:
+    - echo "FROM ghcr.io/quanted/cts-redis:dev-kube" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-redis:main-$CTS_PROD_VERSION
   environment:
     name: stg
     url: http://qed.qed-stage.aws.epa.gov

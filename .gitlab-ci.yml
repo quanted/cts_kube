@@ -98,34 +98,34 @@ SetProdImages:
   script:
     # CTS BioTransformer Image:
     - echo "FROM ghcr.io/quanted/cts-biotransformer:dev-kube" > /workspace/Dockerfile
-    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-biotransformer:main-$CTS_PROD_VERSION
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-biotransformer:main-$PROD_VERSION
     # CTS Django Image:
     - echo "FROM ghcr.io/quanted/cts-django:dev-kube" > /workspace/Dockerfile
-    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-django:main-$CTS_PROD_VERSION
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-django:main-$PROD_VERSION
     # CTS EnviPath Image:
     - echo "FROM ghcr.io/kurtw555/cts-envipath:dev-kube" > /workspace/Dockerfile
-    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-envipath:main-$CTS_PROD_VERSION
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-envipath:main-$PROD_VERSION
     # CTS Celery Image:
     - echo "FROM ghcr.io/quanted/cts-celery:dev-kube" > /workspace/Dockerfile
-    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-celery:main-$CTS_PROD_VERSION
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-celery:main-$PROD_VERSION
     # CTS Nginx Image:
     - echo "FROM ghcr.io/quanted/cts-nginx:dev-kube" > /workspace/Dockerfile
-    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-nginx:main-$CTS_PROD_VERSION
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-nginx:main-$PROD_VERSION
     # CTS NodeJS Image:
     - echo "FROM ghcr.io/quanted/cts-nodejs:dev-kube" > /workspace/Dockerfile
-    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-nodejs:main-$CTS_PROD_VERSION
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-nodejs:main-$PROD_VERSION
     # CTS OPERAWS Image:
     - echo "FROM ghcr.io/quanted/operaws:dev-8152f35b44a5402450220294acabad7008ee7e86" > /workspace/Dockerfile
-    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-operaws:main-$CTS_PROD_VERSION
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-operaws:main-$PROD_VERSION
     # CTS Tomcat Image:
     - echo "FROM ghcr.io/quanted/cts-tomcat:dev-kube" > /workspace/Dockerfile
-    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-tomcat:main-$CTS_PROD_VERSION
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-tomcat:main-$PROD_VERSION
     # CTS MongoDB Image:
     - echo "FROM ghcr.io/quanted/cts-mongodb:dev-kube" > /workspace/Dockerfile
-    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-mongodb:main-$CTS_PROD_VERSION
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-mongodb:main-$PROD_VERSION
     # CTS Redis Image:
     - echo "FROM ghcr.io/quanted/cts-redis:dev-kube" > /workspace/Dockerfile
-    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-redis:main-$CTS_PROD_VERSION
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-redis:main-$PROD_VERSION
   environment:
     name: stg
     url: http://qed.qed-stage.aws.epa.gov

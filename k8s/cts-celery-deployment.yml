@@ -58,13 +58,13 @@ spec:
           initialDelaySeconds: 10
           periodSeconds: 30
           timeoutSeconds: 10
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "250m"
-          limits:
-            memory: "2Gi"
-            cpu: "2000m"
+        # resources:
+        #   requests:
+        #     memory: "256Mi"
+        #     cpu: "250m"
+        #   limits:
+        #     memory: "2Gi"
+        #     cpu: "2000m"
       - name: cts-manager
         command:
         - celery
@@ -102,13 +102,13 @@ spec:
           initialDelaySeconds: 10
           periodSeconds: 30
           timeoutSeconds: 10
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "250m"
-          limits:
-            memory: "2Gi"
-            cpu: "2000m"
+        # resources:
+        #   requests:
+        #     memory: "256Mi"
+        #     cpu: "250m"
+        #   limits:
+        #     memory: "2Gi"
+        #     cpu: "2000m"
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler

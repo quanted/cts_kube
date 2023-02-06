@@ -21,13 +21,13 @@ spec:
         - name: cts-envipath
           image: ghcr.io/kurtw555/cts-envipath:dev-kube
           imagePullPolicy: Always
-          resources:
-            requests:
-              memory: "1Gi"
-              cpu: "500m"
-            limits:
-              memory: "2Gi"
-              cpu: "1000m"
+          # resources:
+          #   requests:
+          #     memory: "1Gi"
+          #     cpu: "500m"
+          #   limits:
+          #     memory: "2Gi"
+          #     cpu: "1000m"
           livenessProbe:
             exec:
               command:

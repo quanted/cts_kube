@@ -50,13 +50,13 @@ spec:
           initialDelaySeconds: 15
           periodSeconds: 30
           timeoutSeconds: 10
-        resources:
-          requests:
-            memory: "512Mi"
-            cpu: "500m"
-          limits:
-            memory: "1024Mi"
-            cpu: "1000m"
+        # resources:
+        #   requests:
+        #     memory: "512Mi"
+        #     cpu: "500m"
+        #   limits:
+        #     memory: "1024Mi"
+        #     cpu: "1000m"
         name: cts-tomcat
         ports:
           - containerPort: 8080

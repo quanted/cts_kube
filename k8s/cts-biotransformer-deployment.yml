@@ -24,13 +24,13 @@ spec:
             value: /src/biotransformer3.0jar
           image: ghcr.io/quanted/cts-biotransformer:dev
           imagePullPolicy: Always
-          resources:
-            requests:
-              memory: "1Gi"
-              cpu: "500m"
-            limits:
-              memory: "2Gi"
-              cpu: "1000m"
+          # resources:
+          #   requests:
+          #     memory: "1Gi"
+          #     cpu: "500m"
+          #   limits:
+          #     memory: "2Gi"
+          #     cpu: "1000m"
           livenessProbe:
             exec:
               command:

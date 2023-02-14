@@ -12,7 +12,7 @@ data:
   CTS_DB_NAME: cts
   CTS_EFS_SERVER: http://cts-tomcat:8080
   CTS_EMAIL: ctsemailserver@gmail.com
-  CTS_EMAIL_RECIPIENT: ctsemailserver@gmail.com
+  CTS_EMAIL_RECIPIENTS: ctsemailserver@gmail.com
   CTS_ENVIPATH_SERVER: http://cts-envipath:5003
   CTS_EPI_SERVER: https://ceamdev.ceeopdev.net/epi/estimated
   CTS_JCHEM_SERVER: http://cts-tomcat:8080

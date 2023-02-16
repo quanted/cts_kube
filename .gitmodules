@@ -10,3 +10,9 @@
 [submodule "cts_nginx"]
 	path = cts_nginx
 	url = https://github.com/quanted/cts_nginx
+[submodule "ctsws"]
+	path = ctsws
+	url = https://github.com/quanted/ctsws
+[submodule "jchemws"]
+	path = jchemws
+	url = https://github.com/quanted/jchemws

@@ -18,7 +18,7 @@ data:
   CTS_JCHEM_SERVER: http://cts-tomcat:8080
   CTS_MEASURED_SERVER: https://ceamdev.ceeopdev.net/epi/measured
   CTS_OPERA_SERVER: http://cts-operaws:3344
-  CTS_REST_SERVER: http://host.docker.internal
+  CTS_REST_SERVER: https://qedcloud.net
   CTS_TEST_SERVER: https://comptox.epa.gov/dashboard/web-test
   CTS_VERSION: "1.3.3"
   CTS_EMAIL_PASS: "${CTS_EMAIL_PASS}"

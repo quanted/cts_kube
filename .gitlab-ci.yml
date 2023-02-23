@@ -7,8 +7,6 @@ stages:
 # Testing "repo mirroring not triggering new pipeline" issue that we're seeing for ordsat
 
 include:
-  - project: 'DSO/DASTScanner'
-    file: '.gitlab-ci.yml'
   - remote: 'https://gitlab.com/prismacloud-public/shift-left/extension/-/raw/master/.pcs.gitlab-ci.yml'
   - local: 'version.yml'
 

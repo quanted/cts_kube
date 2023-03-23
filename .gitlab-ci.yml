@@ -2,39 +2,26 @@ stages:
   - Image Build
   - Image Scan
   - Deployment
-  # - Restart Pods
+  # - Scheduled Tasks
 
-# Testing "repo mirroring not triggering new pipeline" issue that we're seeing for ordsat
 
 include:
   - remote: 'https://gitlab.com/prismacloud-public/shift-left/extension/-/raw/master/.pcs.gitlab-ci.yml'
   - local: 'version.yml'
 
 
-# variables:
-#   cts_biotransformer_version: 0.0.1
-#   cts_celery_version: 0.0.1
-#   cts_django_version: 0.0.1
-#   cts_envipath_version: 0.0.1
-#   cts_nginx_version: 0.0.1
-#   cts_nodejs_version: 0.0.1
-#   cts_operaws_version: 0.0.1
-#   cts_tomcat_version: 0.0.1
-
-#   tag_name: $CI_COMMIT_REF_NAME-$CI_COMMIT_SHA
-
-
-# Build OPERAWS Image:
-#   stage: Image Build
-#   tags:
-#     - qed-stg-runner
-#   image:
-#     docker:stable
-#   when: manual
-#   script:
-#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
-#     - docker build -t cts-operaws:$tag_name operaws/
-#     - docker push https://registry.epa.gov/qed/cts_kube/cts-operaws:$tag_name
+variables:
+  cts_biotransformer_tag: dev-kube  # GHCR tag
+  cts_celery_tag: dev-kube  # GHCR tag
+  cts_django_tag: dev-kube  # GHCR tag
+  cts_mongodb_tag: dev-kube  # GHCR tag
+  cts_nginx_tag: dev-kube  # GHCR tag
+  cts_nodejs_tag: dev-kube  # GHCR tag
+  cts_redis_tag: dev-kube  # GHCR tag
+  ctsws_tag: docker-279e0ff8298c13e5b9db7861a9a2db2b25411e3e  # GHCR tag
+  jchemws_tag: main-7b5ba4b0a5953feee8a3b9a9f1e9e6d94bd8f701  # GHCR tag
+  operaws_tag: dev-8152f35b44a5402450220294acabad7008ee7e86  # GHCR tag
+  # glcr_tag_name: $CI_COMMIT_REF_NAME-$CI_COMMIT_SHA
 
 
 CopyDevImages:
@@ -50,40 +37,44 @@ CopyDevImages:
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
     - mkdir -p /workspace
     # CTS BioTransformer Image:
-    - echo "FROM ghcr.io/quanted/cts-biotransformer:dev-kube" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/cts-biotransformer:$cts_biotransformer_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-biotransformer:$CI_COMMIT_REF_NAME
     # CTS Django Image:
-    - echo "FROM ghcr.io/quanted/cts-django:dev-kube" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/cts-django:$cts_django_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-django:$CI_COMMIT_REF_NAME
     # CTS EnviPath Image:
-    - echo "FROM ghcr.io/kurtw555/cts-envipath:dev-kube" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/kurtw555/cts-envipath:$/cts_envipath_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-envipath:$CI_COMMIT_REF_NAME
     # CTS Celery Image:
-    - echo "FROM ghcr.io/quanted/cts-celery:dev-kube" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/cts-celery:$cts_celery_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-celery:$CI_COMMIT_REF_NAME
     # CTS Nginx Image:
-    - echo "FROM ghcr.io/quanted/cts-nginx:dev-kube" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/cts-nginx:$cts_nginx_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-nginx:$CI_COMMIT_REF_NAME
     # CTS NodeJS Image:
-    - echo "FROM ghcr.io/quanted/cts-nodejs:dev-kube" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/cts-nodejs:$cts_nodejs_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-nodejs:$CI_COMMIT_REF_NAME
     # CTS OPERAWS Image:
-    - echo "FROM ghcr.io/quanted/operaws:dev-8152f35b44a5402450220294acabad7008ee7e86" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/operaws:$operaws_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-operaws:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHA
-    # CTS Tomcat Image:
-    - echo "FROM ghcr.io/quanted/cts-tomcat:dev-kube" > /workspace/Dockerfile
-    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-tomcat:$CI_COMMIT_REF_NAME
+    # CTSWS Image:
+    - echo "FROM ghcr.io/quanted/ctsws:$ctsws_tag" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/ctsws:$CI_COMMIT_REF_NAME
+    # JchemWS Image:
+    - echo "FROM ghcr.io/quanted/jchemws:$jchemws_tag" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/jchemws:$CI_COMMIT_REF_NAME
     # CTS MongoDB Image:
-    - echo "FROM ghcr.io/quanted/cts-mongodb:dev-kube" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/cts-mongodb:$cts_mongodb_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-mongodb:$CI_COMMIT_REF_NAME
     # CTS Redis Image:
-    - echo "FROM ghcr.io/quanted/cts-redis:dev-kube" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/cts-redis:$cts_redis_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-redis:$CI_COMMIT_REF_NAME
   environment:
     name: stg
     url: http://qed.qed-stage.aws.epa.gov
     kubernetes:
       namespace: qed-45-stg
+
 
 SetProdImages:
   stage: Image Build
@@ -95,40 +86,44 @@ SetProdImages:
     entrypoint: [ "" ]
   script:
     # CTS BioTransformer Image:
-    - echo "FROM ghcr.io/quanted/cts-biotransformer:dev-kube" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/cts-biotransformer:cts_biotransformer_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-biotransformer:main-$PROD_VERSION
     # CTS Django Image:
-    - echo "FROM ghcr.io/quanted/cts-django:dev-kube" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/cts-django:cts_django_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-django:main-$PROD_VERSION
     # CTS EnviPath Image:
-    - echo "FROM ghcr.io/kurtw555/cts-envipath:dev-kube" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/kurtw555/cts-envipath:/cts-envipath_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-envipath:main-$PROD_VERSION
     # CTS Celery Image:
-    - echo "FROM ghcr.io/quanted/cts-celery:dev-kube" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/cts-celery:cts_celery_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-celery:main-$PROD_VERSION
     # CTS Nginx Image:
-    - echo "FROM ghcr.io/quanted/cts-nginx:dev-kube" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/cts-nginx:cts_nginx_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-nginx:main-$PROD_VERSION
     # CTS NodeJS Image:
-    - echo "FROM ghcr.io/quanted/cts-nodejs:dev-kube" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/cts-nodejs:cts_nodejs_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-nodejs:main-$PROD_VERSION
     # CTS OPERAWS Image:
-    - echo "FROM ghcr.io/quanted/operaws:dev-8152f35b44a5402450220294acabad7008ee7e86" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/operaws:operaws_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-operaws:main-$PROD_VERSION
-    # CTS Tomcat Image:
-    - echo "FROM ghcr.io/quanted/cts-tomcat:dev-kube" > /workspace/Dockerfile
-    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-tomcat:main-$PROD_VERSION
+    # CTSWS Image:
+    - echo "FROM ghcr.io/quanted/ctsws:$ctsws_tag" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/ctsws:main-$PROD_VERSION
+    # JchemWS Image:
+    - echo "FROM ghcr.io/quanted/jchemws:$jchemws_tag" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/jchemws:main-$PROD_VERSION
     # CTS MongoDB Image:
-    - echo "FROM ghcr.io/quanted/cts-mongodb:dev-kube" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/cts-mongodb:cts_mongodb_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-mongodb:main-$PROD_VERSION
     # CTS Redis Image:
-    - echo "FROM ghcr.io/quanted/cts-redis:dev-kube" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/cts-redis:cts_redis_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-redis:main-$PROD_VERSION
   environment:
     name: stg
     url: http://qed.qed-stage.aws.epa.gov
     kubernetes:
       namespace: qed-45-stg
+
 
 ApplyManifests:
   stage: Deployment
@@ -163,6 +158,7 @@ ApplyManifests:
     kubernetes:
       namespace: qed-45-stg
 
+
 DeleteManifests:
   stage: Deployment
   tags:
@@ -193,6 +189,7 @@ DeleteManifests:
     kubernetes:
       namespace: qed-45-stg
 
+
 ApplyPVC:
   stage: Deployment
   tags:
@@ -211,6 +208,7 @@ ApplyPVC:
     url: http://qed.qed-stage.aws.epa.gov
     kubernetes:
       namespace: qed-45-stg
+
 
 LoadVolumeData:
   stage: Deployment
@@ -232,6 +230,7 @@ LoadVolumeData:
     kubernetes:
       namespace: qed-45-stg
 
+
 BiotransformerImageScan:
   stage: Image Scan
   extends:
@@ -248,6 +247,7 @@ BiotransformerImageScan:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
     - docker pull $prisma_cloud_scan_image
     - ./image_scan.sh
+
 
 DjangoImageScan:
   stage: Image Scan
@@ -266,6 +266,7 @@ DjangoImageScan:
     - docker pull $prisma_cloud_scan_image
     - ./image_scan.sh
 
+
 EnvipathImageScan:
   stage: Image Scan
   extends:
@@ -282,6 +283,7 @@ EnvipathImageScan:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
     - docker pull $prisma_cloud_scan_image
     - ./image_scan.sh
+
 
 CeleryImageScan:
   stage: Image Scan
@@ -300,6 +302,7 @@ CeleryImageScan:
     - docker pull $prisma_cloud_scan_image
     - ./image_scan.sh
 
+
 NginxImageScan:
   stage: Image Scan
   extends:
@@ -316,6 +319,7 @@ NginxImageScan:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
     - docker pull $prisma_cloud_scan_image
     - ./image_scan.sh
+
 
 NodejsImageScan:
   stage: Image Scan
@@ -334,6 +338,7 @@ NodejsImageScan:
     - docker pull $prisma_cloud_scan_image
     - ./image_scan.sh
 
+
 OperawsImageScan:
   stage: Image Scan
   extends:
@@ -351,6 +356,7 @@ OperawsImageScan:
     - docker pull $prisma_cloud_scan_image
     - ./image_scan.sh
 
+
 TomcatImageScan:
   stage: Image Scan
   extends:
@@ -367,3 +373,16 @@ TomcatImageScan:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.epa.gov
     - docker pull $prisma_cloud_scan_image
     - ./image_scan.sh
+
+
+# Generate GA Report:
+#   stage: Scheduled Tasks
+#   tags:
+#     - qed-stg-runner
+#   environment:
+#     name: stg
+#     url: http://qed.qed-stage.aws.epa.gov
+#     kubernetes:
+#       namespace: qed-45-stg
+#   rules:
+#     - if: $CI_PIPELINE_SOURCE == "schedule"

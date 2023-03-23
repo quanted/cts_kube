@@ -10,12 +10,12 @@ data:
   CTS_CHEMAXON_LICENSE: '${CTS_CHEMAXON_LICENSE}'
   CTS_DB_HOST: mongodb://cts-mongodb:27017
   CTS_DB_NAME: cts
-  CTS_EFS_SERVER: http://cts-tomcat:8080
+  CTS_EFS_SERVER: http://cts-ctsws:8080
   CTS_EMAIL: ctsemailserver@gmail.com
   CTS_EMAIL_RECIPIENTS: ctsemailserver@gmail.com
   CTS_ENVIPATH_SERVER: http://cts-envipath:5003
   CTS_EPI_SERVER: https://ceamdev.ceeopdev.net/epi/estimated
-  CTS_JCHEM_SERVER: http://cts-tomcat:8080
+  CTS_JCHEM_SERVER: http://cts-jchemws:8080
   CTS_MEASURED_SERVER: https://ceamdev.ceeopdev.net/epi/measured
   CTS_OPERA_SERVER: http://cts-operaws:3344
   CTS_REST_SERVER: https://qedcloud.net

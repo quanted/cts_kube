@@ -14,6 +14,7 @@ variables:
   cts_biotransformer_tag: dev-kube  # GHCR tag
   cts_celery_tag: dev-kube  # GHCR tag
   cts_django_tag: dev-kube  # GHCR tag
+  cts_envipath_tag: dev-kube  # GHCR tag
   cts_mongodb_tag: dev-kube  # GHCR tag
   cts_nginx_tag: dev-kube  # GHCR tag
   cts_nodejs_tag: dev-kube  # GHCR tag

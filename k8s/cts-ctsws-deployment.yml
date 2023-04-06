@@ -31,12 +31,11 @@ spec:
             configMapKeyRef:
               name: cts-config
               key: CTS_CHEMAXON_LICENSE
-        image: ghcr.io/quanted/ctsws:docker-279e0ff8298c13e5b9db7861a9a2db2b25411e3e
+        image: ghcr.io/quanted/ctsws:docker-eae93c09805eae46c845cc92e3490e9aaf251115
         imagePullPolicy: Always
         command: ["/bin/sh", "-c"]
         args:
           - printenv CTS_TOMCAT_USER > /usr/local/tomcat/conf/tomcat-users.xml;
-            # printenv CTS_CHEMAXON_LICENSE > /home/tomcat/.chemaxon/licenses/license.cxl;
             printenv CTS_CHEMAXON_LICENSE > /root/.chemaxon/licenses/license.cxl;
             catalina.sh run
         readinessProbe:

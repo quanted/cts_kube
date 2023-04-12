@@ -19,9 +19,9 @@ variables:
   cts_nginx_tag: dev-kube  # GHCR tag
   cts_nodejs_tag: dev-kube  # GHCR tag
   cts_redis_tag: dev-kube  # GHCR tag
-  ctsws_tag: docker-279e0ff8298c13e5b9db7861a9a2db2b25411e3e  # GHCR tag
-  jchemws_tag: main-7b5ba4b0a5953feee8a3b9a9f1e9e6d94bd8f701  # GHCR tag
-  operaws_tag: dev-8152f35b44a5402450220294acabad7008ee7e86  # GHCR tag
+  ctsws_tag: $CTSWS_TAG  # GHCR tag (set in Gitlab Variables)
+  jchemws_tag: $JCHEMWS_TAG  # GHCR tag (set in Gitlab Variables)
+  operaws_tag: $OPERAWS_TAG  # GHCR tag (set in Gitlab Variables)
   # glcr_tag_name: $CI_COMMIT_REF_NAME-$CI_COMMIT_SHA
 
 

@@ -87,25 +87,25 @@ SetProdImages:
     entrypoint: [ "" ]
   script:
     # CTS BioTransformer Image:
-    - echo "FROM ghcr.io/quanted/cts-biotransformer:cts_biotransformer_tag" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/cts-biotransformer:$cts_biotransformer_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-biotransformer:main-$PROD_VERSION
     # CTS Django Image:
-    - echo "FROM ghcr.io/quanted/cts-django:cts_django_tag" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/cts-django:$cts_django_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-django:main-$PROD_VERSION
     # CTS EnviPath Image:
-    - echo "FROM ghcr.io/kurtw555/cts-envipath:cts-envipath_tag" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/kurtw555/cts-envipath:cts-$envipath_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-envipath:main-$PROD_VERSION
     # CTS Celery Image:
-    - echo "FROM ghcr.io/quanted/cts-celery:cts_celery_tag" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/cts-celery:$cts_celery_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-celery:main-$PROD_VERSION
     # CTS Nginx Image:
-    - echo "FROM ghcr.io/quanted/cts-nginx:cts_nginx_tag" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/cts-nginx:$cts_nginx_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-nginx:main-$PROD_VERSION
     # CTS NodeJS Image:
-    - echo "FROM ghcr.io/quanted/cts-nodejs:cts_nodejs_tag" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/cts-nodejs:$cts_nodejs_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-nodejs:main-$PROD_VERSION
     # CTS OPERAWS Image:
-    - echo "FROM ghcr.io/quanted/operaws:operaws_tag" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/operaws:$operaws_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-operaws:main-$PROD_VERSION
     # CTSWS Image:
     - echo "FROM ghcr.io/quanted/ctsws:$ctsws_tag" > /workspace/Dockerfile
@@ -114,10 +114,10 @@ SetProdImages:
     - echo "FROM ghcr.io/quanted/jchemws:$jchemws_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/jchemws:main-$PROD_VERSION
     # CTS MongoDB Image:
-    - echo "FROM ghcr.io/quanted/cts-mongodb:cts_mongodb_tag" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/cts-mongodb:$cts_mongodb_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-mongodb:main-$PROD_VERSION
     # CTS Redis Image:
-    - echo "FROM ghcr.io/quanted/cts-redis:cts_redis_tag" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/cts-redis:$cts_redis_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-redis:main-$PROD_VERSION
   environment:
     name: stg

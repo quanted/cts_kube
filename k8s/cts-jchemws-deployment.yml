@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: cts-jchemws
+  name: cts-jchemws
+  namespace: qed-45-stg
+  annotations:
+    app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}
+    app.gitlab.com/env: ${CI_ENVIRONMENT_SLUG}
+    eks.amazonaws.com/compute-type: fargate
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cts-jchemws
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: cts-jchemws
+    spec:
+      containers:
+      - env:
+        - name: JAVA_OPTS
+          value: -Xmx1024m -DCTS_TOMCAT_PASS=${CTS_TOMCAT_PASS}
+        - name: CTS_TOMCAT_USER
+          valueFrom:
+            configMapKeyRef:
+              name: cts-config
+              key: CTS_TOMCAT_USER
+        - name: CTS_CHEMAXON_LICENSE
+          valueFrom:
+            configMapKeyRef:
+              name: cts-config
+              key: CTS_CHEMAXON_LICENSE
+        image: ghcr.io/quanted/jchemws:main-7b5ba4b0a5953feee8a3b9a9f1e9e6d94bd8f701
+        imagePullPolicy: Always
+        command: ["/bin/sh", "-c"]
+        args:
+          - printenv CTS_TOMCAT_USER > /usr/local/tomcat/conf/tomcat-users.xml;
+            printenv CTS_CHEMAXON_LICENSE > /home/tomcat/.chemaxon/licenses/license.cxl;
+            catalina.sh run
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 30
+          timeoutSeconds: 10
+        # resources:
+        #   requests:
+        #     memory: "512Mi"
+        #     cpu: "500m"
+        #   limits:
+        #     memory: "1024Mi"
+        #     cpu: "1000m"
+        name: cts-jchemws
+        ports:
+          - containerPort: 8080
+            protocol: TCP
+        # volumeMounts:
+        #   - mountPath: /home/tomcat/.chemaxon/licenses
+        #     name: cts-chemaxon-license-pvc
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      imagePullSecrets:
+        - name: glcr-auth
+      # volumes:
+      #   - name: cts-chemaxon-license
+      #     persistentVolumeClaim:
+      #       claimName: cts-chemaxon-license-pvc

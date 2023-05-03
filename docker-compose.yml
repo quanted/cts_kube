@@ -104,18 +104,48 @@ services:
     expose:
       - "27017"
 
-  # Apache Tomcat container
-  cts-tomcat:
+  # # Apache Tomcat container
+  # cts-tomcat:
+  #   restart: unless-stopped
+  #   build: ./cts_tomcat
+  #   image: cts-tomcat
+  #   container_name: cts-tomcat
+  #   expose:
+  #     - "8080"
+  #   environment:
+  #     - JAVA_OPTS=-Xmx1g
+  #     - LOG4J_FORMAT_MSG_NO_LOOKUPS=true
+  #   volumes:
+  #     - ./cts_tomcat/tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml
+  #     - ./cts_tomcat/webapps:/usr/local/tomcat/webapps
+  #     - ./cts_tomcat/chemaxon/licenses:/home/tomcat/.chemaxon/licenses
+
+  # CTSWS Apache Tomcat container
+  ctsws:
     restart: unless-stopped
-    build: ./cts_tomcat
-    image: cts-tomcat
-    container_name: cts-tomcat
-    expose:
-      - "8080"
+    image: ${CTSWS_IMAGE}
+    # expose:
+    #   - "8080"
+    ports:
+      - "8087:8080"
     environment:
       - JAVA_OPTS=-Xmx1g
       - LOG4J_FORMAT_MSG_NO_LOOKUPS=true
+      - CTSWS_SERVER_USERNAME=${CTSWS_SERVER_USERNAME}
+      - CTSWS_SERVER_PASSWORD=${CTSWS_SERVER_PASSWORD}
     volumes:
-      - ./cts_tomcat/tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml
-      - ./cts_tomcat/webapps:/usr/local/tomcat/webapps
-      - ./cts_tomcat/chemaxon/licenses:/home/tomcat/.chemaxon/licenses
+      - ./secrets/tomcat/chemaxon/licenses/license.cxl:/root/.chemaxon/licenses/license.cxl
+
+  # Jchem Webservices (legacy)
+  jchemws:
+    restart: unless-stopped
+    image: ${JCHEMWS_IMAGE}
+    # expose:
+    #   - "8080"
+    ports:
+      - "8086:8080"
+    environment:
+      - JAVA_OPTS=-Xmx1500m -Djava.awt.headless=true
+      - LOG4J_FORMAT_MSG_NO_LOOKUPS=true
+    volumes:
+      - ./secrets/tomcat/chemaxon/licenses/license.cxl:/home/tomcat/.chemaxon/licenses/license.cxl

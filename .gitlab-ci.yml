@@ -242,6 +242,7 @@ Biotransformer Prisma Scan:
   stage: Image Scan
   tags:
     - twistcli
+  when: manual
   variables:
     GIT_STRATEGY: clone
   script:
@@ -256,6 +257,7 @@ Django Prisma Scan:
   stage: Image Scan
   tags:
     - twistcli
+  when: manual
   variables:
     GIT_STRATEGY: clone
   script:
@@ -270,6 +272,7 @@ Envipath Prisma Scan:
   stage: Image Scan
   tags:
     - twistcli
+  when: manual
   variables:
     GIT_STRATEGY: clone
   script:
@@ -284,6 +287,7 @@ Celery Prisma Scan:
   stage: Image Scan
   tags:
     - twistcli
+  when: manual
   variables:
     GIT_STRATEGY: clone
   script:
@@ -298,6 +302,7 @@ Nginx Prisma Scan:
   stage: Image Scan
   tags:
     - twistcli
+  when: manual
   variables:
     GIT_STRATEGY: clone
   script:
@@ -312,6 +317,7 @@ Nodejs Prisma Scan:
   stage: Image Scan
   tags:
     - twistcli
+  when: manual
   variables:
     GIT_STRATEGY: clone
   script:
@@ -326,6 +332,7 @@ Operaws Prisma Scan:
   stage: Image Scan
   tags:
     - twistcli
+  when: manual
   variables:
     GIT_STRATEGY: clone
   script:
@@ -340,6 +347,7 @@ Tomcat Prisma Scan:
   stage: Image Scan
   tags:
     - twistcli
+  when: manual
   variables:
     GIT_STRATEGY: clone
   script:

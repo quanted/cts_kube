@@ -244,13 +244,15 @@ Biotransformer Prisma Scan:
     - twistcli
   when: manual
   variables:
-    GIT_STRATEGY: clone
+    GIT_STRATEGY: none
   script:
     - 'export PRISMA_CI_TOKEN=$(curl -kH "Content-Type: application/json" -d "{\"username\":\"$prisma_cloud_compute_username\", \"password\":\"$prisma_cloud_compute_password\"}" https://prismacloud.epa.gov/api/v22.12/authenticate | jq -r .token)'
     - 'curl --progress-bar -L -k --header "Authorization: Bearer $PRISMA_CI_TOKEN" https://prismacloud.epa.gov/api/v1/util/twistcli > twistcli; chmod a+x twistcli;'
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker pull $CI_REGISTRY_IMAGE/cts-biotransformer:$CI_COMMIT_REF_NAME 
     - ./twistcli images scan $CI_REGISTRY_IMAGE/cts-biotransformer:$CI_COMMIT_REF_NAME --address=https://prismacloud.epa.gov --details --token=$PRISMA_CI_TOKEN
+  after_script:
+    - rm -rf $CI_PROJECT_DIR
 
 
 Django Prisma Scan:
@@ -259,13 +261,15 @@ Django Prisma Scan:
     - twistcli
   when: manual
   variables:
-    GIT_STRATEGY: clone
+    GIT_STRATEGY: none
   script:
     - 'export PRISMA_CI_TOKEN=$(curl -kH "Content-Type: application/json" -d "{\"username\":\"$prisma_cloud_compute_username\", \"password\":\"$prisma_cloud_compute_password\"}" https://prismacloud.epa.gov/api/v22.12/authenticate | jq -r .token)'
     - 'curl --progress-bar -L -k --header "Authorization: Bearer $PRISMA_CI_TOKEN" https://prismacloud.epa.gov/api/v1/util/twistcli > twistcli; chmod a+x twistcli;'
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker pull $CI_REGISTRY_IMAGE/cts-django:$CI_COMMIT_REF_NAME
     - ./twistcli images scan $CI_REGISTRY_IMAGE/cts-django:$CI_COMMIT_REF_NAME --address=https://prismacloud.epa.gov --details --token=$PRISMA_CI_TOKEN
+  after_script:
+    - rm -rf $CI_PROJECT_DIR
 
 
 Envipath Prisma Scan:
@@ -274,13 +278,15 @@ Envipath Prisma Scan:
     - twistcli
   when: manual
   variables:
-    GIT_STRATEGY: clone
+    GIT_STRATEGY: none
   script:
     - 'export PRISMA_CI_TOKEN=$(curl -kH "Content-Type: application/json" -d "{\"username\":\"$prisma_cloud_compute_username\", \"password\":\"$prisma_cloud_compute_password\"}" https://prismacloud.epa.gov/api/v22.12/authenticate | jq -r .token)'
     - 'curl --progress-bar -L -k --header "Authorization: Bearer $PRISMA_CI_TOKEN" https://prismacloud.epa.gov/api/v1/util/twistcli > twistcli; chmod a+x twistcli;'
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker pull $CI_REGISTRY_IMAGE/cts-envipath:$CI_COMMIT_REF_NAME 
     - ./twistcli images scan $CI_REGISTRY_IMAGE/cts-envipath:$CI_COMMIT_REF_NAME --address=https://prismacloud.epa.gov --details --token=$PRISMA_CI_TOKEN
+  after_script:
+    - rm -rf $CI_PROJECT_DIR
 
 
 Celery Prisma Scan:
@@ -289,13 +295,15 @@ Celery Prisma Scan:
     - twistcli
   when: manual
   variables:
-    GIT_STRATEGY: clone
+    GIT_STRATEGY: none
   script:
     - 'export PRISMA_CI_TOKEN=$(curl -kH "Content-Type: application/json" -d "{\"username\":\"$prisma_cloud_compute_username\", \"password\":\"$prisma_cloud_compute_password\"}" https://prismacloud.epa.gov/api/v22.12/authenticate | jq -r .token)'
     - 'curl --progress-bar -L -k --header "Authorization: Bearer $PRISMA_CI_TOKEN" https://prismacloud.epa.gov/api/v1/util/twistcli > twistcli; chmod a+x twistcli;'
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker pull $CI_REGISTRY_IMAGE/cts-celery:$CI_COMMIT_REF_NAME 
     - ./twistcli images scan $CI_REGISTRY_IMAGE/cts-celery:$CI_COMMIT_REF_NAME --address=https://prismacloud.epa.gov --details --token=$PRISMA_CI_TOKEN
+  after_script:
+    - rm -rf $CI_PROJECT_DIR
 
 
 Nginx Prisma Scan:
@@ -304,13 +312,15 @@ Nginx Prisma Scan:
     - twistcli
   when: manual
   variables:
-    GIT_STRATEGY: clone
+    GIT_STRATEGY: none
   script:
     - 'export PRISMA_CI_TOKEN=$(curl -kH "Content-Type: application/json" -d "{\"username\":\"$prisma_cloud_compute_username\", \"password\":\"$prisma_cloud_compute_password\"}" https://prismacloud.epa.gov/api/v22.12/authenticate | jq -r .token)'
     - 'curl --progress-bar -L -k --header "Authorization: Bearer $PRISMA_CI_TOKEN" https://prismacloud.epa.gov/api/v1/util/twistcli > twistcli; chmod a+x twistcli;'
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker pull $CI_REGISTRY_IMAGE/cts-nginx:$CI_COMMIT_REF_NAME 
     - ./twistcli images scan $CI_REGISTRY_IMAGE/cts-nginx:$CI_COMMIT_REF_NAME --address=https://prismacloud.epa.gov --details --token=$PRISMA_CI_TOKEN
+  after_script:
+    - rm -rf $CI_PROJECT_DIR
 
 
 Nodejs Prisma Scan:
@@ -319,13 +329,15 @@ Nodejs Prisma Scan:
     - twistcli
   when: manual
   variables:
-    GIT_STRATEGY: clone
+    GIT_STRATEGY: none
   script:
     - 'export PRISMA_CI_TOKEN=$(curl -kH "Content-Type: application/json" -d "{\"username\":\"$prisma_cloud_compute_username\", \"password\":\"$prisma_cloud_compute_password\"}" https://prismacloud.epa.gov/api/v22.12/authenticate | jq -r .token)'
     - 'curl --progress-bar -L -k --header "Authorization: Bearer $PRISMA_CI_TOKEN" https://prismacloud.epa.gov/api/v1/util/twistcli > twistcli; chmod a+x twistcli;'
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker pull $CI_REGISTRY_IMAGE/cts-nodejs:$CI_COMMIT_REF_NAME 
     - ./twistcli images scan $CI_REGISTRY_IMAGE/cts-nodejs:$CI_COMMIT_REF_NAME --address=https://prismacloud.epa.gov --details --token=$PRISMA_CI_TOKEN
+  after_script:
+    - rm -rf $CI_PROJECT_DIR
 
 
 Operaws Prisma Scan:
@@ -334,13 +346,15 @@ Operaws Prisma Scan:
     - twistcli
   when: manual
   variables:
-    GIT_STRATEGY: clone
+    GIT_STRATEGY: none
   script:
     - 'export PRISMA_CI_TOKEN=$(curl -kH "Content-Type: application/json" -d "{\"username\":\"$prisma_cloud_compute_username\", \"password\":\"$prisma_cloud_compute_password\"}" https://prismacloud.epa.gov/api/v22.12/authenticate | jq -r .token)'
     - 'curl --progress-bar -L -k --header "Authorization: Bearer $PRISMA_CI_TOKEN" https://prismacloud.epa.gov/api/v1/util/twistcli > twistcli; chmod a+x twistcli;'
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker pull $CI_REGISTRY_IMAGE/cts-operaws:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHA
     - ./twistcli images scan $CI_REGISTRY_IMAGE/cts-operaws:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHA --address=https://prismacloud.epa.gov --details --token=$PRISMA_CI_TOKEN
+  after_script:
+    - rm -rf $CI_PROJECT_DIR
 
 
 CTSWS Prisma Scan:
@@ -349,13 +363,15 @@ CTSWS Prisma Scan:
     - twistcli
   when: manual
   variables:
-    GIT_STRATEGY: clone
+    GIT_STRATEGY: none
   script:
     - 'export PRISMA_CI_TOKEN=$(curl -kH "Content-Type: application/json" -d "{\"username\":\"$prisma_cloud_compute_username\", \"password\":\"$prisma_cloud_compute_password\"}" https://prismacloud.epa.gov/api/v22.12/authenticate | jq -r .token)'
     - 'curl --progress-bar -L -k --header "Authorization: Bearer $PRISMA_CI_TOKEN" https://prismacloud.epa.gov/api/v1/util/twistcli > twistcli; chmod a+x twistcli;'
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker pull $CI_REGISTRY_IMAGE/ctsws:$CI_COMMIT_REF_NAME 
     - ./twistcli images scan $CI_REGISTRY_IMAGE/ctsws:$CI_COMMIT_REF_NAME --address=https://prismacloud.epa.gov --details --token=$PRISMA_CI_TOKEN
+  after_script:
+    - rm -rf $CI_PROJECT_DIR
 
 
 JchemWS Prisma Scan:
@@ -364,10 +380,12 @@ JchemWS Prisma Scan:
     - twistcli
   when: manual
   variables:
-    GIT_STRATEGY: clone
+    GIT_STRATEGY: none
   script:
     - 'export PRISMA_CI_TOKEN=$(curl -kH "Content-Type: application/json" -d "{\"username\":\"$prisma_cloud_compute_username\", \"password\":\"$prisma_cloud_compute_password\"}" https://prismacloud.epa.gov/api/v22.12/authenticate | jq -r .token)'
     - 'curl --progress-bar -L -k --header "Authorization: Bearer $PRISMA_CI_TOKEN" https://prismacloud.epa.gov/api/v1/util/twistcli > twistcli; chmod a+x twistcli;'
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker pull $CI_REGISTRY_IMAGE/jchemws:$CI_COMMIT_REF_NAME 
     - ./twistcli images scan $CI_REGISTRY_IMAGE/jchemws:$CI_COMMIT_REF_NAME --address=https://prismacloud.epa.gov --details --token=$PRISMA_CI_TOKEN
+  after_script:
+    - rm -rf $CI_PROJECT_DIR

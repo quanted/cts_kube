@@ -56,13 +56,13 @@ CopyDevImages:
     - echo "FROM ghcr.io/quanted/cts-nodejs:$cts_nodejs_ghcr_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-nodejs:$CI_COMMIT_REF_NAME
     # CTS OPERAWS Image:
-    - echo "FROM ghcr.io/quanted/operaws:$operaws_tag" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/operaws:$operaws_ghcr_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-operaws:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHA
     # CTSWS Image:
-    - echo "FROM ghcr.io/quanted/ctsws:$ctsws_tag" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/ctsws:$ctsws_ghcr_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/ctsws:$CI_COMMIT_REF_NAME
     # JchemWS Image:
-    - echo "FROM ghcr.io/quanted/jchemws:$jchemws_tag" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/jchemws:$jchemws_ghcr_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/jchemws:$CI_COMMIT_REF_NAME
     # CTS MongoDB Image:
     - echo "FROM ghcr.io/quanted/cts-mongodb:$cts_mongodb_ghcr_tag" > /workspace/Dockerfile

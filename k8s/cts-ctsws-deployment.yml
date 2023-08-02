@@ -31,7 +31,7 @@ spec:
             configMapKeyRef:
               name: cts-config
               key: CTS_CHEMAXON_LICENSE
-        image: ghcr.io/quanted/ctsws:docker-eae93c09805eae46c845cc92e3490e9aaf251115
+        image: ghcr.io/quanted/ctsws:docker-6a3a8a51e89cb25433326b8d2615b02c47f70b7f
         imagePullPolicy: Always
         command: ["/bin/sh", "-c"]
         args:

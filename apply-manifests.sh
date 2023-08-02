@@ -21,8 +21,6 @@ envsubst < k8s/cts-nodejs-service.yml | kubectl apply -f -
 # envsubst < k8s/cts-operaws-service.yml | kubectl apply -f -
 envsubst < k8s/cts-redis-deployment.yml | kubectl apply -f -
 envsubst < k8s/cts-redis-service.yml | kubectl apply -f -
-# envsubst < k8s/cts-tomcat-deployment.yml | kubectl apply -f -
-# envsubst < k8s/cts-tomcat-service.yml | kubectl apply -f -
 envsubst < k8s/cts-ctsws-deployment.yml | kubectl apply -f -
 envsubst < k8s/cts-ctsws-service.yml | kubectl apply -f -
 envsubst < k8s/cts-jchemws-deployment.yml | kubectl apply -f -

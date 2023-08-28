@@ -105,13 +105,13 @@ SetProdImages:
     - echo "FROM ghcr.io/quanted/cts-nodejs:$cts_nodejs_ghcr_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-nodejs:main-$PROD_VERSION
     # CTS OPERAWS Image:
-    - echo "FROM ghcr.io/quanted/operaws:$operaws_tag" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/operaws:$operaws_ghcr_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-operaws:main-$PROD_VERSION
     # CTSWS Image:
-    - echo "FROM ghcr.io/quanted/ctsws:$ctsws_tag" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/ctsws:$ctsws_ghcr_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/ctsws:main-$PROD_VERSION
     # JchemWS Image:
-    - echo "FROM ghcr.io/quanted/jchemws:$jchemws_tag" > /workspace/Dockerfile
+    - echo "FROM ghcr.io/quanted/jchemws:$jchemws_ghcr_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/jchemws:main-$PROD_VERSION
     # CTS MongoDB Image:
     - echo "FROM ghcr.io/quanted/cts-mongodb:$cts_mongodb_ghcr_tag" > /workspace/Dockerfile

@@ -31,6 +31,7 @@ data:
       <role rolename="manager-gui"/>
       <user username="docker" password="${CTS_TOMCAT_PASS}" roles="manager-gui"/>
     </tomcat-users>
+  CCTE_API_KEY: "${CCTE_API_KEY}"
   DJANGO_SETTINGS_MODULE: "settings"
   ENV_NAME: kube_dev
   MARVIN_PROXY: http://172.17.0.1

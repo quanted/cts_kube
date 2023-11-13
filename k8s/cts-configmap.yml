@@ -17,7 +17,7 @@ data:
   CTS_EPI_SERVER: https://ceamdev.ceeopdev.net/epi/estimated
   CTS_JCHEM_SERVER: http://cts-jchemws:8080
   CTS_MEASURED_SERVER: https://ceamdev.ceeopdev.net/epi/measured
-  CTS_OPERA_SERVER: http://cts-operaws:3344
+  CTS_OPERA_SERVER: https://ceamdev.ceeopdev.net/operaws
   CTS_REST_SERVER: https://qedcloud.net
   CTS_TEST_SERVER: https://comptox.epa.gov/dashboard/web-test
   CTS_VERSION: "1.3.3"
@@ -31,6 +31,7 @@ data:
       <role rolename="manager-gui"/>
       <user username="docker" password="${CTS_TOMCAT_PASS}" roles="manager-gui"/>
     </tomcat-users>
+  CCTE_API_KEY: "${CCTE_API_KEY}"
   DJANGO_SETTINGS_MODULE: "settings"
   ENV_NAME: kube_dev
   MARVIN_PROXY: http://172.17.0.1

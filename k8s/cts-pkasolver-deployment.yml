@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: cts-pkasolver
+  name: cts-pkasolver
+  namespace: qed-kube-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cts-pkasolver
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: cts-pkasolver
+    spec:
+      containers:
+      - image: ghcr.io/quanted/cts-pkasolver:main-9cfd6fd67e6de631772d580fc671e69573ba2526
+        imagePullPolicy: Always
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 30
+          timeoutSeconds: 10
+        # resources:
+        #   requests:
+        #     memory: "512Mi"
+        #     cpu: "500m"
+        #   limits:
+        #     memory: "1024Mi"
+        #     cpu: "1000m"
+        name: cts-pkasolver
+        ports:
+          - containerPort: 8080
+            protocol: TCP
+        # volumeMounts:
+        #   - mountPath: /home/tomcat/.chemaxon/licenses
+        #     name: cts-chemaxon-license-pvc
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler

@@ -18,34 +18,28 @@ spec:
         app: cts-pkasolver
     spec:
       containers:
-      - image: ghcr.io/quanted/cts-pkasolver:main-9cfd6fd67e6de631772d580fc671e69573ba2526
-        imagePullPolicy: Always
-        readinessProbe:
-          tcpSocket:
-            port: 8080
-          initialDelaySeconds: 5
-          periodSeconds: 10
-          timeoutSeconds: 10
+      - name: cts-pkasolver
+        image: ghcr.io/quanted/cts-pkasolver:main-9cfd6fd67e6de631772d580fc671e69573ba2526
+        imagePullPolicy: Never
         livenessProbe:
-          tcpSocket:
-            port: 8080
-          initialDelaySeconds: 15
+          exec:
+            command:
+              - ls
+              - /
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+              - ls
+              - /
+          initialDelaySeconds: 10
           periodSeconds: 30
           timeoutSeconds: 10
-        # resources:
-        #   requests:
-        #     memory: "512Mi"
-        #     cpu: "500m"
-        #   limits:
-        #     memory: "1024Mi"
-        #     cpu: "1000m"
-        name: cts-pkasolver
         ports:
-          - containerPort: 8080
-            protocol: TCP
-        # volumeMounts:
-        #   - mountPath: /home/tomcat/.chemaxon/licenses
-        #     name: cts-chemaxon-license-pvc
+        - containerPort: 8080
+          protocol: TCP
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler

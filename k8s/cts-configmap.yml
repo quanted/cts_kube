@@ -6,6 +6,7 @@ metadata:
   labels:
     app: cts-config
 data:
+  CCTE_API_KEY: "${CCTE_API_KEY}"
   CTS_BIOTRANS_SERVER: http://cts-biotransformer:5002
   CTS_CHEMAXON_LICENSE: '${CTS_CHEMAXON_LICENSE}'
   CTS_DB_HOST: mongodb://cts-mongodb:27017
@@ -31,7 +32,6 @@ data:
       <role rolename="manager-gui"/>
       <user username="docker" password="${CTS_TOMCAT_PASS}" roles="manager-gui"/>
     </tomcat-users>
-  CCTE_API_KEY: "${CCTE_API_KEY}"
   DJANGO_SETTINGS_MODULE: "settings"
   ENV_NAME: kube_dev
   MARVIN_PROXY: http://172.17.0.1

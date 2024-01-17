@@ -24,7 +24,9 @@ spec:
       containers:
       - env:
         - name: JAVA_OPTS
-          value: -Xmx1024m -DCTS_TOMCAT_PASS=${CTS_TOMCAT_PASS}
+          value: -Xmx1500m -DCTS_TOMCAT_PASS=${CTS_TOMCAT_PASS}
+        - name: LOG4J_FORMAT_MSG_NO_LOOKUPS
+          value: true
         - name: CTS_TOMCAT_USER
           valueFrom:
             configMapKeyRef:
@@ -54,13 +56,13 @@ spec:
           initialDelaySeconds: 15
           periodSeconds: 30
           timeoutSeconds: 10
-        # resources:
-        #   requests:
-        #     memory: "512Mi"
-        #     cpu: "500m"
-        #   limits:
-        #     memory: "1024Mi"
-        #     cpu: "1000m"
+        resources:
+          requests:
+            memory: "1024Mi"
+            cpu: "500m"
+          limits:
+            memory: "2048Mi"
+            cpu: "1000m"
         name: cts-jchemws
         ports:
           - containerPort: 8080

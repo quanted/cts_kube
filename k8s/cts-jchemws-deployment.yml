@@ -26,7 +26,7 @@ spec:
         - name: JAVA_OPTS
           value: -Xmx1500m -DCTS_TOMCAT_PASS=${CTS_TOMCAT_PASS}
         - name: LOG4J_FORMAT_MSG_NO_LOOKUPS
-          value: true
+          value: "true"
         - name: CTS_TOMCAT_USER
           valueFrom:
             configMapKeyRef:

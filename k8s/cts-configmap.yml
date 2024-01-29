@@ -20,6 +20,7 @@ data:
   CTS_JCHEM_SERVER: http://cts-jchemws:8080
   CTS_MEASURED_SERVER: '${CTS_MEASURED_SERVER}'
   CTS_OPERA_SERVER: '${CTS_OPERA_SERVER}'
+  CTS_PKASOLVER_SERVER: '${CTS_PKASOLVER_SERVER}'
   CTS_REST_SERVER: '${CTS_REST_SERVER}'
   CTS_STATIC_URL: '/cts/static/'
   CTS_TEST_SERVER: https://comptox.epa.gov/dashboard/web-test

@@ -22,7 +22,8 @@ variables:
   ctsws_ghcr_tag: $CTSWS_TAG  # NOTE: Set in Gitlab Variables
   jchemws_ghcr_tag: $JCHEMWS_TAG  # NOTE: Set in Gitlab Variables
   operaws_ghcr_tag: $OPERAWS_TAG  # NOTE: Set in Gitlab Variables
-  pkasolver_ghcr_tag: $PKASOLVER_TAG
+  pkasolver_ghcr_tag: $PKASOLVER_TAG  # NOTE: Set in Gitlab Variables
+  molgpka_ghcr_tag: $MOLGPKA_TAG  # NOTE: Set in Gitlab Variables
   # glcr_tag_name: $CI_COMMIT_REF_NAME-$CI_COMMIT_SHA
 
 
@@ -261,6 +262,27 @@ Copy CTS Pkasolver Flask Image:
     - mkdir -p /workspace
     - echo "FROM ghcr.io/quanted/cts-pkasolver:$pkasolver_ghcr_tag" > /workspace/Dockerfile
     - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-pkasolver:$CI_COMMIT_REF_NAME
+  environment:
+    name: stg
+    url: http://qed.qed-stage.aws.epa.gov
+    kubernetes:
+      namespace: qed-45-stg
+
+
+Copy CTS MolGpka Flask Image:
+  stage: Image Copy
+  tags:
+    - qed-stg-runner
+  when: manual
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [ "" ]
+  script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    - mkdir -p /workspace
+    - echo "FROM ghcr.io/quanted/cts-molgpka:$molgpka_ghcr_tag" > /workspace/Dockerfile
+    - /kaniko/executor --context=/workspace --destination=$CI_REGISTRY_IMAGE/cts-molgpka:$CI_COMMIT_REF_NAME
   environment:
     name: stg
     url: http://qed.qed-stage.aws.epa.gov
@@ -624,5 +646,21 @@ Pkasolver Prisma Scan:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker pull $CI_REGISTRY_IMAGE/cts-pkasolver:$CI_COMMIT_REF_NAME 
     - ./twistcli images scan $CI_REGISTRY_IMAGE/cts-pkasolver:$CI_COMMIT_REF_NAME --address=https://prismacloud.epa.gov --details --token=$PRISMA_CI_TOKEN
+  after_script:
+    - rm -rf $CI_PROJECT_DIR
+
+MolGpka Prisma Scan:
+  stage: Image Scan
+  tags:
+    - twistcli
+  when: manual
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - 'export PRISMA_CI_TOKEN=$(curl -kH "Content-Type: application/json" -d "{\"username\":\"$prisma_cloud_compute_username\", \"password\":\"$prisma_cloud_compute_password\"}" https://prismacloud.epa.gov/api/v32.01/authenticate | jq -r .token)'
+    - 'curl --progress-bar -L -k --header "Authorization: Bearer $PRISMA_CI_TOKEN" https://prismacloud.epa.gov/api/v1/util/twistcli > twistcli; chmod a+x twistcli;'
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker pull $CI_REGISTRY_IMAGE/cts-molgpka:$CI_COMMIT_REF_NAME 
+    - ./twistcli images scan $CI_REGISTRY_IMAGE/cts-molgpka:$CI_COMMIT_REF_NAME --address=https://prismacloud.epa.gov --details --token=$PRISMA_CI_TOKEN
   after_script:
     - rm -rf $CI_PROJECT_DIR

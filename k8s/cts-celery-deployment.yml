@@ -23,18 +23,7 @@ spec:
       containers:
       - name: cts-worker
         command:
-        - celery
-        - -A
-        - tasks
-        - worker
-        - -Q
-        - cts_queue
-        - -l
-        - info
-        - -n
-        - cts_worker
-        - -c
-        - "2"
+        - sh /src/start-worker.sh
         image: ghcr.io/quanted/cts-celery:dev-kube
         imagePullPolicy: Always
         # image: cts-celery
@@ -67,18 +56,7 @@ spec:
         #     cpu: "2000m"
       - name: cts-manager
         command:
-        - celery
-        - -A
-        - tasks
-        - worker
-        - -Q
-        - manager_queue
-        - -l
-        - info
-        - -n
-        - manager_worker
-        - -c
-        - "1"
+        - sh /src/start-manager.sh
         image: ghcr.io/quanted/cts-celery:dev-kube
         imagePullPolicy: Always
         # image: cts-celery

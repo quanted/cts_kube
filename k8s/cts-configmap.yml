@@ -33,7 +33,7 @@ data:
     </tomcat-users>
   CTS_VERSION: "2.0.0"
   DJANGO_SETTINGS_MODULE: "settings"
-  ENV_NAME: kube_dev
+  # ENV_NAME: kube_dev
   MARVIN_PROXY: http://172.17.0.1
   MONGO_SERVER: "cts-mongodb:27017"
   NODEJS_HOST: https://qedcloud.net

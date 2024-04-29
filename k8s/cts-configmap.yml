@@ -15,14 +15,14 @@ data:
   CTS_EMAIL: ctsemailserver@gmail.com
   CTS_EMAIL_RECIPIENTS: ctsemailserver@gmail.com
   CTS_ENVIPATH_SERVER: http://cts-envipath:5003
-  CTS_EPI_SERVER: https://ceamdev.ceeopdev.net/epi/estimated
+  CTS_EPI_SERVER: https://ceamdev.net/epi/estimated
   CTS_JCHEM_SERVER: http://cts-jchemws:8080
-  CTS_MEASURED_SERVER: '${CTS_MEASURED_SERVER}'
-  CTS_MOLGPKA_SERVER: https://qedcloud.net
-  CTS_OPERA_SERVER: '${CTS_OPERA_SERVER}'
-  CTS_PKASOLVER_SERVER: https://qedcloud.net
+  CTS_MEASURED_SERVER: https://ceamdev.net/epi/measured
+  CTS_MOLGPKA_SERVER: http://cts-molgpka
+  CTS_OPERA_SERVER: https://ceamdev.net
+  CTS_PKASOLVER_SERVER: http://cts-pkasolver
   CTS_RECAPTCHA_KEY: '${CTS_RECAPTCHA_KEY}'
-  CTS_REST_SERVER: '${CTS_REST_SERVER}'
+  CTS_REST_SERVER: https://qedcloud.net
   CTS_STATIC_URL: '/cts/static/'
   CTS_TEST_SERVER: https://comptox.epa.gov/dashboard/web-test
   CTS_TOMCAT_PASS: '${CTS_TOMCAT_PASS}'
@@ -35,7 +35,7 @@ data:
   CTS_VERSION: "2.0.0"
   DJANGO_SETTINGS_MODULE: "settings"
   # ENV_NAME: kube_dev
-  MARVIN_PROXY: http://172.17.0.1
+  MARVIN_PROXY: https://qedcloud.net
   MONGO_SERVER: "cts-mongodb:27017"
   NODEJS_HOST: https://qedcloud.net
   NODEJS_PORT: "80"

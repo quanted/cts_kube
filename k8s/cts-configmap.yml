@@ -18,9 +18,9 @@ data:
   CTS_EPI_SERVER: https://ceamdev.net/epi/estimated
   CTS_JCHEM_SERVER: http://cts-jchemws:8080
   CTS_MEASURED_SERVER: https://ceamdev.net/epi/measured
-  CTS_MOLGPKA_SERVER: http://cts-molgpka
+  CTS_MOLGPKA_SERVER: https://qedcloud.net
   CTS_OPERA_SERVER: https://ceamdev.net
-  CTS_PKASOLVER_SERVER: http://cts-pkasolver
+  CTS_PKASOLVER_SERVER: https://qedcloud.net
   CTS_RECAPTCHA_KEY: '${CTS_RECAPTCHA_KEY}'
   CTS_REST_SERVER: https://qedcloud.net
   CTS_STATIC_URL: '/cts/static/'

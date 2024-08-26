@@ -11,14 +11,14 @@ include:
 
 
 variables:
-  cts_biotransformer_ghcr_tag: dev-kube
-  cts_celery_ghcr_tag: dev-kube
-  cts_django_ghcr_tag: dev-kube
-  cts_envipath_ghcr_tag: dev-kube
-  cts_mongodb_ghcr_tag: dev-kube
-  cts_nginx_ghcr_tag: dev-kube
-  cts_nodejs_ghcr_tag: dev-kube
-  cts_redis_ghcr_tag: dev-kube
+  cts_biotransformer_ghcr_tag: $CTS_BRIOTRANSFORMER_TAG
+  cts_celery_ghcr_tag: $CTS_CELERY_TAG
+  cts_django_ghcr_tag: $CTS_DJANGO_TAG
+  cts_envipath_ghcr_tag: $CTS_ENVIPATH_TAG
+  cts_mongodb_ghcr_tag: $CTS_MONGODB_TAG
+  cts_nginx_ghcr_tag: $CTS_NGINX_TAG
+  cts_nodejs_ghcr_tag: $CTS_NODEJS_TAG
+  cts_redis_ghcr_tag: $CTS_REDIS_TAG
   ctsws_ghcr_tag: $CTSWS_TAG  # NOTE: Set in Gitlab Variables
   jchemws_ghcr_tag: $JCHEMWS_TAG  # NOTE: Set in Gitlab Variables
   operaws_ghcr_tag: $OPERAWS_TAG  # NOTE: Set in Gitlab Variables

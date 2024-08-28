@@ -8,7 +8,7 @@
 #   labels:
 #     app: cts-collected-static-pvc
 # spec:
-#   storageClassName: efs-sc
+#   storageClassName: cts-collected-static-pv
 #   accessModes:
 #     - ReadWriteMany
 #   resources:

@@ -19,7 +19,7 @@ spec:
         app: cts-mongodb
     spec:
       containers:
-      - image: ghcr.io/quanted/cts-mongodb:dev-kube
+      - image: ghcr.io/quanted/cts-mongodb:dev-kube-9a1794acadee2e5c09851099d6b1f1b84f1e722e
         imagePullPolicy: Always
       # - image: cts-mongodb
       #   imagePullPolicy: Never

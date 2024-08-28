@@ -25,7 +25,7 @@ spec:
         command:
         - sh
         - /src/start-worker.sh
-        image: ghcr.io/quanted/cts-celery:dev-kube
+        image: ghcr.io/quanted/cts-celery:dev-kube-8acde41f103b70d8b27420c9185965786c5554ac
         imagePullPolicy: Always
         # image: cts-celery
         # imagePullPolicy: Never

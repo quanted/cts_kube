@@ -32,7 +32,7 @@ spec:
           value: cts-redis
         - name: REDIS_PORT
           value: "6379"
-        image: ghcr.io/quanted/cts-nodejs:dev-kube
+        image: ghcr.io/quanted/cts-nodejs:dev-kube-b3ef05546c137a8b7bf0858d2d740aa61e61886c
         imagePullPolicy: Always
         # image: cts-nodejs
         # imagePullPolicy: Never

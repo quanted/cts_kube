@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: cts-envipath
-          image: ghcr.io/kurtw555/cts-envipath:dev-kube
+          image: ghcr.io/quanted/cts-envipath:dev
           imagePullPolicy: Always
           # resources:
           #   requests:

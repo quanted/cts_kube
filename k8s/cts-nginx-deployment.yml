@@ -18,7 +18,7 @@ spec:
         app: cts-nginx
     spec:
       containers:
-        - image: ghcr.io/quanted/cts-nginx:dev-kube
+        - image: ghcr.io/quanted/cts-nginx:dev-kube-00e9fba48f296ec9169381e9a561cedb5f13e20d
           imagePullPolicy: Always
         # - image: cts-nginx
         #   imagePullPolicy: Never

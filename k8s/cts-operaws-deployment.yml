@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: cts-operaws
-          image: ghcr.io/quanted/operaws:dev-8152f35b44a5402450220294acabad7008ee7e86
+          image: ghcr.io/quanted/operaws:dev-7d34281615d6d1d5b2eab4a718ed660fb4025278
           imagePullPolicy: Always
           # resources:
           #   requests:

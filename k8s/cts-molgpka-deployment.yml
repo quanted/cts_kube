@@ -2,37 +2,25 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: cts-django
-  name: cts-django
+    app: cts-molgpka
+  name: cts-molgpka
   namespace: qed-kube-dev
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cts-django
+      app: cts-molgpka
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: cts-django
+        app: cts-molgpka
     spec:
       containers:
-      - envFrom:
-          - configMapRef:
-              name: cts-config
-        image: ghcr.io/quanted/cts-django:dev-kube-f6e0e3240a0ac40805da815e4b2abeb58c8cc65a
+      - name: cts-molgpka
+        image: ghcr.io/quanted/cts-molgpka:dev-ecb095c89abb59ccc707b5cfdbb9d12ed852af8f
         imagePullPolicy: Always
-        # image: cts-django
-        # imagePullPolicy: Never
-        name: cts-django
-        # resources:
-        #   requests:
-        #     memory: "1Gi"
-        #     cpu: "500m"
-        #   limits:
-        #     memory: "2Gi"
-        #     cpu: "1000m"
         livenessProbe:
           exec:
             command:
@@ -52,13 +40,6 @@ spec:
         ports:
         - containerPort: 8080
           protocol: TCP
-        volumeMounts:
-          - mountPath: /src/cts_app/collected_static
-            name: cts-collected-static
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
-      volumes:
-      - name: cts-collected-static
-        persistentVolumeClaim:
-          claimName: cts-collected-static-pvc

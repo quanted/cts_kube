@@ -21,7 +21,7 @@ spec:
       - envFrom:
           - configMapRef:
               name: cts-config
-        image: ghcr.io/quanted/cts-django:dev-kube-0a242c1a5f1d9cfb1f3bd6a83285045351cc3bfd
+        image: ghcr.io/quanted/cts-django:dev-kube-c5fdf39b0e7621604119f34fa1e39ffd4dc1b9ef
         imagePullPolicy: Always
         # image: cts-django
         # imagePullPolicy: Never

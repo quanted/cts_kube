@@ -33,21 +33,3 @@
 #     requests:
 #       storage: 5Gi
 # ---
-
-# # CTS Tomcat Chemaxon PVC
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: cts-chemaxon-license-pvc
-#   namespace: qed-kube-dev
-#   labels:
-#     app: cts-chemaxon-license-pvc
-# spec:
-#   storageClassName: efs-sc
-#   accessModes:
-#     - ReadOnlyMany
-#   resources:
-#     requests:
-#       storage: 1Mi
-# ---

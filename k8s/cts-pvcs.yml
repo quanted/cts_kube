@@ -26,7 +26,7 @@
 #   labels:
 #     app: cts-mongodb-pvc
 # spec:
-#   storageClassName: efs-sc
+#   storageClassName: cts-mongodb-pv
 #   accessModes:
 #     - ReadWriteMany
 #   resources:

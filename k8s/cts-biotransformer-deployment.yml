@@ -22,7 +22,7 @@ spec:
           env:
           - name: BT_JAR_PATH
             value: /src/biotransformer3.0jar
-          image: ghcr.io/quanted/cts-biotransformer:dev
+          image: ghcr.io/quanted/cts-biotransformer:dev-kube
           imagePullPolicy: Always
           # resources:
           #   requests:

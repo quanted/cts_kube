@@ -1,4 +1,4 @@
-FROM ubuntu:23.10
+FROM ubuntu:25.10
 
 RUN apt-get update && apt-get install -y gnupg curl
 

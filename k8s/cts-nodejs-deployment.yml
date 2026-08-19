@@ -36,7 +36,11 @@ spec:
           value: redis
         - name: REDIS_PORT
           value: "6379"
+<<<<<<< Updated upstream
         image: registry.epa.gov/qed/cyanweb_kube/cts-nodejs:dev-gl
+=======
+        image: ghcr.io/quanted/cts-nodejs:dev-kube-16693775fae1b46d1fd2268247f6caec688191ce
+>>>>>>> Stashed changes
         imagePullPolicy: Always
         name: cts-nodejs
         resources:

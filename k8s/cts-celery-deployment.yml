@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: cts-celery
+  name: cts-celery
+  namespace: qed-kube-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cts-celery
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: cts-celery
+    spec:
+      containers:
+      - name: cts-worker
+        command:
+        - sh
+        - /src/start-worker.sh
+        image: ghcr.io/quanted/cts-celery:dev-kube-26d5468a56b7a580b8303cf30deea17616fb5883
+        imagePullPolicy: Always
+        # image: cts-celery
+        # imagePullPolicy: Never
+        envFrom:
+        - configMapRef:
+            name: cts-config
+        livenessProbe:
+          exec:
+            command:
+              - ls
+              - /
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+              - ls
+              - /
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 10
+        # resources:
+        #   requests:
+        #     memory: "256Mi"
+        #     cpu: "250m"
+        #   limits:
+        #     memory: "2Gi"
+        #     cpu: "2000m"
+      - name: cts-manager
+        command:
+        - sh
+        - /src/start-manager.sh
+        image: ghcr.io/quanted/cts-celery:dev-kube
+        imagePullPolicy: Always
+        # image: cts-celery
+        # imagePullPolicy: Never
+        envFrom:
+        - configMapRef:
+            name: cts-config
+        livenessProbe:
+          exec:
+            command:
+              - ls
+              - /
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+              - ls
+              - /
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 10
+        # resources:
+        #   requests:
+        #     memory: "256Mi"
+        #     cpu: "250m"
+        #   limits:
+        #     memory: "2Gi"
+        #     cpu: "2000m"
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler

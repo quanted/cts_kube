@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: cts-redis
+  name: cts-redis
+  namespace: qed-kube-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cts-redis
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: cts-redis
+    spec:
+      containers:
+      - image: ghcr.io/quanted/cts-redis:dev-kube-4fb6faba2e0b134d57218db6be1eae569333384c
+        imagePullPolicy: Always
+      # - image: redis:latest
+      #   imagePullPolicy: Never
+        name: cts-redis
+        livenessProbe:
+          exec:
+            command:
+              - ls
+              - /
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+              - ls
+              - /
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 10
+        ports:
+          - containerPort: 6379
+            protocol: TCP
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always

@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# export $(grep -v '^#' .env | xargs)  # sets env vars with .env
+
+# Applys manifests with env vars:
+envsubst < k8s/cts-configmap.yml | kubectl apply -f -
+envsubst < k8s/cts-biotransformer-deployment.yml | kubectl apply -f -
+envsubst < k8s/cts-biotransformer-service.yml | kubectl apply -f -
+envsubst < k8s/cts-celery-deployment.yml | kubectl apply -f -
+envsubst < k8s/cts-django-deployment.yml | kubectl apply -f -
+envsubst < k8s/cts-django-service.yml | kubectl apply -f -
+envsubst < k8s/cts-envipath-deployment.yml | kubectl apply -f -
+envsubst < k8s/cts-envipath-service.yml | kubectl apply -f -
+envsubst < k8s/cts-mongodb-service.yml | kubectl apply -f -
+envsubst < k8s/cts-mongodb-statefulset.yml | kubectl apply -f -
+envsubst < k8s/cts-nginx-deployment.yml | kubectl apply -f -
+envsubst < k8s/cts-nginx-service.yml | kubectl apply -f -
+envsubst < k8s/cts-nodejs-deployment.yml | kubectl apply -f -
+envsubst < k8s/cts-nodejs-service.yml | kubectl apply -f -
+envsubst < k8s/cts-operaws-deployment.yml | kubectl apply -f -
+envsubst < k8s/cts-operaws-service.yml | kubectl apply -f -
+envsubst < k8s/cts-redis-deployment.yml | kubectl apply -f -
+envsubst < k8s/cts-redis-service.yml | kubectl apply -f -
+envsubst < k8s/cts-ctsws-deployment.yml | kubectl apply -f -
+envsubst < k8s/cts-ctsws-service.yml | kubectl apply -f -
+envsubst < k8s/cts-jchemws-deployment.yml | kubectl apply -f -
+envsubst < k8s/cts-jchemws-service.yml | kubectl apply -f -
+envsubst < k8s/cts-pkasolver-deployment.yml | kubectl apply -f -
+envsubst < k8s/cts-pkasolver-service.yml | kubectl apply -f -
+envsubst < k8s/cts-molgpka-deployment.yml | kubectl apply -f -
+envsubst < k8s/cts-molgpka-service.yml | kubectl apply -f -
+# envsubst < k8s/cts-epi-deployment.yml | kubectl apply -f -
+# envsubst < k8s/cts-epi-service.yml | kubectl apply -f -

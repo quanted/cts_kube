@@ -26,7 +26,11 @@ spec:
           env:
           - name: BT_JAR_PATH
             value: /src/biotransformer3.0jar
+<<<<<<< Updated upstream
           image: registry.epa.gov/qed/cyanweb_kube/cts-biotransformer:dev-gl
+=======
+          image: ghcr.io/quanted/cts-biotransformer:dev-kube-793f26a6137332ac838fdc64fcf6fd58849646e5
+>>>>>>> Stashed changes
           imagePullPolicy: Always
           resources:
             requests:

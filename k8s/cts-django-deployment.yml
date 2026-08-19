@@ -25,7 +25,11 @@ spec:
       - envFrom:
           - configMapRef:
               name: cts-config
+<<<<<<< Updated upstream
         image: registry.epa.gov/qed/cyanweb_kube/cts-django:dev-gl
+=======
+        image: ghcr.io/quanted/cts-django:dev-kube-3676940e95803cc0060876ba8e889389abcd206d
+>>>>>>> Stashed changes
         imagePullPolicy: Always
         name: cts-django
         resources:

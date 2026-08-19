@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: cts-epi
+  name: cts-epi
+  namespace: qed-kube-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cts-epi
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: cts-epi
+    spec:
+      containers:
+      - image: ghcr.io/quanted/cts-epi:main-19a3298f50aac7f61f11056b59bbc2394541858d
+        # imagePullPolicy: Always
+        imagePullPolicy: Never
+        name: cts-epi
+        command:
+        - java
+        - -jar
+        - /src/EpiSuite-1.0.jar
+        - -api
+        - -port
+        - "8080"
+        livenessProbe:
+          exec:
+            command:
+              - ls
+              - /
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+              - ls
+              - /
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 10
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler

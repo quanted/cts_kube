@@ -23,10 +23,14 @@ spec:
     spec:
       containers:
         - name: cts-envipath
+<<<<<<< Updated upstream
           env:
           - name: BT_JAR_PATH
             value: /src/biotransformer3.0jar
           image: ghcr.io/kurtw555/cts-envipath:dev-gl
+=======
+          image: ghcr.io/quanted/cts-envipath:dev-02d429bb60e259acefe7d7398a76f107e77f6c93
+>>>>>>> Stashed changes
           imagePullPolicy: Always
           resources:
             requests:

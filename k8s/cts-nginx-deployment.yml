@@ -22,11 +22,7 @@ spec:
         app: cts-nginx
     spec:
       containers:
-<<<<<<< Updated upstream
-        - image: registry.epa.gov/qed/cyanweb_kube/cts-nginx:dev-gl
-=======
         - image: ghcr.io/quanted/cts-nginx:dev-kube-4b00c82a4890be8849ff93520a09ecde341cae9c
->>>>>>> Stashed changes
           imagePullPolicy: Always
           name: nginx
           readinessProbe:

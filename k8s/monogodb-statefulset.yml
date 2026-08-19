@@ -19,12 +19,7 @@ spec:
         app: cts-mongodb
     spec:
       containers:
-<<<<<<< Updated upstream:k8s/monogodb-statefulset.yml
-      # - image: mongo:latest
-      - image: ghcr.io/quanted/mongo:5.0.6
-=======
       - image: ghcr.io/quanted/cts-mongodb:dev-kube-4fb6faba2e0b134d57218db6be1eae569333384c
->>>>>>> Stashed changes:k8s/cts-mongodb-statefulset.yml
         imagePullPolicy: Always
         name: cts-mongodb
         ports:

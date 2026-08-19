@@ -1,4 +1,4 @@
-FROM ubuntu:23.10
+FROM ubuntu:25.10
 
 RUN apt-get update && apt-get install -y gnupg curl
 
@@ -10,11 +10,11 @@ RUN echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-6.
 
 RUN apt-get update && \
 	apt-get install -y \
-		mongodb-org=6.0.8 \
-		mongodb-org-database=6.0.8 \
-		mongodb-org-server=6.0.8 \
-		mongodb-org-mongos=6.0.8 \
-		mongodb-org-tools=6.0.8
+		mongodb-org=6.0.27 \
+		mongodb-org-database=6.0.27 \
+		mongodb-org-server=6.0.27 \
+		mongodb-org-mongos=6.0.27 \
+		mongodb-org-tools=6.0.27
 
 RUN mkdir -p /data/db
 

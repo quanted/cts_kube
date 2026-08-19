@@ -29,5 +29,5 @@ envsubst < k8s/cts-pkasolver-deployment.yml | kubectl apply -f -
 envsubst < k8s/cts-pkasolver-service.yml | kubectl apply -f -
 envsubst < k8s/cts-molgpka-deployment.yml | kubectl apply -f -
 envsubst < k8s/cts-molgpka-service.yml | kubectl apply -f -
-# envsubst < k8s/cts-epi-deployment.yml | kubectl apply -f -
-# envsubst < k8s/cts-epi-service.yml | kubectl apply -f -
+envsubst < k8s/cts-epi-deployment.yml | kubectl apply -f -
+envsubst < k8s/cts-epi-service.yml | kubectl apply -f -

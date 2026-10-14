@@ -4,7 +4,8 @@ metadata:
   labels:
     app: cts-django
   name: cts-django
-  namespace: qed-kube-dev
+  namespace: default
+
 spec:
   replicas: 1
   selector:
@@ -21,44 +22,44 @@ spec:
       - envFrom:
           - configMapRef:
               name: cts-config
-        image: ghcr.io/quanted/cts-django:dev-kube-c5fdf39b0e7621604119f34fa1e39ffd4dc1b9ef
+        image: ghcr.io/quanted/cts-django:dev-kube-505210569277db0088eddb0b3d7108eea144bdec
         imagePullPolicy: Always
-        # image: cts-django
+        # image: cts-app-test
         # imagePullPolicy: Never
         name: cts-django
-        # resources:
-        #   requests:
-        #     memory: "1Gi"
-        #     cpu: "500m"
-        #   limits:
-        #     memory: "2Gi"
-        #     cpu: "1000m"
-        livenessProbe:
-          exec:
-            command:
-              - ls
-              - /
-          initialDelaySeconds: 5
-          periodSeconds: 5
-          timeoutSeconds: 10
-        readinessProbe:
-          exec:
-            command:
-              - ls
-              - /
-          initialDelaySeconds: 10
-          periodSeconds: 30
-          timeoutSeconds: 10
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        # livenessProbe:
+        #   exec:
+        #     command:
+        #       - ls
+        #       - /
+        #   initialDelaySeconds: 5
+        #   periodSeconds: 5
+        #   timeoutSeconds: 10
+        # readinessProbe:
+        #   exec:
+        #     command:
+        #       - ls
+        #       - /
+        #   initialDelaySeconds: 10
+        #   periodSeconds: 30
+        #   timeoutSeconds: 10
         ports:
         - containerPort: 8080
           protocol: TCP
-        volumeMounts:
-          - mountPath: /src/cts_app/collected_static
-            name: cts-collected-static
+        # volumeMounts:
+        #   - mountPath: /src/cts_app/collected_static
+        #     name: cts-collected-static
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
-      volumes:
-      - name: cts-collected-static
-        persistentVolumeClaim:
-          claimName: cts-collected-static-pvc
+      # volumes:
+      # - name: cts-collected-static
+      #   persistentVolumeClaim:
+      #     claimName: cts-collected-static-pvc

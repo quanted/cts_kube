@@ -4,7 +4,7 @@ metadata:
   labels:
     app: cts-mongodb
   name: cts-mongodb
-  namespace: qed-kube-dev
+  namespace: default
 spec:
   podManagementPolicy: OrderedReady
   replicas: 1
@@ -19,26 +19,19 @@ spec:
         app: cts-mongodb
     spec:
       containers:
-      - image: ghcr.io/quanted/cts-mongodb:dev-kube-9a1794acadee2e5c09851099d6b1f1b84f1e722e
+      - image: ghcr.io/quanted/cts-mongodb:dev-kube-9260d5404080c898ebb651dfe6b5722009de1abc
         imagePullPolicy: Always
-      # - image: cts-mongodb
-      #   imagePullPolicy: Never
-        command:
-          - mongod
-          - --dbpath
-          - '/data/db/cts'
-          - --bind_ip_all
         name: cts-mongodb
         ports:
         - containerPort: 27017
           protocol: TCP
         volumeMounts:
-        - mountPath: /data/db/cts
-          name: cts-mongodb-data
+        - mountPath: /data/db
+          name: cts-mongodb-pv
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       volumes:
-      - name: cts-mongodb-data
+      - name: cts-mongodb-pv
         persistentVolumeClaim:
           claimName: cts-mongodb-pvc

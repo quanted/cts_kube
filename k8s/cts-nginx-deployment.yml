@@ -4,7 +4,8 @@ metadata:
   labels:
     app: cts-nginx
   name: cts-nginx
-  namespace: qed-kube-dev
+  namespace: default
+
 spec:
   replicas: 1
   selector:
@@ -18,11 +19,11 @@ spec:
         app: cts-nginx
     spec:
       containers:
-        - image: ghcr.io/quanted/cts-nginx:dev-kube-0a7888ab8d74edab6e0a4263b5e3fa090fb2a87e
+        - image: ghcr.io/quanted/cts-nginx:dev-kube-505210569277db0088eddb0b3d7108eea144bdec
           imagePullPolicy: Always
-        # - image: cts-nginx
+        # - image: cts-nginx-test
         #   imagePullPolicy: Never
-          name: cts-nginx
+          name: nginx
           readinessProbe:
             tcpSocket:
               port: 80
@@ -33,21 +34,21 @@ spec:
               port: 80
             initialDelaySeconds: 15
             periodSeconds: 30
-          # resources:
-          #   requests:
-          #     memory: "256Mi"
-          #     cpu: "250m"
-          #   limits:
-          #     memory: "500Mi"
-          #     cpu: "500m"
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "500Mi"
+              cpu: "500m"
           ports:
             - containerPort: 443
             - containerPort: 80
-          volumeMounts:
-            - mountPath: /src/collected_static
-              name: cts-collected-static
+          # volumeMounts:
+          #   - mountPath: /src/collected_static
+          #     name: cts-collected-static
       restartPolicy: Always
-      volumes:
-      - name: cts-collected-static
-        persistentVolumeClaim:
-          claimName: cts-collected-static-pvc
+      # volumes:
+      # - name: cts-collected-static
+      #   persistentVolumeClaim:
+      #     claimName: cts-collected-static-pvc

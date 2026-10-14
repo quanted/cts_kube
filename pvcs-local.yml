@@ -1,0 +1,50 @@
+
+##################################
+# Persistent Volume Controllers
+##################################
+
+# # CTS Collected Static PVC
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: cts-collected-static-pvc
+#   namespace: default
+#   labels:
+#     type: local
+#     app: cts-collected-static-pvc
+# spec:
+#   accessModes:
+#     - ReadWriteMany
+#   resources:
+#     requests:
+#       storage: 1Gi
+#   storageClassName: ""
+#   volumeName: cts-collected-static-pv
+#   selector:
+#     matchLabels:
+#       name: cts-collected-static-pv
+# ---
+
+# CTS MongoDB PVC
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cts-mongodb-pvc
+  namespace: default
+  labels:
+    type: local
+    app: cts-mongodb-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: ""
+  volumeName: cts-mongodb-pv
+  selector:
+    matchLabels:
+      name: cts-mongodb-pv
+---

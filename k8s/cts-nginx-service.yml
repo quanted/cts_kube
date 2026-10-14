@@ -2,15 +2,15 @@ apiVersion: v1
 kind: Service
 metadata:
   name: cts-nginx
-  namespace: qed-kube-dev
+  namespace: default
 spec:
-  type: NodePort
-  # type: ClusterIP
   selector:
     app: cts-nginx
+  type: NodePort
   ports:
     - protocol: TCP
       port: 80
       targetPort: 80
       name: http
-      nodePort: 30002
+      nodePort: 32000
+

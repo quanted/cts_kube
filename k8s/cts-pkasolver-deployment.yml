@@ -4,7 +4,7 @@ metadata:
   labels:
     app: cts-pkasolver
   name: cts-pkasolver
-  namespace: qed-kube-dev
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: cts-pkasolver
-        image: ghcr.io/quanted/cts-pkasolver:dev-d4f6811755ab942a2cd683d18d86d3f99b32cdc0
+        image: ghcr.io/quanted/cts-pkasolver:dev-1acadc1a5e581e9e9e46ab9f9aac69bcf8720770
         imagePullPolicy: Always
         livenessProbe:
           exec:

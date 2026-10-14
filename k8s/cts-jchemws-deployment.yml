@@ -4,7 +4,7 @@ metadata:
   labels:
     app: cts-jchemws
   name: cts-jchemws
-  namespace: qed-kube-dev
+  namespace: default
 spec:
   replicas: 1
   selector:

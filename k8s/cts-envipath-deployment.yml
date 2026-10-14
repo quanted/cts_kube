@@ -4,7 +4,8 @@ metadata:
   labels:
     app: cts-envipath
   name: cts-envipath
-  namespace: qed-kube-dev
+  namespace: default
+
 spec:
   replicas: 1
   selector:
@@ -19,15 +20,15 @@ spec:
     spec:
       containers:
         - name: cts-envipath
-          image: ghcr.io/quanted/cts-envipath:dev
+          image: ghcr.io/quanted/cts-envipath:dev-16d3d0a5277699878edeb532834efcb2a2ecda40
           imagePullPolicy: Always
-          # resources:
-          #   requests:
-          #     memory: "1Gi"
-          #     cpu: "500m"
-          #   limits:
-          #     memory: "2Gi"
-          #     cpu: "1000m"
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
           livenessProbe:
             exec:
               command:

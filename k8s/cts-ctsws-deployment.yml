@@ -4,7 +4,7 @@ metadata:
   labels:
     app: cts-ctsws
   name: cts-ctsws
-  namespace: qed-kube-dev
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -31,7 +31,7 @@ spec:
             configMapKeyRef:
               name: cts-config
               key: CTS_CHEMAXON_LICENSE
-        image: ghcr.io/quanted/ctsws:docker-6a2e432a6d90cdbcc6df3dd169813ebf4cc6858a
+        image: ghcr.io/quanted/ctsws:docker-49b5356311b64a7a18ef34bd1d5ac3e5be0379f3
         imagePullPolicy: Always
         command: ["/bin/sh", "-c"]
         args:

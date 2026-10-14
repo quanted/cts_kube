@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: cts-mongodb
-  namespace: qed-kube-dev
+  name: mongodb
+  namespace: default
 spec:
   ports:
   - port: 27017
     protocol: TCP
     targetPort: 27017
   selector:
-    app: cts-mongodb
+    app: mongodb
   type: ClusterIP

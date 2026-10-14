@@ -2,42 +2,39 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cts-config
-  namespace: qed-kube-dev
+  namespace: default
   labels:
     app: cts-config
 data:
-  CCTE_API_KEY: "${CCTE_API_KEY}"
+  CCTE_API_KEY: '${CCTE_API_KEY}'
   CTS_BIOTRANS_SERVER: http://cts-biotransformer:5002
   CTS_CHEMAXON_LICENSE: '${CTS_CHEMAXON_LICENSE}'
-  CTS_DB_HOST: mongodb://cts-mongodb:27017
+  CTS_DB_HOST: mongodb://mongodb:27017
   CTS_DB_NAME: cts
   CTS_EFS_SERVER: http://cts-ctsws:8080
   CTS_EMAIL: ctsemailserver@gmail.com
-  CTS_EMAIL_RECIPIENTS: ctsemailserver@gmail.com
+  CTS_EMAIL_RECIPIENT: ctsemailserver@gmail.com
   CTS_ENVIPATH_SERVER: http://cts-envipath:5003
-  CTS_EPI_SERVER: https://ceamdev.net/epi/estimated
+  CTS_EPI_SERVER: http://cts-epi:8080/api/submit
   CTS_JCHEM_SERVER: http://cts-jchemws:8080
-  CTS_MEASURED_SERVER: https://ceamdev.net/epi/measured
   CTS_MOLGPKA_SERVER: http://cts-nginx
-  CTS_OPERA_SERVER: https://ceamdev.net
+  CTS_OPERA_SERVER: http://cts-operaws:3344
   CTS_PKASOLVER_SERVER: http://cts-nginx
   CTS_RECAPTCHA_KEY: '${CTS_RECAPTCHA_KEY}'
   CTS_REST_SERVER: http://localhost:30002
   CTS_STATIC_URL: '/cts/static/'
   CTS_TEST_SERVER: https://comptox.epa.gov/dashboard/web-test
-  CTS_TOMCAT_PASS: '${CTS_TOMCAT_PASS}'
   CTS_TOMCAT_USER: |
     <?xml version='1.0' encoding='utf-8'?>
     <tomcat-users>
       <role rolename="manager-gui"/>
       <user username="docker" password="${CTS_TOMCAT_PASS}" roles="manager-gui"/>
     </tomcat-users>
-  CTS_VERSION: "2.0.0"
+  CTS_VERSION: "1.2"
   DJANGO_SETTINGS_MODULE: "settings"
-  # ENV_NAME: kube_dev
-  MARVIN_PROXY: https://qedcloud.net
+  MARVIN_PROXY: http://localhost:30002
   MONGO_SERVER: "cts-mongodb:27017"
-  NODEJS_HOST: https://qedcloud.net
+  NODEJS_HOST: http://localhost:30002
   NODEJS_PORT: "80"
   PASSWORD_REQUIRED: "False"
   REDIS_HOSTNAME: cts-redis

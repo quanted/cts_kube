@@ -6,7 +6,8 @@ metadata:
   labels:
     app: cts-nodejs
   name: cts-nodejs
-  namespace: qed-kube-dev
+  namespace: default
+
 spec:
   replicas: 1
   selector:
@@ -32,34 +33,32 @@ spec:
           value: cts-redis
         - name: REDIS_PORT
           value: "6379"
-        image: ghcr.io/quanted/cts-nodejs:dev-kube-b3ef05546c137a8b7bf0858d2d740aa61e61886c
+        image: ghcr.io/quanted/cts-nodejs:dev-kube-94c63257ed2c68f9e09adb5afba710a82e356b6b
         imagePullPolicy: Always
-        # image: cts-nodejs
-        # imagePullPolicy: Never
         name: cts-nodejs
-        # resources:
-        #   requests:
-        #     memory: "1Gi"
-        #     cpu: "500m"
-        #   limits:
-        #     memory: "2Gi"
-        #     cpu: "1000m"
-        livenessProbe:
-          exec:
-            command:
-              - ls
-              - /
-          initialDelaySeconds: 5
-          periodSeconds: 5
-          timeoutSeconds: 10
-        readinessProbe:
-          exec:
-            command:
-              - ls
-              - /
-          initialDelaySeconds: 10
-          periodSeconds: 30
-          timeoutSeconds: 10
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        # livenessProbe:
+        #   exec:
+        #     command:
+        #       - ls
+        #       - /
+        #   initialDelaySeconds: 5
+        #   periodSeconds: 5
+        #   timeoutSeconds: 10
+        # readinessProbe:
+        #   exec:
+        #     command:
+        #       - ls
+        #       - /
+        #   initialDelaySeconds: 10
+        #   periodSeconds: 30
+        #   timeoutSeconds: 10
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler

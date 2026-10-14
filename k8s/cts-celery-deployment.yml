@@ -4,7 +4,7 @@ metadata:
   labels:
     app: cts-celery
   name: cts-celery
-  namespace: qed-kube-dev
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -23,31 +23,41 @@ spec:
       containers:
       - name: cts-worker
         command:
-        - sh
-        - /src/start-worker.sh
-        image: ghcr.io/quanted/cts-celery:dev-kube-d69a354dd57a84964e509754daeb078a9f7aea07
+        - celery
+        - -A
+        - tasks
+        - worker
+        - -Q
+        - cts_queue
+        - -l
+        - info
+        - -n
+        - cts_worker
+        - -c
+        - "4"
+        image: ghcr.io/quanted/cts-celery:dev-kube-f31cc9deed753f91232590831852607aee3fd44e
         imagePullPolicy: Always
         # image: cts-celery
         # imagePullPolicy: Never
         envFrom:
         - configMapRef:
             name: cts-config
-        livenessProbe:
-          exec:
-            command:
-              - ls
-              - /
-          initialDelaySeconds: 5
-          periodSeconds: 5
-          timeoutSeconds: 10
-        readinessProbe:
-          exec:
-            command:
-              - ls
-              - /
-          initialDelaySeconds: 10
-          periodSeconds: 30
-          timeoutSeconds: 10
+        # livenessProbe:
+        #   exec:
+        #     command:
+        #       - ls
+        #       - /
+        #   initialDelaySeconds: 5
+        #   periodSeconds: 5
+        #   timeoutSeconds: 10
+        # readinessProbe:
+        #   exec:
+        #     command:
+        #       - ls
+        #       - /
+        #   initialDelaySeconds: 10
+        #   periodSeconds: 30
+        #   timeoutSeconds: 10
         # resources:
         #   requests:
         #     memory: "256Mi"
@@ -57,31 +67,41 @@ spec:
         #     cpu: "2000m"
       - name: cts-manager
         command:
-        - sh
-        - /src/start-manager.sh
-        image: ghcr.io/quanted/cts-celery:dev-kube
+        - celery
+        - -A
+        - tasks
+        - worker
+        - -Q
+        - manager_queue
+        - -l
+        - info
+        - -n
+        - manager_worker
+        - -c
+        - "1"
+        image: ghcr.io/quanted/cts-celery:dev-kube-f31cc9deed753f91232590831852607aee3fd44e
         imagePullPolicy: Always
         # image: cts-celery
         # imagePullPolicy: Never
         envFrom:
         - configMapRef:
             name: cts-config
-        livenessProbe:
-          exec:
-            command:
-              - ls
-              - /
-          initialDelaySeconds: 5
-          periodSeconds: 5
-          timeoutSeconds: 10
-        readinessProbe:
-          exec:
-            command:
-              - ls
-              - /
-          initialDelaySeconds: 10
-          periodSeconds: 30
-          timeoutSeconds: 10
+        # livenessProbe:
+        #   exec:
+        #     command:
+        #       - ls
+        #       - /
+        #   initialDelaySeconds: 5
+        #   periodSeconds: 5
+        #   timeoutSeconds: 10
+        # readinessProbe:
+        #   exec:
+        #     command:
+        #       - ls
+        #       - /
+        #   initialDelaySeconds: 10
+        #   periodSeconds: 30
+        #   timeoutSeconds: 10
         # resources:
         #   requests:
         #     memory: "256Mi"

@@ -1,0 +1,41 @@
+##################################
+# Persistent Volumes
+##################################
+
+# # CTS Collected Static PV
+# ---
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: cts-collected-static-pv
+#   labels:
+#     type: local
+#     app: cts-collected-static-pv
+# spec:
+#   storageClassName: ""
+#   accessModes:
+#     - ReadWriteMany
+#   capacity:
+#     storage: 1Gi
+#   hostPath:
+#     path: ${CTS_COLLECTED_STATIC_PV_PATH}
+# ---
+
+# CTS OPERAWS PV
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: cts-mongodb-pv
+  labels:
+    type: local
+    app: cts-mongodb-pv
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 5Gi
+  hostPath:
+    path: ${CTS_MONGODB_PV_PATH}
+---

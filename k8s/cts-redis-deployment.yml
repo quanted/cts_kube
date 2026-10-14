@@ -4,7 +4,7 @@ metadata:
   labels:
     app: cts-redis
   name: cts-redis
-  namespace: qed-kube-dev
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -18,7 +18,7 @@ spec:
         app: cts-redis
     spec:
       containers:
-      - image: ghcr.io/quanted/cts-redis:dev-kube-9a1794acadee2e5c09851099d6b1f1b84f1e722e
+      - image: ghcr.io/quanted/cts-redis:dev-kube-6a4a4a15cae9a3d3906912654b4ecb2a31b944a4
         imagePullPolicy: Always
       # - image: redis:latest
       #   imagePullPolicy: Never

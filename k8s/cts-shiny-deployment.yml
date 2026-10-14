@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: cts-shiny
+  name: cts-shiny
+  namespace: default
+
+spec:
+  # Keep at 1 for now: a dashboard session lives in one pod (one websocket).
+  # More replicas need sticky routing at nginx once batch uploads/downloads exist.
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cts-shiny
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: cts-shiny
+    spec:
+      containers:
+      - name: cts-shiny
+        image: ghcr.io/quanted/cts-shiny:main-79fec2765d75f4a83b501248c257bf5963797c59
+        imagePullPolicy: Always
+        # image: cts-shiny-test
+        # imagePullPolicy: Never
+        # The dashboard only talks to the API, so it doesn't need cts-config.
+        env:
+          - name: CTS_API_URL
+            value: http://cts-api:5000/ctsshiny/rest   # in-cluster, not through nginx
+          - name: CTS_DOCS_URL
+            value: /cts/static/cts_app/docs/            # reaction library docs (served by nginx)
+          - name: CTS_TIMEOUT_PCHEM
+            value: "300"
+          - name: CTS_TIMEOUT_PCHEM_OPERA
+            value: "900"
+          - name: CTS_TIMEOUT_TRANSFORMATION
+            value: "660"
+          - name: CTS_ENABLE_HALF_LIFE
+            value: "false"
+          - name: HOME
+            value: /tmp
+        ports:
+        - containerPort: 8000
+          protocol: TCP
+        # resources:
+        #   requests:
+        #     memory: "512Mi"
+        #     cpu: "250m"
+        #   limits:
+        #     memory: "1Gi"
+        #     cpu: "1000m"
+        # readinessProbe:
+        #   httpGet:
+        #     path: /
+        #     port: 8000
+        #   initialDelaySeconds: 5
+        #   periodSeconds: 10
+        #   timeoutSeconds: 5
+        # livenessProbe:
+        #   tcpSocket:
+        #     port: 8000
+        #   initialDelaySeconds: 20
+        #   periodSeconds: 30
+        #   timeoutSeconds: 5
+        #   failureThreshold: 3
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 65532
+          runAsGroup: 65532
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop: ["ALL"]
+        volumeMounts:
+          - mountPath: /tmp
+            name: tmp
+      volumes:
+      - name: tmp
+        emptyDir: {}
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler

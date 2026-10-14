@@ -4,7 +4,7 @@ metadata:
   labels:
     app: cts-molgpka
   name: cts-molgpka
-  namespace: qed-kube-dev
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: cts-molgpka
-        image: ghcr.io/quanted/cts-molgpka:dev-ecb095c89abb59ccc707b5cfdbb9d12ed852af8f
+        image: ghcr.io/quanted/cts-molgpka:dev-3b831ccdd47e905cbb154b77b673d399a364eff4
         imagePullPolicy: Always
         livenessProbe:
           exec:

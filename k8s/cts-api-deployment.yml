@@ -29,6 +29,10 @@ spec:
         imagePullPolicy: Always
         # image: cts-flask-api-test
         # imagePullPolicy: Never
+        # Same calculator settings as the Django app (CTS_JCHEM_SERVER, CTS_EFS_SERVER,
+        # CTS_EPI_SERVER, CTS_OPERA_SERVER, CTS_BIOTRANS_SERVER, CTS_TEST_SERVER,
+        # CTS_DB_HOST, CCTE_API_KEY, ...). The API won't start if a required one is
+        # missing, and its log names it.
         envFrom:
           - configMapRef:
               name: cts-config
@@ -37,7 +41,7 @@ spec:
           - name: PORT
             value: "5000"
           - name: CTS_API_URL_PREFIX
-            value: /ctsshiny/rest          # nginx routes /ctsshiny/rest/ here; Django keeps /cts/rest
+            value: /cts/shiny/rest          # nginx routes /cts/shiny/rest/ here; Django keeps /cts/rest
           - name: WEB_CONCURRENCY
             value: "2"
           - name: GUNICORN_THREADS
@@ -51,29 +55,29 @@ spec:
         ports:
         - containerPort: 5000
           protocol: TCP
-        # resources:
-        #   requests:
-        #     memory: "1Gi"
-        #     cpu: "500m"
-        #   limits:
-        #     memory: "2Gi"
-        #     cpu: "2000m"
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "2000m"
         # /healthz answers without calling any calculator.
-        # readinessProbe:
-        #   httpGet:
-        #     path: /healthz
-        #     port: 5000
-        #   initialDelaySeconds: 5
-        #   periodSeconds: 10
-        #   timeoutSeconds: 5
-        # livenessProbe:
-        #   httpGet:
-        #     path: /healthz
-        #     port: 5000
-        #   initialDelaySeconds: 20
-        #   periodSeconds: 30
-        #   timeoutSeconds: 5
-        #   failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 5000
+          initialDelaySeconds: 20
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 3
         securityContext:
           runAsNonRoot: true
           runAsUser: 65532
